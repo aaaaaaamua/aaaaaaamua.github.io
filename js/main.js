@@ -1,140 +1,139 @@
-/* eslint-disable no-undef */
-// console.js
-console.log(String.raw`
-          _____                    _____                    _____                    _____          
-         /\    \                  /\    \                  /\    \                  /\    \         
-        /::\____\                /::\    \                /::\    \                /::\    \        
-       /:::/    /               /::::\    \               \:::\    \              /::::\    \       
-      /:::/    /               /::::::\    \               \:::\    \            /::::::\    \      
-     /:::/    /               /:::/\:::\    \               \:::\    \          /:::/\:::\    \     
-    /:::/____/               /:::/__\:::\    \               \:::\    \        /:::/__\:::\    \    
-   /::::\    \              /::::\   \:::\    \               \:::\    \      /::::\   \:::\    \   
-  /::::::\____\________    /::::::\   \:::\    \               \:::\    \    /::::::\   \:::\    \  
- /:::/\:::::::::::\    \  /:::/\:::\   \:::\    \               \:::\    \  /:::/\:::\   \:::\    \ 
-/:::/  |:::::::::::\____\/:::/  \:::\   \:::\____\_______________\:::\____\/:::/__\:::\   \:::\____\
-\::/   |::|~~~|~~~~~     \::/    \:::\  /:::/    /\::::::::::::::::::/    /\:::\   \:::\   \::/    /
- \/____|::|   |           \/____/ \:::\/:::/    /  \::::::::::::::::/____/  \:::\   \:::\   \/____/ 
-       |::|   |                    \::::::/    /    \:::\~~~~\~~~~~~         \:::\   \:::\    \     
-       |::|   |                     \::::/    /      \:::\    \               \:::\   \:::\____\    
-       |::|   |                     /:::/    /        \:::\    \               \:::\   \::/    /    
-       |::|   |                    /:::/    /          \:::\    \               \:::\   \/____/     
-       |::|   |                   /:::/    /            \:::\    \               \:::\    \         
-       \::|   |                  /:::/    /              \:::\____\               \:::\____\        
-        \:|   |                  \::/    /                \::/    /                \::/    /        
-         \|___|                   \/____/                  \/____/                  \/____/         
-see theme at https://github.com/0x4qE/hexo-theme-Kaze
-`);
-// darkmode.js
-// reverse button
-const scrollWidth = document.body.scrollWidth || document.documentElement.scrollWidth;
-let darkControlButton = null;
-if (scrollWidth <= 742) {
-  darkControlButton = document.querySelector('.darkwidget');
-} else {
-  darkControlButton = document.querySelector('.darknavbar');
-}
+/* eslint-disable node/no-unsupported-features/node-builtins */
+(function($, moment, ClipboardJS, config) {
+    $('.article img:not(".not-gallery-item")').each(function() {
+        // wrap images with link and add caption if possible
+        if ($(this).parent('a').length === 0) {
+            $(this).wrap('<a class="gallery-item" href="' + $(this).attr('src') + '"></a>');
+            if (this.alt) {
+                $(this).after('<p class="has-text-centered is-size-6 caption">' + this.alt + '</p>');
+            }
+        }
+    });
 
-darkControlButton.addEventListener('click', () => {
-  setDarkmode(reverseDarkModeSetting());
-});
-// scroll-up.js
-const smoothScrollToTop = () => {
-  let yTopValve = (window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop);
-  if (yTopValve > 1) {
-    window.requestAnimationFrame(smoothScrollToTop);
-    scrollTo(0, Math.floor(yTopValve * 0.85));
-  } else {
-    scrollTo(0, 0);
-  }
-};
-setTimeout(() => {
-  document.getElementById('scrollbutton').onclick = smoothScrollToTop;
-}, 0);
-// popbutton.js
-const reversePopButton = () => {
-  const scrollButton = document.getElementById('scrollbutton');
-  const menuButton = document.getElementById('menubutton');
-  const reverseButton = document.getElementById('popbutton');
-  const scrollWidth = document.body.scrollWidth || document.documentElement.scrollWidth;
-  if (scrollButton.style.display === 'flex') {
-    scrollButton.style.bottom = '32px';
-    scrollButton.style.opacity = '0';
-    reverseButton.style.transform = 'none';
-    setTimeout(() => {
-      scrollButton.style.display = 'none';
-    }, 100);
-  } else {
-    scrollButton.style.display = 'flex';
-    reverseButton.style.transform = 'rotate(90deg)';
-    setTimeout(() => {
-      scrollButton.style.bottom = '85px';
-      scrollButton.style.opacity = '1';
-    }, 100);
-  }
-  const mobileToc = document.getElementById('mobiletoc');
-  if (scrollWidth <= 862 && mobileToc) {
-    if (menuButton.style.display === 'flex') {
-      menuButton.style.right = '32px';
-      menuButton.style.opacity = '0';
-      setTimeout(() => {
-        menuButton.style.display = 'none';
-      }, 100);
-    } else {
-      menuButton.style.display = 'flex';
-      setTimeout(() => {
-        menuButton.style.right = '85px';
-        menuButton.style.opacity = '1';
-      }, 100);
+    if (typeof $.fn.lightGallery === 'function') {
+        $('.article').lightGallery({ selector: '.gallery-item' });
     }
-  }
-  const darkButton = document.querySelector('.darkwidget');
-  if (scrollWidth <= 742) {
-    if (darkButton.style.display === 'flex') {
-      darkButton.style.bottom = '32px';
-      darkButton.style.opacity = '0';
-      darkButton.style.transform = 'none';
-      setTimeout(() => {
-        darkButton.style.display = 'none';
-      }, 100);
-    } else {
-      darkButton.style.display = 'flex';
-      reverseButton.style.transform = 'rotate(90deg)';
-      setTimeout(() => {
-        darkButton.style.bottom = '138px';
-        darkButton.style.opacity = '1';
-      }, 100);
+    if (typeof $.fn.justifiedGallery === 'function') {
+        if ($('.justified-gallery > p > .gallery-item').length) {
+            $('.justified-gallery > p > .gallery-item').unwrap();
+        }
+        $('.justified-gallery').justifiedGallery();
     }
-  } 
-};
-setTimeout(() => {
-  document.getElementById('popbutton').onclick = reversePopButton;
-}, 0);
-// menuButton.js
-function menuClick(event) {
-  const target = event.target;
-  const mobileToc = document.getElementById('mobiletoc');
-  if (!mobileToc) {
-    return;
-  }
-  if (!mobileToc.contains(target)) {
-    mobileToc.style.display = 'none';
-    document.body.removeChild(mask);
-    document.removeEventListener('click', menuClick);
-  }
-}
-const clickMenuButton = () => {
-  const mobileToc = document.getElementById('mobiletoc');
-  if (!mobileToc) {
-    return;
-  }
-  mobileToc.style.display = 'block';
-  const mask = document.createElement('div');
-  mask.id = 'mask';
-  document.body.appendChild(mask);
-  setTimeout(() => {
-    document.addEventListener('click', menuClick);
-  }, 0);
-};
-setTimeout(() => {
-  document.getElementById('menubutton').onclick = clickMenuButton;
-}, 0);
+
+    if (typeof moment === 'function') {
+        $('.article-meta time').each(function() {
+            $(this).text(moment($(this).attr('datetime')).fromNow());
+        });
+    }
+
+    $('.article > .content > table').each(function() {
+        if ($(this).width() > $(this).parent().width()) {
+            $(this).wrap('<div class="table-overflow"></div>');
+        }
+    });
+
+    function adjustNavbar() {
+        const navbarWidth = $('.navbar-main .navbar-start').outerWidth() + $('.navbar-main .navbar-end').outerWidth();
+        if ($(document).outerWidth() < navbarWidth) {
+            $('.navbar-main .navbar-menu').addClass('justify-content-start');
+        } else {
+            $('.navbar-main .navbar-menu').removeClass('justify-content-start');
+        }
+    }
+    adjustNavbar();
+    $(window).resize(adjustNavbar);
+
+    function toggleFold(codeBlock, isFolded) {
+        const $toggle = $(codeBlock).find('.fold i');
+        !isFolded ? $(codeBlock).removeClass('folded') : $(codeBlock).addClass('folded');
+        !isFolded ? $toggle.removeClass('fa-angle-right') : $toggle.removeClass('fa-angle-down');
+        !isFolded ? $toggle.addClass('fa-angle-down') : $toggle.addClass('fa-angle-right');
+    }
+
+    function createFoldButton(fold) {
+        return '<span class="fold">' + (fold === 'unfolded' ? '<i class="fas fa-angle-down"></i>' : '<i class="fas fa-angle-right"></i>') + '</span>';
+    }
+
+    $('figure.highlight table').wrap('<div class="highlight-body">');
+    if (typeof config !== 'undefined'
+        && typeof config.article !== 'undefined'
+        && typeof config.article.highlight !== 'undefined') {
+
+        $('figure.highlight').addClass('hljs');
+        $('figure.highlight .code .line span').each(function() {
+            const classes = $(this).attr('class').split(/\s+/);
+            if (classes.length === 1) {
+                $(this).addClass('hljs-' + classes[0]);
+                $(this).removeClass(classes[0]);
+            }
+        });
+
+
+        const clipboard = config.article.highlight.clipboard;
+        const fold = config.article.highlight.fold.trim();
+
+        $('figure.highlight').each(function() {
+            if ($(this).find('figcaption').length) {
+                $(this).find('figcaption').addClass('level is-mobile');
+                $(this).find('figcaption').append('<div class="level-left">');
+                $(this).find('figcaption').append('<div class="level-right">');
+                $(this).find('figcaption div.level-left').append($(this).find('figcaption').find('span'));
+                $(this).find('figcaption div.level-right').append($(this).find('figcaption').find('a'));
+            } else {
+                if (clipboard || fold) {
+                    $(this).prepend('<figcaption class="level is-mobile"><div class="level-left"></div><div class="level-right"></div></figcaption>');
+                }
+            }
+        });
+
+        if (typeof ClipboardJS !== 'undefined' && clipboard) {
+            $('figure.highlight').each(function() {
+                const id = 'code-' + Date.now() + (Math.random() * 1000 | 0);
+                const button = '<a href="javascript:;" class="copy" title="Copy" data-clipboard-target="#' + id + ' .code"><i class="fas fa-copy"></i></a>';
+                $(this).attr('id', id);
+                $(this).find('figcaption div.level-right').append(button);
+            });
+            new ClipboardJS('.highlight .copy'); // eslint-disable-line no-new
+        }
+
+        if (fold) {
+            $('figure.highlight').each(function() {
+                $(this).addClass('foldable'); // add 'foldable' class as long as fold is enabled
+
+                if ($(this).find('figcaption').find('span').length > 0) {
+                    const span = $(this).find('figcaption').find('span');
+                    if (span[0].innerText.indexOf('>folded') > -1) {
+                        span[0].innerText = span[0].innerText.replace('>folded', '');
+                        $(this).find('figcaption div.level-left').prepend(createFoldButton('folded'));
+                        toggleFold(this, true);
+                        return;
+                    }
+                }
+                $(this).find('figcaption div.level-left').prepend(createFoldButton(fold));
+                toggleFold(this, fold === 'folded');
+            });
+
+            $('figure.highlight figcaption .level-left').click(function() {
+                const $code = $(this).closest('figure.highlight');
+                toggleFold($code.eq(0), !$code.hasClass('folded'));
+            });
+        }
+    }
+
+    const $toc = $('#toc');
+    if ($toc.length > 0) {
+        const $mask = $('<div>');
+        $mask.attr('id', 'toc-mask');
+
+        $('body').append($mask);
+
+        function toggleToc() { // eslint-disable-line no-inner-declarations
+            $toc.toggleClass('is-active');
+            $mask.toggleClass('is-active');
+        }
+
+        $toc.on('click', toggleToc);
+        $mask.on('click', toggleToc);
+        $('.navbar-main .catalogue').on('click', toggleToc);
+    }
+}(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings));

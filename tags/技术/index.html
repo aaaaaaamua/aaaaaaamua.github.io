@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>Tag: 技术 - Xiaozhao&#039;Blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Xiaozhao&#039;Blog"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Xiaozhao&#039;Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="Xiaozhao&#039;Blog"><meta property="og:url" content="http://aaaaaaamua.github.io/"><meta property="og:site_name" content="Xiaozhao&#039;Blog"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://aaaaaaamua.github.io/img/og_image.png"><meta property="article:author" content="Xiaozhao"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://aaaaaaamua.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://aaaaaaamua.github.io"},"headline":"Xiaozhao'Blog","image":["http://aaaaaaamua.github.io/img/og_image.png"],"author":{"@type":"Person","name":"Xiaozhao"},"publisher":{"@type":"Organization","name":"Xiaozhao'Blog","logo":{"@type":"ImageObject","url":"http://aaaaaaamua.github.io/img/logo.svg"}},"description":""}</script><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Xiaozhao&#039;Blog" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">Tags</a></li><li class="is-active"><a href="#" aria-current="page">技术</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-11-20T15:45:55.323Z" title="11/20/2023, 10:45:55 AM">2023-11-20</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-11-20T16:13:28.459Z" title="11/20/2023, 11:13:28 AM">2023-11-20</time></span><span class="level-item">12 minutes read (About 1749 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/11/20/NFC/">NFC</a></p><div class="content"><h1 id="关于门禁是设备的一些探究"><a href="#关于门禁是设备的一些探究" class="headerlink" title="关于门禁是设备的一些探究"></a>关于门禁是设备的一些探究</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。</p>
+<p>那就搞搞首要任务吧，复制复制这张加密卡！</p>
+<h2 id="啥都不会-先学理论"><a href="#啥都不会-先学理论" class="headerlink" title="啥都不会 先学理论"></a>啥都不会 先学理论</h2><h3 id="变色龙"><a href="#变色龙" class="headerlink" title="变色龙"></a>变色龙</h3><blockquote>
+<p>变色龙侦测卡，也称为Chameleon Mini，是一个开源产品，其大小稍大于一般的信用卡。这款侦测卡的主要功能是模拟被动NFC设备和非接触式IC卡，充当有源NFC设备如RFID读取器，以及嗅探和登录通信。它可以完全复制许多商业非接触式智能卡包括UID卡在内的全部内容，因此常用于测试RFID和NFC设备在各种攻击环境下的安全性。</p>
+</blockquote>
+<h3 id="读卡器"><a href="#读卡器" class="headerlink" title="读卡器"></a>读卡器</h3><p>这个就不用多说了，就是读卡号，写卡，格式化卡，改卡</p>
+<h3 id="各种相关的卡片"><a href="#各种相关的卡片" class="headerlink" title="各种相关的卡片"></a>各种相关的卡片</h3><h4 id="ID卡"><a href="#ID卡" class="headerlink" title="ID卡"></a>ID卡</h4><blockquote>
+<p>ID卡没有算法，不可写入数据，其ID出厂一次性写入，应用人员只可读出卡号加以利用 ，ID卡容易复制，安全性较低。</p>
+</blockquote>
+<h4 id="IC卡"><a href="#IC卡" class="headerlink" title="IC卡"></a>IC卡</h4><blockquote>
+<p>IC卡是智能卡的总称， IC卡带有存储器可读写，普通的IC卡也叫储存器卡、逻辑加密卡。IC卡数据的读取,写入均相应的密码认证, 数据可以分区，不同区用于不同的功能，可以有不同的密码保护。IC卡所记录内容可反复擦写，分为接触式和非接触式IC卡。  </p>
+</blockquote>
+<p>看着有点麻烦，再看看</p>
+<h4 id="CPU卡"><a href="#CPU卡" class="headerlink" title="CPU卡"></a>CPU卡</h4><p>没有下手的可能</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>相关算法有很多，但是引起大佬注意的不多</p>
+<h4 id="滚动码"><a href="#滚动码" class="headerlink" title="滚动码"></a>滚动码</h4><blockquote>
+<p>每次进行正确的刷卡行为都会改动卡片本身数据；倘若系统检测到卡片数据有误，做人的系统就会禁止这次行为；不做人的系统就会拉黑这张卡，也就是说除非联系管理员，否则就会得到一张废卡</p>
+</blockquote>
+<p>这个是最大的威胁，开始我以为是是要接触读卡机就会改变数据，后来发现是只有和终端正确响应才能能够进行数据交互</p>
+<h4 id="挑战响应机制"><a href="#挑战响应机制" class="headerlink" title="挑战响应机制"></a>挑战响应机制</h4><p>有点复杂看不太懂</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/59305710?utm_id=0">知乎</a><br><a href="https://blog.csdn.net/z_shaowu/article/details/6220317">CSDN</a></p>
+</blockquote>
+<h2 id="上手实操（相当简单）"><a href="#上手实操（相当简单）" class="headerlink" title="上手实操（相当简单）"></a>上手实操（相当简单）</h2><ol>
+<li>读卡器读原卡号导入变色龙</li>
+<li>变色龙解码拿到解密文件</li>
+<li>导入解密文件开始解码</li>
+<li>解码完得到dump文件</li>
+</ol>
+<hr>
+<p>（以上可以复制完了，接下来是导入手机）<br>5. 手机复制卡号（由于机制保密问题，手机一旦识别到加密区就会自动停止复制，可能在root机型上可以复制，但未探究）<br>6. 然后将手机放在读卡器上导入dump文件进行m1写卡</p>
+<h2 id="出现的问题及反思"><a href="#出现的问题及反思" class="headerlink" title="出现的问题及反思"></a>出现的问题及反思</h2><h3 id="1-变色龙的使用"><a href="#1-变色龙的使用" class="headerlink" title="1. 变色龙的使用"></a>1. 变色龙的使用</h3><h4 id="变色龙的嗅探功能："><a href="#变色龙的嗅探功能：" class="headerlink" title="变色龙的嗅探功能："></a>变色龙的嗅探功能：</h4><p>随便都可以进行嗅探，可以不用提前导入卡号，就可以得到设备的加密方式（字符串），但是返回解码的密码并不能够对原卡进行解码。本次样本中正确的密码应该是原卡卡号+加密方式（字符串）。</p>
+<h4 id="变色龙的模拟功能"><a href="#变色龙的模拟功能" class="headerlink" title="变色龙的模拟功能"></a>变色龙的模拟功能</h4><p>需要导入dump文件，并且可以导入多达8个，可以模拟各种卡，并且可以对卡文件进行随意改动而<strong>不会影响硬件</strong>。</p>
+<h4 id="变色龙的随机卡号功能"><a href="#变色龙的随机卡号功能" class="headerlink" title="变色龙的随机卡号功能"></a>变色龙的随机卡号功能</h4><p>random UID可以随机模拟卡号，按一下变一下</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>然而事实上变色龙并不能取代读卡器的功能，也就是说变色龙不能够单独使用</p>
+<h3 id="2-卡片"><a href="#2-卡片" class="headerlink" title="2. 卡片"></a>2. 卡片</h3><ul>
+<li>读卡后一声为低频卡（ID）</li>
+<li>读卡后两声为高频卡（除了ID卡的其他卡）</li>
+<li>大佬介绍存在一种卡读卡的时候完全没有反应</li>
+<li>UID卡手动改动0扇区卡号后读卡的时候也完全没反应，也就是说正常使用UID卡不能够手动改变0扇区，<em><strong>但是</strong></em>却可以导入dump文件对卡号进行修改，相当奇怪。</li>
+</ul>
+<h3 id="3-Dump文件"><a href="#3-Dump文件" class="headerlink" title="3. Dump文件"></a>3. Dump文件</h3><p>dump文件采用16进制的编码形式<br>解码后导入dump文件重新写卡得到的也是加密卡<br>dump文件中初始六位为卡号，会等同于某一特定扇区的初始6位</p>
+<h3 id="4-进一步探究"><a href="#4-进一步探究" class="headerlink" title="4. 进一步探究"></a>4. 进一步探究</h3><ol>
+<li>我们发现刷卡到开门只需要不到一秒的时间，但是即使我们通过嗅探得到的秘钥在解码时电脑上了性能模式，也足足解码了17分钟。那么基本可以断定在进行交互的时候，门禁终端并没有解码所有扇区，而是仅仅解码某一特定扇区。</li>
+<li>原卡中的某一特定扇区中有明确的工号，而在工号的前面是有字符串转十六进制的八位字符。但是在后边控制变量的时候，我们发现只有工号和卡号有用，其余部分没有作用。</li>
+<li>0扇区和这个特定扇区卡号必须一致，否则就会导致无法读卡。</li>
+<li>通过单位内部人员名单发现工号位数一直形式相似，基本可以判断这个区块的判断方式就是工号。</li>
+<li>单位内的工号分为人员工号和部门工号</li>
+<li>如果只改变工号，在特定的部门里会显示“未授权”，然而更多的部门会显示“数据错误”。</li>
+<li>所有设备嗅探得到的加密方式完全一致</li>
+</ol>
+<h3 id="5-小遗憾"><a href="#5-小遗憾" class="headerlink" title="5. 小遗憾"></a>5. 小遗憾</h3><ol>
+<li>在发现工号和卡上内容的联系后，我们就萌生了有工号刷遍全单位的想法，然而随着进一步探究基本确定了卡号和工号的绑定。然后由于样本有限，我们无法推断两者间的加密方式或者是随机发卡模式。</li>
+<li>未能搞清楚门禁系统返回“未授权”，“数据错误”的具体原因。猜测系统分为两步验证：</li>
+</ol>
+<ul>
+<li>首先验证卡号是否授权，否，返回“未授权”；</li>
+<li>是，进一步检验卡号，返回“数据错误”。</li>
+</ul>
+<h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a><strong>特别鸣谢</strong></h2><p>感谢大佬在这次行动中全程带我起飞，但由于不可抗力因素，无法实名感谢🌹</p>
+</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="Your name"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Your name</p><p class="is-size-6 is-block">Your title</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Your location</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">0</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ppoffice"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-20T15:46:01.239Z">2023-11-20</time></p><p class="title"><a href="/2023/11/20/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/">是谁偷偷给我打了满分？</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-11-20T15:45:55.323Z">2023-11-20</time></p><p class="title"><a href="/2023/11/20/NFC/">NFC</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/%E6%8A%80%E6%9C%AF/"><span class="tag">技术</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%95%B4%E6%B4%BB/"><span class="tag">整活</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="card widget"><div class="card-content"><div class="notification is-danger">You need to set <code>client_id</code> and <code>slot_id</code> to show this AD unit. Please set it in <code>_config.yml</code>.</div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Xiaozhao&#039;Blog" height="28"></a><p class="is-size-7"><span>&copy; 2023 Xiaozhao</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
