@@ -41,9 +41,9 @@
     <link href="http://aaaaaaamua.github.io/2024/01/02/build_dvwa_on_phpstudy/"/>
     <id>http://aaaaaaamua.github.io/2024/01/02/build_dvwa_on_phpstudy/</id>
     <published>2024-01-03T04:15:23.276Z</published>
-    <updated>2023-12-11T05:34:05.578Z</updated>
+    <updated>2024-01-03T05:13:44.671Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在GitHub上发现了这个靶场，正愁这两天了解了sql注入但是还没来得及尝试，正好有个地方适合小朋友玩玩，顺手还发现了phypstudy的正确用法（下载好久居然一直没用或):）</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li>先下载<a href="http://public.xp.cn/upgrades/phpStudy_64.zip">phpstudy（容器）</a>；</li><li>安装在一个全英文的路径下后启动；<img src="C:\Users\小赵赵赵\AppData\Roaming\Typora\typora-user-images\image-20231211132536871.png" alt="image-20231211132536871">注意要启动WNMP，Apache2.4.39，MySQL5.7.26；</li><li>在浏览器地址栏中输入localhost，看看是否出现phpstudy的界面，有则表明成功；</li><li><a href="https://github.com/digininja/DVWA">下载dvwa</a>，选择zip压缩包下载；</li><li>解压后改名字把解压后的文件夹里面的单个文件夹取出放在phpstudy&#x2F;WWW的路径下面；</li><li>之后修改文件夹（DVWA）中config文件夹中的内容，修改成congfig.inc.php（删掉后面的.dist）</li><li>用VS打开修改后的文件，修改如下<img src="C:\Users\小赵赵赵\Downloads\mmexport1702272690942.jpg" alt="mmexport1702272690942"></li></ol><p>8.在phpstudy软件-数据库中修改数据库密码成12456</p><p>9.回到浏览器界面完成注册账户密码为：admin和password</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在GitHub上发现了这个靶场，正愁这两天了解了sql注入但是还没来得及尝试，正好有个地方适合小朋友玩玩，顺手还发现了phypstudy的正确用法（下载好久居然一直没用或):）</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li>先下载<a href="http://public.xp.cn/upgrades/phpStudy_64.zip">phpstudy（容器）</a>；</li><li>安装在一个全英文的路径下后启动；<img src="https://githubfast.com/aaaaaaamua/aaaaaaamua.github.io/tree/master/imags/2.png" alt="image-20231211132536871">注意要启动WNMP，Apache2.4.39，MySQL5.7.26；</li><li>在浏览器地址栏中输入localhost，看看是否出现phpstudy的界面，有则表明成功；</li><li><a href="https://github.com/digininja/DVWA">下载dvwa</a>，选择zip压缩包下载；</li><li>解压后改名字把解压后的文件夹里面的单个文件夹取出放在phpstudy&#x2F;WWW的路径下面；</li><li>之后修改文件夹（DVWA）中config文件夹中的内容，修改成congfig.inc.php（删掉后面的.dist）</li><li>用VS打开修改后的文件，修改如下<img src="https://githubfast.com/aaaaaaamua/aaaaaaamua.github.io/tree/master/imags/3.png" alt="mmexport1702272690942"></li></ol><p>8.在phpstudy软件-数据库中修改数据库密码成12456</p><p>9.回到浏览器界面完成注册账户密码为：admin和password</p>]]></content>
     
     
       
