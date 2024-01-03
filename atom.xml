@@ -6,7 +6,7 @@
   <link href="http://aaaaaaamua.github.io/atom.xml" rel="self"/>
   
   <link href="http://aaaaaaamua.github.io/"/>
-  <updated>2023-11-28T16:19:35.935Z</updated>
+  <updated>2023-12-11T05:34:05.578Z</updated>
   <id>http://aaaaaaamua.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://aaaaaaamua.github.io/2024/01/02/build_dvwa_on_phpstudy/"/>
+    <id>http://aaaaaaamua.github.io/2024/01/02/build_dvwa_on_phpstudy/</id>
+    <published>2024-01-03T04:15:23.276Z</published>
+    <updated>2023-12-11T05:34:05.578Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在GitHub上发现了这个靶场，正愁这两天了解了sql注入但是还没来得及尝试，正好有个地方适合小朋友玩玩，顺手还发现了phypstudy的正确用法（下载好久居然一直没用或):）</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li>先下载<a href="http://public.xp.cn/upgrades/phpStudy_64.zip">phpstudy（容器）</a>；</li><li>安装在一个全英文的路径下后启动；<img src="C:\Users\小赵赵赵\AppData\Roaming\Typora\typora-user-images\image-20231211132536871.png" alt="image-20231211132536871">注意要启动WNMP，Apache2.4.39，MySQL5.7.26；</li><li>在浏览器地址栏中输入localhost，看看是否出现phpstudy的界面，有则表明成功；</li><li><a href="https://github.com/digininja/DVWA">下载dvwa</a>，选择zip压缩包下载；</li><li>解压后改名字把解压后的文件夹里面的单个文件夹取出放在phpstudy&#x2F;WWW的路径下面；</li><li>之后修改文件夹（DVWA）中config文件夹中的内容，修改成congfig.inc.php（删掉后面的.dist）</li><li>用VS打开修改后的文件，修改如下<img src="C:\Users\小赵赵赵\Downloads\mmexport1702272690942.jpg" alt="mmexport1702272690942"></li></ol><p>8.在phpstudy软件-数据库中修改数据库密码成12456</p><p>9.回到浏览器界面完成注册账户密码为：admin和password</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在GitHub上发现了这个靶场，正愁这两天了解了sql注入但是还没来得及尝试，正好有个地方适合小朋友玩玩，顺手还发现了phypstudy的正</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>2023.12.1版burp下载</title>
+    <link href="http://aaaaaaamua.github.io/2024/01/02/burp2023.12.1/"/>
+    <id>http://aaaaaaamua.github.io/2024/01/02/burp2023.12.1/</id>
+    <published>2024-01-03T04:15:21.304Z</published>
+    <updated>2024-01-03T04:06:34.840Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="23-12-1版burp但是英文版"><a href="#23-12-1版burp但是英文版" class="headerlink" title="23.12.1版burp但是英文版"></a>23.12.1版burp但是英文版</h2><h3 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h3><p>正值期末周不想复习没啥事干，一直看手底下的21年burp不顺眼了，就想着什么时候给换掉，想睡觉就有人给递枕头，这不是乌震安全更新了一个注册机，我直接偷走</p><h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>2023.12.1</p><h3 id="具体流程"><a href="#具体流程" class="headerlink" title="具体流程"></a>具体流程</h3><ol><li><a href="https://portswigger.net/burp/releases/professional-community-2023-12-1?requestededition=professional">先下载对应版本的安装包</a></li><li>正常安装后打开，此时会显示未注册</li><li>编辑安装目录下的BurpSuitePro.vmoptions文件，可以用vscode<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>=ALL-UNNAMED</span><br><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>.tree=ALL-UNNAMED</span><br><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>.Opcodes=ALL-UNNAMED</span><br><span class="line">-javaagent:BurpLoaderKeygen.jar</span><br><span class="line">-noverif</span><br></pre></td></tr></table></figure></li><li>下载注册机，将BurpLoaderKeygen.jar放置在burpsuite.exe同级目录下</li><li>然后打开注册机开始注册，需要把注册码粘贴过来复制过去</li></ol><h3 id="注册机下载"><a href="#注册机下载" class="headerlink" title="注册机下载"></a>注册机下载</h3><p> 链接:<a href="https://pan.baidu.com/s/1-jmCgoa6v3oLqo2TZ7b8KA">https://pan.baidu.com/s/1-jmCgoa6v3oLqo2TZ7b8KA</a> 提取码:v0i9（防跑路自存链）<br> 注：下载后的注册机放为apk格式，去掉后缀即可<br> <br> ## 21版burp但是中文版<br> <a href="https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe">Oracle账户</a></p><p><a href="https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html">JDK15</a>必须是在jdk15大版本下才可以运行注册机</p><p><a href="https://www.52pojie.cn/thread-1369324-1-1.html">具体教程</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;23-12-1版burp但是英文版&quot;&gt;&lt;a href=&quot;#23-12-1版burp但是英文版&quot; class=&quot;headerlink&quot; title=&quot;23.12.1版burp但是英文版&quot;&gt;&lt;/a&gt;23.12.1版burp但是英文版&lt;/h2&gt;&lt;h3 id=&quot;前情提要&quot;</summary>
+      
+    
+    
+    
+    
+    <category term="工具使用备份" scheme="http://aaaaaaamua.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E5%A4%87%E4%BB%BD/"/>
+    
+  </entry>
   
   <entry>
     <title>burp2021.2下载激活</title>
