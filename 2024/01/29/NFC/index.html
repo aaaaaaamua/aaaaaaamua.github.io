@@ -7,16 +7,20 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Xiaozhao&#39;blog">
-<meta property="og:url" content="http://example.com/index.html">
+<meta name="description" content="前情提要工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。 那就搞搞首要任务吧，复制复制这张加密卡！ 啥都不会 先学理论变色龙 变色龙侦测卡，也称为Chameleon Mini，是一个开源产品，其大小稍大于一般的信用卡。这款侦测卡的主要功能是模拟被动NFC设备和非接触式IC卡，充当有源NFC设备如RF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于NFC的一些探究">
+<meta property="og:url" content="http://example.com/2024/01/29/NFC/index.html">
 <meta property="og:site_name" content="Xiaozhao&#39;blog">
+<meta property="og:description" content="前情提要工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。 那就搞搞首要任务吧，复制复制这张加密卡！ 啥都不会 先学理论变色龙 变色龙侦测卡，也称为Chameleon Mini，是一个开源产品，其大小稍大于一般的信用卡。这款侦测卡的主要功能是模拟被动NFC设备和非接触式IC卡，充当有源NFC设备如RF">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-01-29T05:12:03.903Z">
+<meta property="article:modified_time" content="2024-01-29T05:12:03.903Z">
 <meta property="article:author" content="Xiaozhao">
 <meta name="twitter:card" content="summary">
 
 
-<title >Xiaozhao'blog</title>
+<title >关于NFC的一些探究</title>
 
 <!-- Favicon -->
 
@@ -57,7 +61,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"example.com","author":"Xiaozhao","root":"/","typed_text":null,"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"https://picx.zhimg.com/80/v2-7864093ef6a1d56aa514d85b0875e162_1440w.webp?source=2c26e567","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","appleTouchIcon":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","webmanifest":null,"visibilitychange":"trye","hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","showText":"(/≧▽≦/)咦！又好了！                                                             .","hideText":"(●—●)Oh, crash!"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":true},"live_time":{"start_time":"25/01/2024 03:00:00","prefix":"The blog has been lovely to run undefined day"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":true,"postUpdate":"2024-01-29 13:14:37"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-01-29 13:12:03"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -136,7 +140,7 @@
     <nav>
         <ul>
             
-            <li class="menu-item-has-children current-menu-item">
+            <li class="menu-item-has-children ">
                 <a  href="/" target="">
                     Home
                 </a>
@@ -176,7 +180,8 @@
             <!-- top bar end -->
 
             <!-- body -->
-            <div class="trm-content-start">
+            
+<div class="trm-content-start">
     <!-- banner -->
     <div class="trm-banner">
     
@@ -197,10 +202,10 @@
                     <!-- banner title -->
                     <div class="trm-banner-text ">
                         <div class="trm-label trm-mb-20">
-                            Hi my new friend!
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            树深时见鹿，<br>溪午不闻钟。
+                            关于NFC的一些探究
                         </h1>
 
                         
@@ -210,7 +215,7 @@
                                 </li>
                                 <li>
                                     <span>
-                                        index.html
+                                        2024
                                     </span>
                                 </li>
                             </ul>
@@ -286,57 +291,103 @@
             
             <div class="trm-page-content col-lg-8">
                 <div id="trm-content" class="trm-content">
-                    <!-- categories -->
-
-    <div class="row hidden-sm">
-        
-        
-    </div>
-
-<!-- categories end -->
-
-<!-- newest publications -->
-<div class="row">
-    
-        <div class="col-lg-12">
-            <!-- title -->
-            <h5 class="trm-title-with-divider">
-                Newest Publications 
-                <span data-number="01"></span>
-            </h5>
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            01/29
         </div>
-    
-    
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2024/01/29/NFC/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="/img/block.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" #.">
-                    Unclassified
-                </a>
-            </div>
-            <h5>
-                <a href="/2024/01/29/NFC/" class="trm-anima-link">
-                    关于NFC的一些探究
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>24/01/29</li>
-                <li>13:12</li>
-                
-                
-            </ul>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            13:12
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xiaozhao
         </div>
     </div>
 </div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。</p>
+<p>那就搞搞首要任务吧，复制复制这张加密卡！</p>
+<h2 id="啥都不会-先学理论"><a href="#啥都不会-先学理论" class="headerlink" title="啥都不会 先学理论"></a>啥都不会 先学理论</h2><h3 id="变色龙"><a href="#变色龙" class="headerlink" title="变色龙"></a>变色龙</h3><blockquote>
+<p>变色龙侦测卡，也称为Chameleon Mini，是一个开源产品，其大小稍大于一般的信用卡。这款侦测卡的主要功能是模拟被动NFC设备和非接触式IC卡，充当有源NFC设备如RFID读取器，以及嗅探和登录通信。它可以完全复制许多商业非接触式智能卡包括UID卡在内的全部内容，因此常用于测试RFID和NFC设备在各种攻击环境下的安全性。</p>
+</blockquote>
+<h3 id="读卡器"><a href="#读卡器" class="headerlink" title="读卡器"></a>读卡器</h3><p>这个就不用多说了，就是读卡号，写卡，格式化卡，改卡</p>
+<h3 id="各种相关的卡片"><a href="#各种相关的卡片" class="headerlink" title="各种相关的卡片"></a>各种相关的卡片</h3><h4 id="ID卡"><a href="#ID卡" class="headerlink" title="ID卡"></a>ID卡</h4><blockquote>
+<p>ID卡没有算法，不可写入数据，其ID出厂一次性写入，应用人员只可读出卡号加以利用 ，ID卡容易复制，安全性较低。</p>
+</blockquote>
+<h4 id="IC卡"><a href="#IC卡" class="headerlink" title="IC卡"></a>IC卡</h4><blockquote>
+<p>IC卡是智能卡的总称， IC卡带有存储器可读写，普通的IC卡也叫储存器卡、逻辑加密卡。IC卡数据的读取,写入均相应的密码认证, 数据可以分区，不同区用于不同的功能，可以有不同的密码保护。IC卡所记录内容可反复擦写，分为接触式和非接触式IC卡。  </p>
+</blockquote>
+<p>看着有点麻烦，再看看</p>
+<h4 id="CPU卡"><a href="#CPU卡" class="headerlink" title="CPU卡"></a>CPU卡</h4><p>没有下手的可能</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>相关算法有很多，但是引起大佬注意的不多</p>
+<h4 id="滚动码"><a href="#滚动码" class="headerlink" title="滚动码"></a>滚动码</h4><blockquote>
+<p>每次进行正确的刷卡行为都会改动卡片本身数据；倘若系统检测到卡片数据有误，做人的系统就会禁止这次行为；不做人的系统就会拉黑这张卡，也就是说除非联系管理员，否则就会得到一张废卡</p>
+</blockquote>
+<p>这个是最大的威胁，开始我以为是是要接触读卡机就会改变数据，后来发现是只有和终端正确响应才能能够进行数据交互</p>
+<h4 id="挑战响应机制"><a href="#挑战响应机制" class="headerlink" title="挑战响应机制"></a>挑战响应机制</h4><p>有点复杂看不太懂</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59305710?utm_id=0">知乎</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/z_shaowu/article/details/6220317">CSDN</a></p>
+</blockquote>
+<h2 id="上手实操（相当简单）"><a href="#上手实操（相当简单）" class="headerlink" title="上手实操（相当简单）"></a>上手实操（相当简单）</h2><ol>
+<li>读卡器读原卡号导入变色龙</li>
+<li>变色龙解码拿到解密文件</li>
+<li>导入解密文件开始解码</li>
+<li>解码完得到dump文件</li>
+</ol>
+<hr>
+<p>（以上可以复制完了，接下来是导入手机）<br>5. 手机复制卡号（由于机制保密问题，手机一旦识别到加密区就会自动停止复制，可能在root机型上可以复制，但未探究）<br>6. 然后将手机放在读卡器上导入dump文件进行m1写卡</p>
+<h2 id="出现的问题及反思"><a href="#出现的问题及反思" class="headerlink" title="出现的问题及反思"></a>出现的问题及反思</h2><h3 id="1-变色龙的使用"><a href="#1-变色龙的使用" class="headerlink" title="1. 变色龙的使用"></a>1. 变色龙的使用</h3><h4 id="变色龙的嗅探功能："><a href="#变色龙的嗅探功能：" class="headerlink" title="变色龙的嗅探功能："></a>变色龙的嗅探功能：</h4><p>随便都可以进行嗅探，可以不用提前导入卡号，就可以得到设备的加密方式（字符串），但是返回解码的密码并不能够对原卡进行解码。本次样本中正确的密码应该是原卡卡号+加密方式（字符串）。</p>
+<h4 id="变色龙的模拟功能"><a href="#变色龙的模拟功能" class="headerlink" title="变色龙的模拟功能"></a>变色龙的模拟功能</h4><p>需要导入dump文件，并且可以导入多达8个，可以模拟各种卡，并且可以对卡文件进行随意改动而<strong>不会影响硬件</strong>。</p>
+<h4 id="变色龙的随机卡号功能"><a href="#变色龙的随机卡号功能" class="headerlink" title="变色龙的随机卡号功能"></a>变色龙的随机卡号功能</h4><p>random UID可以随机模拟卡号，按一下变一下</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>然而事实上变色龙并不能取代读卡器的功能，也就是说变色龙不能够单独使用</p>
+<h3 id="2-卡片"><a href="#2-卡片" class="headerlink" title="2. 卡片"></a>2. 卡片</h3><ul>
+<li>读卡后一声为低频卡（ID）</li>
+<li>读卡后两声为高频卡（除了ID卡的其他卡）</li>
+<li>大佬介绍存在一种卡读卡的时候完全没有反应</li>
+<li>UID卡手动改动0扇区卡号后读卡的时候也完全没反应，也就是说正常使用UID卡不能够手动改变0扇区，<em><strong>但是</strong></em>却可以导入dump文件对卡号进行修改，相当奇怪。</li>
+</ul>
+<h3 id="3-Dump文件"><a href="#3-Dump文件" class="headerlink" title="3. Dump文件"></a>3. Dump文件</h3><p>dump文件采用16进制的编码形式<br>解码后导入dump文件重新写卡得到的也是加密卡<br>dump文件中初始六位为卡号，会等同于某一特定扇区的初始6位</p>
+<h3 id="4-进一步探究"><a href="#4-进一步探究" class="headerlink" title="4. 进一步探究"></a>4. 进一步探究</h3><ol>
+<li>我们发现刷卡到开门只需要不到一秒的时间，但是即使我们通过嗅探得到的秘钥在解码时电脑上了性能模式，也足足解码了17分钟。那么基本可以断定在进行交互的时候，门禁终端并没有解码所有扇区，而是仅仅解码某一特定扇区。</li>
+<li>原卡中的某一特定扇区中有明确的工号，而在工号的前面是有字符串转十六进制的八位字符。但是在后边控制变量的时候，我们发现只有工号和卡号有用，其余部分没有作用。</li>
+<li>0扇区和这个特定扇区卡号必须一致，否则就会导致无法读卡。</li>
+<li>通过单位内部人员名单发现工号位数一直形式相似，基本可以判断这个区块的判断方式就是工号。</li>
+<li>单位内的工号分为人员工号和部门工号</li>
+<li>如果只改变工号，在特定的部门里会显示“未授权”，然而更多的部门会显示“数据错误”。</li>
+<li>所有设备嗅探得到的加密方式完全一致</li>
+</ol>
+<h3 id="5-小遗憾"><a href="#5-小遗憾" class="headerlink" title="5. 小遗憾"></a>5. 小遗憾</h3><ol>
+<li>在发现工号和卡上内容的联系后，我们就萌生了有工号刷遍全单位的想法，然而随着进一步探究基本确定了卡号和工号的绑定。然后由于样本有限，我们无法推断两者间的加密方式或者是随机发卡模式。</li>
+<li>未能搞清楚门禁系统返回“未授权”，“数据错误”的具体原因。猜测系统分为两步验证：</li>
+</ol>
+<ul>
+<li>首先验证卡号是否授权，否，返回“未授权”；</li>
+<li>是，进一步检验卡号，返回“数据错误”。</li>
+</ul>
+<h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a><strong>特别鸣谢</strong></h2><p>感谢大佬在这次行动中全程带我起飞，但由于不可抗力因素，无法实名感谢🌹</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
     
         <div class="col-lg-6">
     <div class="trm-blog-card trm-scroll-animation">
@@ -369,106 +420,10 @@
     </div>
 </div>
     
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2024/01/29/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="/img/block.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" #.">
-                    Unclassified
-                </a>
-            </div>
-            <h5>
-                <a href="/2024/01/29/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/" class="trm-anima-link">
-                    
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>24/01/29</li>
-                <li>13:10</li>
-                
-                
-            </ul>
-        </div>
-    </div>
 </div>
-    
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2024/01/29/burp2023.12.1/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="/img/block.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" #.">
-                    Unclassified
-                </a>
-            </div>
-            <h5>
-                <a href="/2024/01/29/burp2023.12.1/" class="trm-anima-link">
-                    2023.12.1版burp下载
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>24/01/29</li>
-                <li>13:10</li>
-                
-                
-            </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2024/01/29/GEMINI/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="/img/picture/fwq/cover.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" #.">
-                    Unclassified
-                </a>
-            </div>
-            <h5>
-                <a href="/2024/01/29/GEMINI/" class="trm-anima-link">
-                    微信机器人
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>24/01/29</li>
-                <li>01:39</li>
-                
-                
-            </ul>
-        </div>
-    </div>
-</div>
-    
-</div>
-<!-- newest publications end -->
 
+    
 
-    <div class="trm-pagination">
-        <span class="page-number current">1</span>
-    </div>
 
 
                     <div class="trm-divider footer-divider"></div>
@@ -513,6 +468,10 @@
 <div class="trm-fixed-container">
     
     
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
     
     <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
         <i class="iconfont fas fa-arrow-up"></i>
@@ -544,6 +503,10 @@
     
 
     <!-- 评论插件 -->
+    
+        
+
+        
     
 
 
