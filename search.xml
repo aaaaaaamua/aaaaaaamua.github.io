@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>微信机器人</title>
+    <url>/2024/01/29/GEMINI/</url>
+    <content><![CDATA[<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><blockquote>
+<p>复现b站大佬“技术爬爬虾”按照GitHub开源项目“chatgpt-on-wechat”的项目。该项目利用的是微信的官方接口接入最时髦的谷歌机器人GEMINI，不存在任何的账号风险。<br>B站大佬项目地址：<a href="https://www.bilibili.com/read/cv29550040/">https://www.bilibili.com/read/cv29550040/</a><br>GitHub项目地址：<a href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a></p>
+</blockquote>
+<h2 id="环境声明"><a href="#环境声明" class="headerlink" title="环境声明"></a>环境声明</h2><ol>
+<li>本次复现实验使用的服务器有：华为云提供的云函数（不用钱）（用于企业微信应用中&lt;网页授权及JS-SDK&gt;验证）以及阿里云提供的轻量应用服务器（[亚太-新加坡-包年-学生优惠&#x3D;免费](<a href="https://common-buy.aliyun.com/?spm=5176.161059.J_5253785160.2.3b16a505WHYCnL&commodityCode=swas&request=%7B%22ord_time%22:%2212:Month%22,%22order_num%22:1,%22instance_type%22:%22server%22,%22app_image%22:%220e41d20bf73e481db7d0023dd255c0bd%22,%22datadisk_type%22:%22essddatadisk%22,%22version_type%22:%22swas.s2.c2m1s40b3t04%22,%22image_type%22:%22appimage%22%7D&regionId=ap-southeast-1">轻量应用服务器 (aliyun.com)</a>)）（用于部署主体docker转发提供AI服务的服务器和企业微信机器人之间的流量）</li>
+<li>Ubuntu22.04</li>
+<li>docker version 24.0.7</li>
+</ol>
+<h2 id="复现过程困难"><a href="#复现过程困难" class="headerlink" title="复现过程困难"></a>复现过程困难</h2><ol>
+<li><p>在验证&lt;网页授权及JS-SDK&gt;时候的出现验证失败的问题：<br> 1.1 在选择云函数实例的时候需要选择北京的服务器，如果选择其他地区的服务器则会出现下一步校验可信域名的时候找不到相关的代码区；<br> 1.2 需要先点击申请校验域名后下载文件，用文本打开文件后复制到华为云函数中的代码中后才可以进行确定（只有在这个时候才会真正地开始校验）；</p>
+</li>
+<li><p>最后一设置api接收的时候一直出现<strong>api回调地址请求不通过</strong>，是由于服务器没有开放9898端口，这是阿里云做的整体防护，不能够直接在服务器系统上进行端口开放，需要在阿里云服务器-轻量应用服务器中的防火墙中手动打开9898端口,具体操作为：轻量应用服务器-小盾牌图标-防火墙-管理规则-添加规则。</p>
+<p><img src="/img/picture/fwq/fwq.1.png" alt="fwq.1" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ol>
+<h2 id="B站大佬原文"><a href="#B站大佬原文" class="headerlink" title="B站大佬原文"></a>B站大佬原文</h2><p>这不是普通微信好友，这是我的家族企业微信，我们点进去看看，其实里面就我一个活人，其他都是AI机器人。这些机器人对接了各类AI大模型，甚至还提供电影下载，智能家居等服务。这些机器人使用的是微信的官方接口，不会对微信账号带来任何风险。并且微信天然支持语音图片输入，能承接AI的多模态功能。所以使用企业微信对接AI机器人，是一个非常好的解决方案。  本期我来分享下如何免费注册一个人的企业，白嫖企业微信的全部功能。企业微信设置繁琐，内容十分硬核，建议收藏多看几遍，视频制作不易希望各位观众老爷点赞支持下。  </p>
+<p>项目主页：<a href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a><br>项目文档；<a href="https://docs.link-ai.tech/cow/quick-start">https://docs.link-ai.tech/cow/quick-start</a><br>本教程没讲到的细节请参考文档。  </p>
+<ol>
+<li><p>注册企业微信<br><a href="https://work.weixin.qq.com/wework_admin/register_wx?from=loginpage">https://work.weixin.qq.com/wework_admin/register_wx?from=loginpage</a>  </p>
+</li>
+<li><p>创建企业机器人<br>应用管理–&gt;应用–&gt;创建应用 ，应用名称跟描述随便填,可见范围选整个公司<br>这样就创建好了一个企业机器人。</p>
+</li>
+</ol>
+<p><img src="/img/picture/fwq/2.png" alt="2" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ol start="3">
+<li>配置可信域名<br>如果未认证的企业可以使用华为云的域名，认证企业则必须</li>
+</ol>
+<p>3.1. 登陆华为云<br>  <a href="https://activity.huaweicloud.com/">https://activity.huaweicloud.com/</a> ，完成实名认证</p>
+<p>3.2. 创建云函数<br>搜索云函数，点击立即使用。右上角创建函数，选择HTTP函数，函数名称随便填。</p>
+<p><img src="/img/picture/fwq/3.png" alt="3" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.3. 创建触发器<br>切换到设置 触发器-创建触发器</p>
+<p><img src="/img/picture/fwq/4.png" alt="4" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>安全认证选None ，分组随意创建一个 </p>
+<p><img src="/img/picture/fwq/5.png" alt="5" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.4. 获得URL</p>
+<p><img src="/img/picture/fwq/6.png" alt="6" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>下一步 打开企业微信 –&gt;进入刚才创建的机器人–&gt;设置可信域名</p>
+<p><img src="/img/picture/fwq/7.png" alt="7" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可信域名填3.4步骤中的URL，类似以下格式（注意去掉http:&#x2F;&#x2F; 与 最后的&#x2F;）</p>
+<p>5d1c0cceabb04d8e8413c2b615790846.apig.cn-north-1.huaweicloudapis.com</p>
+<p>3.5. 获得乱码<br>点击申请校验域名-&gt;下载文件, 将文件里面的乱码复制下来  大约长这样： 1tg27Cpi9hYTjFFq </p>
+<p><img src="/img/picture/fwq/8.png" alt="8" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.6. 绑定可信域名<br>回到华为云，  代码-&gt;index.js 修改第九行为文件里的乱码（见3.5小节获得的乱码），点击部署 </p>
+<p><img src="/img/picture/fwq/9.png" alt="9" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>部署完成 回到企业微信-&gt;点击确定  可信域名即完成绑定</p>
+<ol start="4">
+<li>Gemini对接企业微信</li>
+</ol>
+<p>我们使用这个项目  chatgpt-on-wechat</p>
+<p><a href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a></p>
+<p>4.1. 申请Google Gemini<br>申请一个API key</p>
+<p><a href="https://makersuite.google.com/app/apikey">https://makersuite.google.com/app/apikey</a></p>
+<p>4.2. ubuntu系统安装docker<br>找一个国外IP的服务器，先安装docker ，下面脚本已ubuntu为例</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt-get install ca-certificates curl gnupg lsb-release software-properties-common</span><br><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io </span><br></pre></td></tr></table></figure>
+<p>4.3. 下载docker compose<br>执行以下命令下载 docker-compose.yml：</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">wget https://open-<span class="number">1317903499</span>.cos.ap-guangzhou.myqcloud.com/docker-compose.yml</span><br></pre></td></tr></table></figure>
+<p>修改docker compose文件，主要配置从24行以下开始 </p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="function">version: &#x27;2.0&#x27;</span></span><br><span class="line"><span class="function"><span class="title">services</span>:</span></span><br><span class="line"><span class="function">  <span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span>:</span></span><br><span class="line"><span class="function">    <span class="title">image</span>: <span class="title">zhayujie</span>/<span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span></span></span><br><span class="line"><span class="function">    <span class="title">container_name</span>: <span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span></span></span><br><span class="line"><span class="function">    <span class="title">security_opt</span>:</span></span><br><span class="line"><span class="function">      - <span class="title">seccomp:unconfined</span></span></span><br><span class="line"><span class="function">    <span class="title">environment</span>:</span></span><br><span class="line"><span class="function">      <span class="title">OPEN_AI_API_KEY</span>: &#x27;<span class="title">YOUR</span> <span class="title">KEY</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">PROXY</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">SINGLE_CHAT_PREFIX</span>: &#x27;[&quot;<span class="title">bot</span>&quot;, &quot;@<span class="title">bot</span>&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">SINGLE_CHAT_REPLY_PREFIX</span>: &#x27;&quot;[<span class="title">bot</span>] &quot;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">GROUP_CHAT_PREFIX</span>: &#x27;[&quot;@<span class="title">bot</span>&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">GROUP_NAME_WHITE_LIST</span>: &#x27;[&quot;测试群&quot;, &quot;测试群2&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">IMAGE_CREATE_PREFIX</span>: &#x27;[&quot;画&quot;, &quot;看&quot;, &quot;找&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CONVERSATION_MAX_TOKENS</span>: 1000</span></span><br><span class="line"><span class="function">      <span class="title">SPEECH_RECOGNITION</span>: &#x27;<span class="title">False</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CHARACTER_DESC</span>: &#x27;你是<span class="title">Gemini</span>, 你旨在回答并解决人们的任何问题&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">EXPIRES_IN_SECONDS</span>: 3600</span></span><br><span class="line"><span class="function">      <span class="title">USE_GLOBAL_PLUGIN_CONFIG</span>: &#x27;<span class="title">True</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">USE_LINKAI</span>: &#x27;<span class="title">False</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">LINKAI_API_KEY</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">LINKAI_APP_CODE</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      ## 配置从以下开始</span></span><br><span class="line"><span class="function">      <span class="title">MODEL</span>: &#x27;<span class="title">gemini</span>&#x27;</span></span><br><span class="line"><span class="function">      # 4.1小节申请的 <span class="title">gemini</span> <span class="title">api</span> <span class="title">key</span></span></span><br><span class="line"><span class="function">      <span class="title">GEMINI_API_KEY</span>: &#x27;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CHANNEL_TYPE</span>: &quot;<span class="title">wechatcom_app</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;我的企业-&gt;企业<span class="title">ID</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOM_CORP_ID</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;<span class="title">Secret</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_SECRET</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;<span class="title">AgentId</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_AGENT_ID</span>: &quot;<span class="title">xxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;接收消息-&gt;设置<span class="title">API</span>接收-&gt;<span class="title">Token</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_TOKEN</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;接收消息-&gt;设置<span class="title">API</span>接收-&gt;<span class="title">EncodingAESKey</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_AES_KEY</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_PORT</span>&quot;: 9898</span></span><br><span class="line"><span class="function">    <span class="title">ports</span>:</span></span><br><span class="line"><span class="function">      - 9898:9898 </span></span><br></pre></td></tr></table></figure>
+<p>4.4. 启动docker<br>修改完成后将docker启动起来</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 启动docker</span><br><span class="line">sudo docker compose up -d</span><br><span class="line"># 查看日志</span><br><span class="line">sudo docker logs  chatgpt-on-wechat</span><br><span class="line"># 停止docker 如果修改配置文件必须先停止再启动</span><br><span class="line"># sudo docker compose down</span><br></pre></td></tr></table></figure>
+<p>启动完成后安装Gimini依赖</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"># 获取所有执行中的容器</span><br><span class="line">sudo docker ps</span><br><span class="line"># 在置顶容器安装 google-generativeai，注意修改xxxxxxxx为容器ID</span><br><span class="line">sudo docker exec xxxxxxxxxx pip3 install google-generativeai</span><br><span class="line"># 重启容器</span><br><span class="line">sudo docker restart xxxxxxxxxx</span><br></pre></td></tr></table></figure>
+<p>4.5. 企业微信设置<br>回到企业微信，填写好URL  ,按如下格式  </p>
+<p>http:&#x2F;&#x2F;服务器IP:9898&#x2F;wxcomapp</p>
+<p><img src="/img/picture/fwq/10.png" alt="10" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>注意Token与EncodingAESKey与docker配置一致。</p>
+<p>点击企业可信IP，填入服务器的公网IP</p>
+<p><img src="/img/picture/fwq/11.png" alt="11" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>4.6. 微信加入企业<br>我的企业-&gt;微信插件-&gt;邀请关注 ，使用微信扫码即加入企业，然后就可以开始应用机器人</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>关于NFC的一些探究</title>
+    <url>/2024/01/29/NFC/</url>
+    <content><![CDATA[<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。</p>
+<p>那就搞搞首要任务吧，复制复制这张加密卡！</p>
+<h2 id="啥都不会-先学理论"><a href="#啥都不会-先学理论" class="headerlink" title="啥都不会 先学理论"></a>啥都不会 先学理论</h2><h3 id="变色龙"><a href="#变色龙" class="headerlink" title="变色龙"></a>变色龙</h3><blockquote>
+<p>变色龙侦测卡，也称为Chameleon Mini，是一个开源产品，其大小稍大于一般的信用卡。这款侦测卡的主要功能是模拟被动NFC设备和非接触式IC卡，充当有源NFC设备如RFID读取器，以及嗅探和登录通信。它可以完全复制许多商业非接触式智能卡包括UID卡在内的全部内容，因此常用于测试RFID和NFC设备在各种攻击环境下的安全性。</p>
+</blockquote>
+<h3 id="读卡器"><a href="#读卡器" class="headerlink" title="读卡器"></a>读卡器</h3><p>这个就不用多说了，就是读卡号，写卡，格式化卡，改卡</p>
+<h3 id="各种相关的卡片"><a href="#各种相关的卡片" class="headerlink" title="各种相关的卡片"></a>各种相关的卡片</h3><h4 id="ID卡"><a href="#ID卡" class="headerlink" title="ID卡"></a>ID卡</h4><blockquote>
+<p>ID卡没有算法，不可写入数据，其ID出厂一次性写入，应用人员只可读出卡号加以利用 ，ID卡容易复制，安全性较低。</p>
+</blockquote>
+<h4 id="IC卡"><a href="#IC卡" class="headerlink" title="IC卡"></a>IC卡</h4><blockquote>
+<p>IC卡是智能卡的总称， IC卡带有存储器可读写，普通的IC卡也叫储存器卡、逻辑加密卡。IC卡数据的读取,写入均相应的密码认证, 数据可以分区，不同区用于不同的功能，可以有不同的密码保护。IC卡所记录内容可反复擦写，分为接触式和非接触式IC卡。  </p>
+</blockquote>
+<p>看着有点麻烦，再看看</p>
+<h4 id="CPU卡"><a href="#CPU卡" class="headerlink" title="CPU卡"></a>CPU卡</h4><p>没有下手的可能</p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>相关算法有很多，但是引起大佬注意的不多</p>
+<h4 id="滚动码"><a href="#滚动码" class="headerlink" title="滚动码"></a>滚动码</h4><blockquote>
+<p>每次进行正确的刷卡行为都会改动卡片本身数据；倘若系统检测到卡片数据有误，做人的系统就会禁止这次行为；不做人的系统就会拉黑这张卡，也就是说除非联系管理员，否则就会得到一张废卡</p>
+</blockquote>
+<p>这个是最大的威胁，开始我以为是是要接触读卡机就会改变数据，后来发现是只有和终端正确响应才能能够进行数据交互</p>
+<h4 id="挑战响应机制"><a href="#挑战响应机制" class="headerlink" title="挑战响应机制"></a>挑战响应机制</h4><p>有点复杂看不太懂</p>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/59305710?utm_id=0">知乎</a><br><a href="https://blog.csdn.net/z_shaowu/article/details/6220317">CSDN</a></p>
+</blockquote>
+<h2 id="上手实操（相当简单）"><a href="#上手实操（相当简单）" class="headerlink" title="上手实操（相当简单）"></a>上手实操（相当简单）</h2><ol>
+<li>读卡器读原卡号导入变色龙</li>
+<li>变色龙解码拿到解密文件</li>
+<li>导入解密文件开始解码</li>
+<li>解码完得到dump文件</li>
+</ol>
+<hr>
+<p>（以上可以复制完了，接下来是导入手机）<br>5. 手机复制卡号（由于机制保密问题，手机一旦识别到加密区就会自动停止复制，可能在root机型上可以复制，但未探究）<br>6. 然后将手机放在读卡器上导入dump文件进行m1写卡</p>
+<h2 id="出现的问题及反思"><a href="#出现的问题及反思" class="headerlink" title="出现的问题及反思"></a>出现的问题及反思</h2><h3 id="1-变色龙的使用"><a href="#1-变色龙的使用" class="headerlink" title="1. 变色龙的使用"></a>1. 变色龙的使用</h3><h4 id="变色龙的嗅探功能："><a href="#变色龙的嗅探功能：" class="headerlink" title="变色龙的嗅探功能："></a>变色龙的嗅探功能：</h4><p>随便都可以进行嗅探，可以不用提前导入卡号，就可以得到设备的加密方式（字符串），但是返回解码的密码并不能够对原卡进行解码。本次样本中正确的密码应该是原卡卡号+加密方式（字符串）。</p>
+<h4 id="变色龙的模拟功能"><a href="#变色龙的模拟功能" class="headerlink" title="变色龙的模拟功能"></a>变色龙的模拟功能</h4><p>需要导入dump文件，并且可以导入多达8个，可以模拟各种卡，并且可以对卡文件进行随意改动而<strong>不会影响硬件</strong>。</p>
+<h4 id="变色龙的随机卡号功能"><a href="#变色龙的随机卡号功能" class="headerlink" title="变色龙的随机卡号功能"></a>变色龙的随机卡号功能</h4><p>random UID可以随机模拟卡号，按一下变一下</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>然而事实上变色龙并不能取代读卡器的功能，也就是说变色龙不能够单独使用</p>
+<h3 id="2-卡片"><a href="#2-卡片" class="headerlink" title="2. 卡片"></a>2. 卡片</h3><ul>
+<li>读卡后一声为低频卡（ID）</li>
+<li>读卡后两声为高频卡（除了ID卡的其他卡）</li>
+<li>大佬介绍存在一种卡读卡的时候完全没有反应</li>
+<li>UID卡手动改动0扇区卡号后读卡的时候也完全没反应，也就是说正常使用UID卡不能够手动改变0扇区，<em><strong>但是</strong></em>却可以导入dump文件对卡号进行修改，相当奇怪。</li>
+</ul>
+<h3 id="3-Dump文件"><a href="#3-Dump文件" class="headerlink" title="3. Dump文件"></a>3. Dump文件</h3><p>dump文件采用16进制的编码形式<br>解码后导入dump文件重新写卡得到的也是加密卡<br>dump文件中初始六位为卡号，会等同于某一特定扇区的初始6位</p>
+<h3 id="4-进一步探究"><a href="#4-进一步探究" class="headerlink" title="4. 进一步探究"></a>4. 进一步探究</h3><ol>
+<li>我们发现刷卡到开门只需要不到一秒的时间，但是即使我们通过嗅探得到的秘钥在解码时电脑上了性能模式，也足足解码了17分钟。那么基本可以断定在进行交互的时候，门禁终端并没有解码所有扇区，而是仅仅解码某一特定扇区。</li>
+<li>原卡中的某一特定扇区中有明确的工号，而在工号的前面是有字符串转十六进制的八位字符。但是在后边控制变量的时候，我们发现只有工号和卡号有用，其余部分没有作用。</li>
+<li>0扇区和这个特定扇区卡号必须一致，否则就会导致无法读卡。</li>
+<li>通过单位内部人员名单发现工号位数一直形式相似，基本可以判断这个区块的判断方式就是工号。</li>
+<li>单位内的工号分为人员工号和部门工号</li>
+<li>如果只改变工号，在特定的部门里会显示“未授权”，然而更多的部门会显示“数据错误”。</li>
+<li>所有设备嗅探得到的加密方式完全一致</li>
+</ol>
+<h3 id="5-小遗憾"><a href="#5-小遗憾" class="headerlink" title="5. 小遗憾"></a>5. 小遗憾</h3><ol>
+<li>在发现工号和卡上内容的联系后，我们就萌生了有工号刷遍全单位的想法，然而随着进一步探究基本确定了卡号和工号的绑定。然后由于样本有限，我们无法推断两者间的加密方式或者是随机发卡模式。</li>
+<li>未能搞清楚门禁系统返回“未授权”，“数据错误”的具体原因。猜测系统分为两步验证：</li>
+</ol>
+<ul>
+<li>首先验证卡号是否授权，否，返回“未授权”；</li>
+<li>是，进一步检验卡号，返回“数据错误”。</li>
+</ul>
+<h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a><strong>特别鸣谢</strong></h2><p>感谢大佬在这次行动中全程带我起飞，但由于不可抗力因素，无法实名感谢🌹</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>新23burp下载</title>
+    <url>/2024/01/29/burp2023.12.1/</url>
+    <content><![CDATA[<h2 id="23-12-1版burp但是英文版"><a href="#23-12-1版burp但是英文版" class="headerlink" title="23.12.1版burp但是英文版"></a>23.12.1版burp但是英文版</h2><h3 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h3><p>正值期末周不想复习没啥事干，一直看手底下的21年burp不顺眼了，就想着什么时候给换掉，想睡觉就有人给递枕头，这不是乌震安全更新了一个注册机，我直接偷走</p>
+<h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>2023.12.1</p>
+<h3 id="具体流程"><a href="#具体流程" class="headerlink" title="具体流程"></a>具体流程</h3><ol>
+<li><a href="https://portswigger.net/burp/releases/professional-community-2023-12-1?requestededition=professional">先下载对应版本的安装包</a></li>
+<li>正常安装后打开，此时会显示未注册</li>
+<li>编辑安装目录下的BurpSuitePro.vmoptions文件，将以下代码添加到该文件中，可以用vscode进行编辑<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>=ALL-UNNAMED</span><br><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>.tree=ALL-UNNAMED</span><br><span class="line">--add-opens=java.base/jdk.internal.org.objectweb.<span class="keyword">asm</span>.Opcodes=ALL-UNNAMED</span><br><span class="line">-javaagent:BurpLoaderKeygen.jar</span><br><span class="line">-noverif</span><br></pre></td></tr></table></figure></li>
+<li>下载注册机，将BurpLoaderKeygen.jar放置在burpsuite.exe同级目录下</li>
+<li>然后打开注册机开始注册，需要把注册码粘贴过来复制过去</li>
+</ol>
+<h3 id="注册机下载"><a href="#注册机下载" class="headerlink" title="注册机下载"></a>注册机下载</h3><p> 链接:<a href="https://pan.baidu.com/s/1-jmCgoa6v3oLqo2TZ7b8KA">https://pan.baidu.com/s/1-jmCgoa6v3oLqo2TZ7b8KA</a> 提取码:v0i9（防跑路自存链）<br> 注：下载后的注册机放为apk格式，去掉后缀即可</p>
+<p> ## 21版burp但是中文版<br> <a href="https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe">Oracle账户</a></p>
+<p><a href="https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html">JDK15</a>必须是在jdk15大版本下才可以运行注册机</p>
+<p><a href="https://www.52pojie.cn/thread-1369324-1-1.html">具体教程</a></p>
+]]></content>
+      <tags>
+        <tag>工具使用备份</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>是谁偷偷给我打了满分？</title>
+    <url>/2024/01/29/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/</url>
+    <content><![CDATA[<h1 id="是谁偷偷给我打了满分？"><a href="#是谁偷偷给我打了满分？" class="headerlink" title="是谁偷偷给我打了满分？"></a>是谁偷偷给我打了满分？</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>部分学校设置的优学院学生互评机制给了一些“不法分子”趁虚而入的机会，常常会对毫不相干的同学下手。具体表现为作业看都不看一眼直接给满分，这种行为我们要给予坚决抵制，并且要揪出到底是谁！</p>
+<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>edge 油猴插件 <a href="https://greasyfork.org/zh-CN/scripts/443611-%E5%B7%B2%E5%A4%B1%E6%95%88-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E8%AF%84%E5%88%86%E4%BA%BA%E6%9F%A5%E8%AF%A2">脚本</a> burp</p>
+<h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><h3 id="1-丐版操作（不能直接抓人）"><a href="#1-丐版操作（不能直接抓人）" class="headerlink" title="1. 丐版操作（不能直接抓人）"></a>1. 丐版操作（不能直接抓人）</h3><ol>
+<li>下载[已失效]的脚本（链接在上面了）；</li>
+<li>下载成功之后我们进入优学院已经学生互评过的页面，就可以看见互评人了；</li>
+<li>userID就是目标同学的唯一ID了；</li>
+<li>开始翻找舍友的ID，这么多次互评总有一次被舍友评到或者评到舍友吧doge；<a href="https://imgse.com/i/piaYIzQ"><img src="https://z1.ax1x.com/2023/11/21/piaYIzQ.jpg" alt="piaYIzQ.jpg" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></a></li>
+<li>局限性：不能够看到自己的ID，无法直接抓人，要通过社工大法间接求援。</li>
+</ol>
+<h3 id="2-进阶版（直接抓人）"><a href="#2-进阶版（直接抓人）" class="headerlink" title="2.进阶版（直接抓人）"></a>2.进阶版（直接抓人）</h3><p><em>宇宙声明：本人由于技术太差，只说大概不说具体原理和步骤名称（距离产生美）</em></p>
+<ol>
+<li>proxy打开浏览器</li>
+<li>登录优学院账号直到打开相关科目的作业详情；</li>
+<li>打开HTTP history逐个点击，可以找到自己的userID，这个是和学号高度相关的，自己在班级学号中的位置就是在userID中的排序；</li>
+<li>在本地新建一个Excel文档拉一下对比花名册就可以得到所有人的学号姓名对应userID。</li>
+</ol>
+<h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>可以直接看到互评同学的的姓名，学号，班级<br><a href="https://greasyfork.org/zh-CN/scripts/464344-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E4%BA%92%E8%AF%84%E6%98%BE%E7%A4%BA%E8%AF%84%E5%88%86%E4%BA%BA%E5%90%8D%E5%AD%97">油猴插件</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>火绒剑抓微信包</title>
+    <url>/2024/01/29/%E7%81%AB%E7%BB%92%E5%89%91/</url>
+    <content><![CDATA[<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>微信语音通话使用UPD协议，在接通的时候会暴露彼此ip地址，通过火绒剑可以对对方的ip地址进行跟踪。</p>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://wws.lanzouj.com/b02634q9g">火绒剑下载</a>，密码：52pj；</p>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><ol>
+<li>在火绒的安全工具中找到火绒剑并且打开；</li>
+<li>在进程中找到WeChat的“进程ID”；</li>
+<li>在系统-过滤-进程过滤中添加进程；</li>
+<li>下拉方法，将映像路径改成进程ID；</li>
+</ol>
+<p><a href="https://imgse.com/i/pFkWtSJ"><img src="https://s11.ax1x.com/2024/01/17/pFkWtSJ.png" alt="pFkWtSJ.png" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></a></p>
+<p><a href="https://imgse.com/i/pFkWNl9"><img src="https://s11.ax1x.com/2024/01/17/pFkWNl9.png" alt="pFkWNl9.png" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></a></p>
+<ol start="5">
+<li>设置动作过滤，只保留MT_netmon选项</li>
+</ol>
+<h2 id="细节-1"><a href="#细节-1" class="headerlink" title="细节"></a>细节</h2><ol>
+<li>不是在网络中进行；</li>
+<li>需要在接通电话后稍等一下才会出现；</li>
+<li>用于微信通话的端口不会是常见的端口，一定是比较奇怪的端口；</li>
+<li>作为UPD协议会一直改变端口传输，并且各个端口多半是连接在一起的；</li>
+<li>IP定位并不能得到一个准确的位置，最多就只能精准到半径8km。</li>
+<li><a href="https://chaipip.com/aiwen.html">常用IP定位网站</a></li>
+</ol>
+]]></content>
+  </entry>
+</search>
