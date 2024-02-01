@@ -92,6 +92,32 @@
   --selection-bg-color: #f1f1f1;
   --selection-color: #1f2d3d;
 }
+:root {
+	/* 代码块背景色、前景色 */
+	--highlight-background: #f6f8fa;
+	--highlight-foreground: #4d5a60;
+	/* 行号 */
+	--highlight-gutter-color: #90a4ae;
+	--highlight-gutter-bg-color: #f1f1f1;
+	/* 工具栏 */
+	--highlight-tools-color: #646464;
+	--highlight-tools-bg-color: #e6ebf1;
+	/* 滚动条 */
+	--highlight-scrollbar: #d7d7d7;
+
+	/* 代码 */
+	--highlight-addition: #e32323;
+	--highlight-deletion: #bf42bf;
+	--highlight-comment: rgba(149, 165, 166, 0.8);
+
+	--highlight-yellow: #ffb62c;
+	--highlight-purple: #7c4dff;
+	--highlight-aqua: #39adb5;
+	--highlight-red: #e53935;
+	--highlight-orange: #f76d47;
+	--highlight-green: #91b859;
+	--highlight-blue: #6182b8;
+}
 /* @media (prefers-color-scheme: dark) {
     :root {
         .dark()
