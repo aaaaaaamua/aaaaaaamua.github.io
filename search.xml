@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>微信机器人</title>
-    <url>/2024/01/31/GEMINI/</url>
+    <url>/2024/01/13/GEMINI/</url>
     <content><![CDATA[<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><blockquote>
 <p>复现b站大佬“技术爬爬虾”按照GitHub开源项目“chatgpt-on-wechat”的项目。该项目利用的是微信的官方接口接入最时髦的谷歌机器人GEMINI，不存在任何的账号风险。<br>B站大佬项目地址：<a href="https://www.bilibili.com/read/cv29550040/">https://www.bilibili.com/read/cv29550040/</a><br>GitHub项目地址：<a href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a></p>
 </blockquote>
@@ -72,10 +72,13 @@
 <p><img src="/img/picture/fwq/11.png" alt="11" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>4.6. 微信加入企业<br>我的企业-&gt;微信插件-&gt;邀请关注 ，使用微信扫码即加入企业，然后就可以开始应用机器人</p>
 ]]></content>
+      <tags>
+        <tag>复现项目</tag>
+      </tags>
   </entry>
   <entry>
     <title>关于NFC的一些探究</title>
-    <url>/2024/01/29/NFC/</url>
+    <url>/2023/11/20/NFC/</url>
     <content><![CDATA[<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>工作中常会用到单位的门禁卡，但是由于仅此一张，又是加密卡无法直接用手机复制，于是托大佬搞来了读卡器和变色龙(Chameleon Mini pm8)。</p>
 <p>那就搞搞首要任务吧，复制复制这张加密卡！</p>
 <h2 id="啥都不会-先学理论"><a href="#啥都不会-先学理论" class="headerlink" title="啥都不会 先学理论"></a>啥都不会 先学理论</h2><h3 id="变色龙"><a href="#变色龙" class="headerlink" title="变色龙"></a>变色龙</h3><blockquote>
@@ -140,7 +143,7 @@
   </entry>
   <entry>
     <title>新23burp下载</title>
-    <url>/2024/01/29/burp2023.12.1/</url>
+    <url>/2024/01/03/burp2023.12.1/</url>
     <content><![CDATA[<h2 id="23-12-1版burp但是英文版"><a href="#23-12-1版burp但是英文版" class="headerlink" title="23.12.1版burp但是英文版"></a>23.12.1版burp但是英文版</h2><h3 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h3><p>正值期末周不想复习没啥事干，一直看手底下的21年burp不顺眼了，就想着什么时候给换掉，想睡觉就有人给递枕头，这不是乌震安全更新了一个注册机，我直接偷走</p>
 <h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>2023.12.1</p>
 <h3 id="具体流程"><a href="#具体流程" class="headerlink" title="具体流程"></a>具体流程</h3><ol>
@@ -161,7 +164,7 @@
   </entry>
   <entry>
     <title>是谁偷偷给我打了满分？</title>
-    <url>/2024/01/29/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/</url>
+    <url>/2023/12/25/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/</url>
     <content><![CDATA[<h1 id="是谁偷偷给我打了满分？"><a href="#是谁偷偷给我打了满分？" class="headerlink" title="是谁偷偷给我打了满分？"></a>是谁偷偷给我打了满分？</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>部分学校设置的优学院学生互评机制给了一些“不法分子”趁虚而入的机会，常常会对毫不相干的同学下手。具体表现为作业看都不看一眼直接给满分，这种行为我们要给予坚决抵制，并且要揪出到底是谁！</p>
 <h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>edge 油猴插件 <a href="https://greasyfork.org/zh-CN/scripts/443611-%E5%B7%B2%E5%A4%B1%E6%95%88-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E8%AF%84%E5%88%86%E4%BA%BA%E6%9F%A5%E8%AF%A2">脚本</a> burp</p>
 <h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><h3 id="1-丐版操作（不能直接抓人）"><a href="#1-丐版操作（不能直接抓人）" class="headerlink" title="1. 丐版操作（不能直接抓人）"></a>1. 丐版操作（不能直接抓人）</h3><ol>
@@ -180,10 +183,17 @@
 </ol>
 <h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>可以直接看到互评同学的的姓名，学号，班级<br><a href="https://greasyfork.org/zh-CN/scripts/464344-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E4%BA%92%E8%AF%84%E6%98%BE%E7%A4%BA%E8%AF%84%E5%88%86%E4%BA%BA%E5%90%8D%E5%AD%97">油猴插件</a></p>
 ]]></content>
+      <categories>
+        <category>脚本</category>
+        <category>学校</category>
+      </categories>
+      <tags>
+        <tag>脚本</tag>
+      </tags>
   </entry>
   <entry>
     <title>火绒剑抓微信包</title>
-    <url>/2024/01/29/%E7%81%AB%E7%BB%92%E5%89%91/</url>
+    <url>/2024/01/17/%E7%81%AB%E7%BB%92%E5%89%91/</url>
     <content><![CDATA[<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>微信语音通话使用UPD协议，在接通的时候会暴露彼此ip地址，通过火绒剑可以对对方的ip地址进行跟踪。</p>
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://wws.lanzouj.com/b02634q9g">火绒剑下载</a>，密码：52pj；</p>
 <h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><ol>
