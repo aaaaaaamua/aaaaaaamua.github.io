@@ -385,7 +385,7 @@
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\data\nvram\APCFG\APRDEB</span><br></pre></td></tr></table></figure>
 <p>并修改其中的WIFI文件，按照里面的数据格式改成想要的 mac 地址，之后关闭飞行模式或者重启手机即可。</p>
 <h4 id="3-对于-windows-平台"><a href="#3-对于-windows-平台" class="headerlink" title="3. 对于 windows 平台"></a>3. 对于 windows 平台</h4><h5 id="3-1-设备管理器修改法"><a href="#3-1-设备管理器修改法" class="headerlink" title="3.1 设备管理器修改法"></a>3.1 设备管理器修改法</h5><p><strong>此方法使用的前提是网卡的自带驱动上带了相关的修改接口</strong><br>打开<em>控制面板→设备管理器→网络适配器→对应网卡→属性</em></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/d41cf280b4147fe9cbd4e293d0bd951d.png" alt="设备管理器" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://exp-picture.cdn.bcebos.com/3201a8f39187031c25b3c34a6a86242fa972ecc9.jpg?x-bce-process=image/format,f_auto/quality,q_80" alt="设备管理器" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>在<em>高级选项</em>中找到 <em>Network Address&#x2F;MAC Address&#x2F;网络地址</em> 在设备管理器对网卡mac进行修改</p>
 <h5 id="3-2-注册表修改法"><a href="#3-2-注册表修改法" class="headerlink" title="3.2 注册表修改法"></a>3.2 注册表修改法</h5><p><strong>此方法为万能方法，但是需要注意前文提及的realtek网卡的限制</strong><br>win+r 并输入 <strong>regedit</strong> 打开注册表，并定位到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\&#123;4D36E972-E325-11CE-BFC1-08002bE10318&#125;</span><br></pre></td></tr></table></figure>
