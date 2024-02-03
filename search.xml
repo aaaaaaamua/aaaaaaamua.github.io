@@ -72,6 +72,9 @@
 <p><img src="/img/picture/fwq/11.png" alt="11" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>4.6. 微信加入企业<br>我的企业-&gt;微信插件-&gt;邀请关注 ，使用微信扫码即加入企业，然后就可以开始应用机器人</p>
 ]]></content>
+      <categories>
+        <category>复现项目</category>
+      </categories>
       <tags>
         <tag>复现项目</tag>
       </tags>
