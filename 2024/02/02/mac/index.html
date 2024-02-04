@@ -385,7 +385,7 @@
 <p>每一个00xx都代表着一个网卡，但是需要注意的是，一般来说只有一个是真实网卡，其他都是虚拟网卡，具体就需要进入各个项目看看是否有标明对应的网卡型号。</p>
 <p><img src="/img/picture/mac/2.png" alt="如此设备中0002为真实网卡，型号为 Realtek RTL8852BE" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>找到物理网卡以后，需要在这个网卡的项目中新建一个字符串，命名为 <strong>NetworkAdress</strong> ，值就是新的 mac </p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/0c7742b6f29e649a7425e8802f7b5b10.png" alt="3" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/img/picture/mac/11.png" alt="12" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>点击确定后重启网卡或者直接重启电脑再看看 mac 是否修改成功。<br>介绍通过 cmd 命令来查看和重启网卡：</p>
 <ul>
 <li>首先进入cmd终端 win+r 键入 cmd ，命令行输入<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh interface show interface</span><br></pre></td></tr></table></figure>
