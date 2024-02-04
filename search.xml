@@ -262,10 +262,11 @@
 <h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>一般来说已知 mac 是无法获取对应IP的，但是在居于网中通过 arp 可以通过映射关系用 mac 查询到对应设备的IP地址。先 ping 一下获得更多数据后查找 arp 包。先同样是打开cmd，批量ping局域网内ip</p>
 <figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">#批量<span class="built_in">ping</span>局域网内网段</span><br><span class="line"><span class="keyword">for</span> /L %i <span class="keyword">IN</span> (<span class="number">1</span>,<span class="number">1</span>,<span class="number">254</span>) <span class="keyword">DO</span> <span class="built_in">ping</span> -w <span class="number">2</span> -n <span class="number">1</span> <span class="number">10</span>.<span class="number">8</span>.<span class="number">1</span>.%i</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>批量ping网段命令语法<br><code>for /L %variable in (start,step,end) do command [command-parameters]</code><br>variable变量名 | start开始 | step步长 | end结束 | command命令 | command-parameters命令参数</p>
-<blockquote>
-<p>for &#x2F;L %d in (1,1,255) do ping 192.168.0.%d &gt;&gt; C:\Users\XXX\Desktop\a.txt<br><code>&gt;&gt;</code>为重定向符号，将代码执行结果保存到文件路径为 C:\Users\XXX\Desktop 的a.txt文件</p>
-</blockquote>
+<p>批量ping网段命令语法</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> /L %variable <span class="keyword">in</span> (<span class="built_in">start</span>,step,end) <span class="keyword">do</span> command [command-parameters]</span><br></pre></td></tr></table></figure>
+<p>variable变量名 | start开始 | step步长 | end结束 | command命令 | command-parameters命令参数</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> /L %d <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">1</span>,<span class="number">255</span>) <span class="keyword">do</span> <span class="built_in">ping</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.%d &gt;&gt; C:\Users\XXX\Desktop\a.txt</span><br></pre></td></tr></table></figure>
+<p><code>&gt;&gt;</code>为重定向符号，将代码执行结果保存到文件路径为 C:\Users\XXX\Desktop 的a.txt文件</p>
 </blockquote>
 <figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">#查 arp 表</span><br><span class="line">arp -a</span><br></pre></td></tr></table></figure>
 <p>就可以看到对应的 mac 和 IP 的对应关系。</p>
