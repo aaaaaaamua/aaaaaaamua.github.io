@@ -287,6 +287,35 @@
       </tags>
   </entry>
   <entry>
+    <title>是谁偷偷给我打了满分？</title>
+    <url>/2023/12/25/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/</url>
+    <content><![CDATA[<h1 id="是谁偷偷给我打了满分？"><a href="#是谁偷偷给我打了满分？" class="headerlink" title="是谁偷偷给我打了满分？"></a>是谁偷偷给我打了满分？</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>部分学校设置的优学院学生互评机制给了一些“不法分子”趁虚而入的机会，常常会对毫不相干的同学下手。具体表现为作业看都不看一眼直接给满分，这种行为我们要给予坚决抵制，并且要揪出到底是谁！</p>
+<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>edge 油猴插件 <a href="https://greasyfork.org/zh-CN/scripts/443611-%E5%B7%B2%E5%A4%B1%E6%95%88-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E8%AF%84%E5%88%86%E4%BA%BA%E6%9F%A5%E8%AF%A2">脚本</a> burp</p>
+<h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><h3 id="1-丐版操作（不能直接抓人）"><a href="#1-丐版操作（不能直接抓人）" class="headerlink" title="1. 丐版操作（不能直接抓人）"></a>1. 丐版操作（不能直接抓人）</h3><ol>
+<li>下载[已失效]的脚本（链接在上面了）；</li>
+<li>下载成功之后我们进入优学院已经学生互评过的页面，就可以看见互评人了；</li>
+<li>userID就是目标同学的唯一ID了；</li>
+<li>开始翻找舍友的ID，这么多次互评总有一次被舍友评到或者评到舍友吧doge；<a href="https://imgse.com/i/piaYIzQ"><img src="https://z1.ax1x.com/2023/11/21/piaYIzQ.jpg" alt="piaYIzQ.jpg" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></a></li>
+<li>局限性：不能够看到自己的ID，无法直接抓人，要通过社工大法间接求援。</li>
+</ol>
+<h3 id="2-进阶版（直接抓人）"><a href="#2-进阶版（直接抓人）" class="headerlink" title="2.进阶版（直接抓人）"></a>2.进阶版（直接抓人）</h3><p><em>宇宙声明：本人由于技术太差，只说大概不说具体原理和步骤名称（距离产生美）</em></p>
+<ol>
+<li>proxy打开浏览器</li>
+<li>登录优学院账号直到打开相关科目的作业详情；</li>
+<li>打开HTTP history逐个点击，可以找到自己的userID，这个是和学号高度相关的，自己在班级学号中的位置就是在userID中的排序；</li>
+<li>在本地新建一个Excel文档拉一下对比花名册就可以得到所有人的学号姓名对应userID。</li>
+</ol>
+<h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>可以直接看到互评同学的的姓名，学号，班级<br><a href="https://greasyfork.org/zh-CN/scripts/464344-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E4%BA%92%E8%AF%84%E6%98%BE%E7%A4%BA%E8%AF%84%E5%88%86%E4%BA%BA%E5%90%8D%E5%AD%97">油猴插件</a></p>
+]]></content>
+      <categories>
+        <category>脚本</category>
+        <category>学校</category>
+      </categories>
+      <tags>
+        <tag>脚本</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>火绒剑抓微信包</title>
     <url>/2024/01/17/%E7%81%AB%E7%BB%92%E5%89%91/</url>
     <content><![CDATA[<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>微信语音通话使用UPD协议，在接通的时候会暴露彼此ip地址，通过火绒剑可以对对方的ip地址进行跟踪。</p>
@@ -316,35 +345,6 @@
       </categories>
       <tags>
         <tag>技术</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>是谁偷偷给我打了满分？</title>
-    <url>/2023/12/25/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/</url>
-    <content><![CDATA[<h1 id="是谁偷偷给我打了满分？"><a href="#是谁偷偷给我打了满分？" class="headerlink" title="是谁偷偷给我打了满分？"></a>是谁偷偷给我打了满分？</h1><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>部分学校设置的优学院学生互评机制给了一些“不法分子”趁虚而入的机会，常常会对毫不相干的同学下手。具体表现为作业看都不看一眼直接给满分，这种行为我们要给予坚决抵制，并且要揪出到底是谁！</p>
-<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><p>edge 油猴插件 <a href="https://greasyfork.org/zh-CN/scripts/443611-%E5%B7%B2%E5%A4%B1%E6%95%88-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E8%AF%84%E5%88%86%E4%BA%BA%E6%9F%A5%E8%AF%A2">脚本</a> burp</p>
-<h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><h3 id="1-丐版操作（不能直接抓人）"><a href="#1-丐版操作（不能直接抓人）" class="headerlink" title="1. 丐版操作（不能直接抓人）"></a>1. 丐版操作（不能直接抓人）</h3><ol>
-<li>下载[已失效]的脚本（链接在上面了）；</li>
-<li>下载成功之后我们进入优学院已经学生互评过的页面，就可以看见互评人了；</li>
-<li>userID就是目标同学的唯一ID了；</li>
-<li>开始翻找舍友的ID，这么多次互评总有一次被舍友评到或者评到舍友吧doge；<a href="https://imgse.com/i/piaYIzQ"><img src="https://z1.ax1x.com/2023/11/21/piaYIzQ.jpg" alt="piaYIzQ.jpg" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></a></li>
-<li>局限性：不能够看到自己的ID，无法直接抓人，要通过社工大法间接求援。</li>
-</ol>
-<h3 id="2-进阶版（直接抓人）"><a href="#2-进阶版（直接抓人）" class="headerlink" title="2.进阶版（直接抓人）"></a>2.进阶版（直接抓人）</h3><p><em>宇宙声明：本人由于技术太差，只说大概不说具体原理和步骤名称（距离产生美）</em></p>
-<ol>
-<li>proxy打开浏览器</li>
-<li>登录优学院账号直到打开相关科目的作业详情；</li>
-<li>打开HTTP history逐个点击，可以找到自己的userID，这个是和学号高度相关的，自己在班级学号中的位置就是在userID中的排序；</li>
-<li>在本地新建一个Excel文档拉一下对比花名册就可以得到所有人的学号姓名对应userID。</li>
-</ol>
-<h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>可以直接看到互评同学的的姓名，学号，班级<br><a href="https://greasyfork.org/zh-CN/scripts/464344-%E4%BC%98%E5%AD%A6%E9%99%A2%E4%BD%9C%E4%B8%9A%E4%BA%92%E8%AF%84%E6%98%BE%E7%A4%BA%E8%AF%84%E5%88%86%E4%BA%BA%E5%90%8D%E5%AD%97">油猴插件</a></p>
-]]></content>
-      <categories>
-        <category>脚本</category>
-        <category>学校</category>
-      </categories>
-      <tags>
-        <tag>脚本</tag>
       </tags>
   </entry>
 </search>
