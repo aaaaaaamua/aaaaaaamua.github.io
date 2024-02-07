@@ -76,7 +76,7 @@
         <category>复现项目</category>
       </categories>
       <tags>
-        <tag>复现项目</tag>
+        <tag>wechat-ai</tag>
       </tags>
   </entry>
   <entry>
@@ -143,6 +143,12 @@
 </ul>
 <h2 id="特别鸣谢"><a href="#特别鸣谢" class="headerlink" title="特别鸣谢"></a><strong>特别鸣谢</strong></h2><p>感谢大佬在这次行动中全程带我起飞，但由于不可抗力因素，无法实名感谢🌹</p>
 ]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>NFC</tag>
+      </tags>
   </entry>
   <entry>
     <title>新23burp下载</title>
@@ -161,8 +167,11 @@
 <p><a href="https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html">JDK15</a>必须是在jdk15大版本下才可以运行注册机</p>
 <p><a href="https://www.52pojie.cn/thread-1369324-1-1.html">具体教程</a></p>
 ]]></content>
+      <categories>
+        <category>工具使用备份</category>
+      </categories>
       <tags>
-        <tag>工具使用备份</tag>
+        <tag>burp2023.12</tag>
       </tags>
   </entry>
   <entry>
