@@ -72,9 +72,18 @@
       </tags>
   </entry>
   <entry>
-    <title>新23burp下载</title>
+    <title>burp</title>
     <url>/2024/01/03/burp2023.12.1/</url>
-    <content><![CDATA[<h2 id="23-12-1版burp但是英文版"><a href="#23-12-1版burp但是英文版" class="headerlink" title="23.12.1版burp但是英文版"></a>23.12.1版burp但是英文版</h2><h3 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h3><p>正值期末周不想复习没啥事干，一直看手底下的21年burp不顺眼了，就想着什么时候给换掉，想睡觉就有人给递枕头，这不是乌震安全更新了一个注册机，我直接偷走</p>
+    <content><![CDATA[<h2 id="24-1-1版本（有中文"><a href="#24-1-1版本（有中文" class="headerlink" title="24.1.1版本（有中文"></a>24.1.1版本（有中文</h2><blockquote>
+<p>来咯，船新的burp可以适应中文</p>
+</blockquote>
+<p>老规矩啦，还是下载注册机和官方安装包</p>
+<ul>
+<li>下载官方安装包2024.1.1版本：<a href="https://portswigger.net/burp/releases">https://portswigger.net/burp/releases</a></li>
+<li>注册机： <a href="https://pan.baidu.com/s/1Nk0p9e5_kRQ3dZAxBMonNQ">https://pan.baidu.com/s/1Nk0p9e5_kRQ3dZAxBMonNQ</a> 提取码:64c0 （from知攻善防实验室）<br>将下载的注册机（上方链接）解压后把文件都移入burpsuit的文件目录下方<br>用vscode打开BurpSuitePro.vmoptions，在打开注册机压缩包内的vmoptions.txt，将里的东西复制到BurpSuitePro.vmoptions中替换原有的文件<br>如果不需要汉化可以将 -javaagent:BurpSuiteChs.jar 注释掉</li>
+</ul>
+<p><code>#-javaagent:BurpSuiteChs.jar</code><br>之后就是使用注册机进行破解（BurpLoaderKeygen.jar）</p>
+<h2 id="23-12-1版burp但是英文版"><a href="#23-12-1版burp但是英文版" class="headerlink" title="23.12.1版burp但是英文版"></a>23.12.1版burp但是英文版</h2><h3 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h3><p>正值期末周不想复习没啥事干，一直看手底下的21年burp不顺眼了，就想着什么时候给换掉，想睡觉就有人给递枕头，这不是乌震安全更新了一个注册机，我直接偷走</p>
 <h3 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h3><p>2023.12.1</p>
 <h3 id="具体流程"><a href="#具体流程" class="headerlink" title="具体流程"></a>具体流程</h3><ol>
 <li><a href="https://portswigger.net/burp/releases/professional-community-2023-12-1?requestededition=professional">先下载对应版本的安装包</a></li>
