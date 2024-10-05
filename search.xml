@@ -367,7 +367,7 @@
   </entry>
   <entry>
     <title>python中API发送自建应用消息</title>
-    <url>/2024/10/04/pythonWXWapi/</url>
+    <url>/2024/10/05/pythonWXWapi/</url>
     <content><![CDATA[<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><blockquote>
 <p>corpwechatbot: <a href="https://github.com/GentleCP/corpwechatbot">https://github.com/GentleCP/corpwechatbot</a><br>官方文档: <a href="https://developer.work.weixin.qq.com/document/path/90930">https://developer.work.weixin.qq.com/document/path/90930</a><br>疑似官方源码: <a href="https://github.com/sbzhu/weworkapi_python">https://github.com/sbzhu/weworkapi_python</a></p>
 </blockquote>
@@ -387,15 +387,15 @@
  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python -m venv WXWorkAPI</span><br></pre></td></tr></table></figure></li>
 <li><p>拷贝代码: <a href="https://gist.github.com/GentleCP/5d02f4e84b8c8905bcf67643223cd499">链接</a> &#x2F; <a href="https://github.com/aaaaaaamua/aaaaaaamua.github.io/blob/master/add_files/web%E5%9B%9E%E8%B0%83%E9%85%8D%E7%BD%AE.zip">下载代码</a></p>
 </li>
-<li><p>在企业微信后台进入应用管理，选择一个应用，找到接收消息<br><img src="/image.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<li><p>在企业微信后台进入应用管理，选择一个应用，找到接收消息<br><img src="/img/picture/pythonWXWapi/image.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 </li>
-<li><p>设置API接收消息的三个选项，如下<br><img src="/image-1.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<li><p>设置API接收消息的三个选项，如下<br><img src="/img/picture/pythonWXWapi/image-1.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 </li>
 <li><p>参考corpwechatbot-web (github.com)，在服务器上运行web.py  </p>
  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 web.py -p=8000 -t=&quot;token&quot; -a=&quot;aeskey&quot; -c=&quot;corpid&quot;</span><br></pre></td></tr></table></figure>
 <p> 确认你的web服务成功启动，并能通过公网访问  </p>
 </li>
-<li><p>点击保存，如果正常，会提示API设置成功，记住这些配置信息<br><img src="/image-2.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<li><p>点击保存，如果正常，会提示API设置成功，记住这些配置信息<br><img src="/img/picture/pythonWXWapi/image-2.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 </li>
 <li><p>这样就完成了url的配置,但是需要注意的是,以后所有的数据都需要从这个设置的端口中出入, 所以需要设置代理服务器, 让所有的数据都经过这里, 但是web.py会自己去使用端口,就会导致直接发送消息时出现端口占用的现象。</p>
 </li>
@@ -417,7 +417,7 @@
 <li><p>端口冲突<br> 如果出现端口冲突的时候，停用squid</p>
  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop squid</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="设置可信域名"><a href="#设置可信域名" class="headerlink" title="设置可信域名"></a>设置可信域名</h3><p>找到对应的路径，输入ip注意不需要端口，只需要ip<br><img src="/image-3.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="设置可信域名"><a href="#设置可信域名" class="headerlink" title="设置可信域名"></a>设置可信域名</h3><p>找到对应的路径，输入ip注意不需要端口，只需要ip<br><img src="/img/picture/pythonWXWapi/image-3.png" alt="alt text" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><ol>
 <li><p>配置环境</p>
  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source /to/path/bin/activate</span><br><span class="line">pip install -U corpwechatbot</span><br></pre></td></tr></table></figure></li>
@@ -432,7 +432,7 @@
 <p> <code>app.send_text(content=&quot;如果我是DJ，你会爱我吗？&quot;)</code></p>
 </li>
 <li><p>图片消息<br> 发送一张图片，可选jpg,png，大小不超过2MB，目前仅支持通过图片路径发送.</p>
-<p> app.send_image(image_path&#x3D;’test.png’)  # 图片存储路径<br> img.png</p>
+<p> app.send_img&#x2F;picture&#x2F;pythonWXWapi&#x2F;image(img&#x2F;picture&#x2F;pythonWXWapi&#x2F;image_path&#x3D;’test.png’)  # 图片存储路径<br> img.png</p>
 </li>
 <li><p>语音消息<br> 发送一条语音，大小不超过2MB，时长不超过60s，必须是.amr格式</p>
 <p> app.send_voice(voice_path&#x3D;’test.amr’)<br> img_1.png</p>
@@ -454,7 +454,7 @@
 
 </li>
 <li><p>mpnews图文消息<br>该图文消息相比于上一个允许更丰富的表达，接受html语法，更多区别请参考官方文档</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">app.send_mpnews(title=&#x27;你好，我是CP&#x27;,</span><br><span class="line">            image_path=&#x27;data/test.png&#x27;,</span><br><span class="line">            content=&#x27;&lt;a href=&quot;https://blog.gentlecp.com&quot;&gt;Hello World&lt;/a&gt;&#x27;,</span><br><span class="line">            content_source_url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            author=&#x27;GentleCP&#x27;,</span><br><span class="line">            digest=&#x27;这是一段描述&#x27;,</span><br><span class="line">            safe=1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">app.send_mpnews(title=&#x27;你好，我是CP&#x27;,</span><br><span class="line">            img/picture/pythonWXWapi/image_path=&#x27;data/test.png&#x27;,</span><br><span class="line">            content=&#x27;&lt;a href=&quot;https://blog.gentlecp.com&quot;&gt;Hello World&lt;/a&gt;&#x27;,</span><br><span class="line">            content_source_url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            author=&#x27;GentleCP&#x27;,</span><br><span class="line">            digest=&#x27;这是一段描述&#x27;,</span><br><span class="line">            safe=1)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>卡片消息<br>发送一张卡片，带有跳转链接</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">app.send_card(title=&#x27;真骚哥出柜&#x27;,</span><br><span class="line">            desp=&#x27;真骚哥竟然出柜了？对象竟然是他...&#x27;,</span><br><span class="line">            url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            btntxt=&#x27;一睹为快&#x27;)</span><br></pre></td></tr></table></figure>
