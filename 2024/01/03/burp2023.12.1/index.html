@@ -9,7 +9,7 @@
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
 <meta name="description" content="24.1.1版本（有中文 来咯，船新的burp可以适应中文  老规矩啦，还是下载注册机和官方安装包  下载官方安装包2024.1.1版本：https:&#x2F;&#x2F;portswigger.net&#x2F;burp&#x2F;releases 注册机： https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1Nk0p9e5_kRQ3dZAxBMonNQ 提取码:64c0 （from知攻善防实验室）将下载的注册机（上方链接）解压后把文">
 <meta property="og:type" content="article">
-<meta property="og:title" content="burp">
+<meta property="og:title" content="burp使用">
 <meta property="og:url" content="http://aaaaaaamua.github.io/2024/01/03/burp2023.12.1/index.html">
 <meta property="og:site_name" content="Xiaozhao&#39;blog">
 <meta property="og:description" content="24.1.1版本（有中文 来咯，船新的burp可以适应中文  老规矩啦，还是下载注册机和官方安装包  下载官方安装包2024.1.1版本：https:&#x2F;&#x2F;portswigger.net&#x2F;burp&#x2F;releases 注册机： https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1Nk0p9e5_kRQ3dZAxBMonNQ 提取码:64c0 （from知攻善防实验室）将下载的注册机（上方链接）解压后把文">
@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<title >burp</title>
+<title >burp使用</title>
 
 <!-- Favicon -->
 
@@ -271,7 +271,7 @@ var _hmt = _hmt || [];
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            burp
+                            burp使用
                         </h1>
 
                         
@@ -352,6 +352,10 @@ var _hmt = _hmt || [];
 <h2 id="21版burp但是中文版"><a href="#21版burp但是中文版" class="headerlink" title="21版burp但是中文版"></a>21版burp但是中文版</h2><p> <a target="_blank" rel="noopener" href="https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe">Oracle账户</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html">JDK15</a>必须是在jdk15大版本下才可以运行注册机</p>
 <p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1369324-1-1.html">具体教程</a></p>
+<h2 id="关于一些使用方法"><a href="#关于一些使用方法" class="headerlink" title="关于一些使用方法"></a>关于一些使用方法</h2><ol>
+<li>对于编辑框中字体错位的方法，可以将字体调整到8的倍数，8&#x2F;16&#x2F;32</li>
+<li>对于注册机突然很小的情况，可以在任务管理器中找到运行burp的java文件，在属性中找到兼容性将DPI更改成跟随系统</li>
+</ol>
 
 </article>
     
@@ -419,43 +423,55 @@ var _hmt = _hmt || [];
                     <!-- footer -->
                     <footer class="trm-scroll-animation">
 
-    
-
-    
+    <% if(theme.footer.beian.enable) { %>
         <div class="trm-footer-item">
-            <span>© 2024- 2024</span>
+            <a rel="noopener" href="https://beian.miit.gov.cn/" target="_blank"><%- theme.footer.beian.icp %></a>
+        </div>
+    <% } %>
+
+    <% if(theme.footer.copyrightYear) { %>
+        <div class="trm-footer-item">
+            <span>© <%- theme.footer.copyrightYear %>- <%- date(Date.now(), 'YYYY') %></span>
             <span class="footer-separator"data-separator=" · "></span>
-            <span class="trm-accent-color">小赵</span>
+            <span class="trm-accent-color"><%- theme.user.name %></span>
         </div>
-    
+    <% } %>
 
-      
+    <% if(theme.footer.powered.enable) { %>
+        <div class="trm-footer-item">
+            <span>
+                <%- __('footer.powered','<a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>')%> v<%- hexo_env('version') %>
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                <%- __('footer.theme') %> - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v<%- async_env('version')%>
+            </span>
+        </div>
+    <% } %>  
 
-    
+    <% if(theme.footer.live_time.enable) { %>
         <div class="trm-footer-item blog-run-long"></div>
-    
+    <% } %> 
 
-
+    <% if(theme.footer.custom_text) { %>
         <div class="trm-footer-item">
-            大佬来了就随便看看吧
+            <%- theme.footer.custom_text %>
         </div>
-    
-
-    
+    <% if(theme.busuanzi && theme.busuanzi.enable) { %>
 	<!-- 不蒜子统计 -->
-        <div class="trm-footer-item">
-	    <span id="busuanzi_container_site_pv">
-			    总访问量<span id="busuanzi_value_site_pv"></span>次
-	    </span>
-	    <span class="post-meta-divider">|</span>
-	    <span id="busuanzi_container_site_uv" style='display:none'>
-			    访客数<span id="busuanzi_value_site_uv"></span>人
-	    </span>
-	    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	<span id="busuanzi_container_site_pv">
+			本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span class="post-meta-divider">|</span>
+	<span id="busuanzi_container_site_uv" style='display:none'>
+			本站访客数<span id="busuanzi_value_site_uv"></span>人
+	</span>
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 	</script>
-    
+    <% } %> 
 </footer>
-
 
                     <!-- footer end -->
 
@@ -476,7 +492,7 @@ var _hmt = _hmt || [];
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="24.1.1版本（有中文"><a rel="nofollow" class="trm-toc-link" href="#24-1-1版本（有中文"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">24.1.1版本（有中文</span></a></li><li class="trm-toc-item trm-toc-level-2" title="23.12.1版burp但是英文版"><a rel="nofollow" class="trm-toc-link" href="#23-12-1版burp但是英文版"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">23.12.1版burp但是英文版</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="前情提要"><a rel="nofollow" class="trm-toc-link" href="#前情提要"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">前情提要</span></a></li><li class="trm-toc-item trm-toc-level-3" title="版本"><a rel="nofollow" class="trm-toc-link" href="#版本"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">版本</span></a></li><li class="trm-toc-item trm-toc-level-3" title="具体流程"><a rel="nofollow" class="trm-toc-link" href="#具体流程"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">具体流程</span></a></li><li class="trm-toc-item trm-toc-level-3" title="注册机下载"><a rel="nofollow" class="trm-toc-link" href="#注册机下载"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text">注册机下载</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="21版burp但是中文版"><a rel="nofollow" class="trm-toc-link" href="#21版burp但是中文版"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">21版burp但是中文版</span></a></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="24.1.1版本（有中文"><a rel="nofollow" class="trm-toc-link" href="#24-1-1版本（有中文"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">24.1.1版本（有中文</span></a></li><li class="trm-toc-item trm-toc-level-2" title="23.12.1版burp但是英文版"><a rel="nofollow" class="trm-toc-link" href="#23-12-1版burp但是英文版"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">23.12.1版burp但是英文版</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="前情提要"><a rel="nofollow" class="trm-toc-link" href="#前情提要"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">前情提要</span></a></li><li class="trm-toc-item trm-toc-level-3" title="版本"><a rel="nofollow" class="trm-toc-link" href="#版本"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">版本</span></a></li><li class="trm-toc-item trm-toc-level-3" title="具体流程"><a rel="nofollow" class="trm-toc-link" href="#具体流程"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">具体流程</span></a></li><li class="trm-toc-item trm-toc-level-3" title="注册机下载"><a rel="nofollow" class="trm-toc-link" href="#注册机下载"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text">注册机下载</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="21版burp但是中文版"><a rel="nofollow" class="trm-toc-link" href="#21版burp但是中文版"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">21版burp但是中文版</span></a></li><li class="trm-toc-item trm-toc-level-2" title="关于一些使用方法"><a rel="nofollow" class="trm-toc-link" href="#关于一些使用方法"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">关于一些使用方法</span></a></li></ol>
       </div>
     </div>
 

@@ -151,7 +151,7 @@
       </tags>
   </entry>
   <entry>
-    <title>burp</title>
+    <title>burp使用</title>
     <url>/2024/01/03/burp2023.12.1/</url>
     <content><![CDATA[<h2 id="24-1-1版本（有中文"><a href="#24-1-1版本（有中文" class="headerlink" title="24.1.1版本（有中文"></a>24.1.1版本（有中文</h2><blockquote>
 <p>来咯，船新的burp可以适应中文</p>
@@ -175,6 +175,10 @@
 <h2 id="21版burp但是中文版"><a href="#21版burp但是中文版" class="headerlink" title="21版burp但是中文版"></a>21版burp但是中文版</h2><p> <a href="https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.exe">Oracle账户</a></p>
 <p><a href="https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html">JDK15</a>必须是在jdk15大版本下才可以运行注册机</p>
 <p><a href="https://www.52pojie.cn/thread-1369324-1-1.html">具体教程</a></p>
+<h2 id="关于一些使用方法"><a href="#关于一些使用方法" class="headerlink" title="关于一些使用方法"></a>关于一些使用方法</h2><ol>
+<li>对于编辑框中字体错位的方法，可以将字体调整到8的倍数，8&#x2F;16&#x2F;32</li>
+<li>对于注册机突然很小的情况，可以在任务管理器中找到运行burp的java文件，在属性中找到兼容性将DPI更改成跟随系统</li>
+</ol>
 ]]></content>
       <categories>
         <category>工具使用备份</category>
