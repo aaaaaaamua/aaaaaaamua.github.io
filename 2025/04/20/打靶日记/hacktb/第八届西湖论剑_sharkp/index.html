@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="第八届西湖论剑_sharkp参考wp:  ​	iot 逆向思路:西湖论剑WriteUp | CN-SEC 中文网 ​	web思路: 西湖论剑 By 金石滩小鲨鱼 | Ya1orin🍭 ​	官方wp: 第八届西湖论剑·中国杭州网络安全技能大赛初赛官方Write Up（上） 流量分析法 恶意文件可以使用在线安全沙箱来分析出恶意ip  导出文件(又记了一次_悲_)(但是实际上这次不在这里): 首先确认">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hacktb_第八届西湖论剑_sharkp">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/04/20/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/hacktb/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="第八届西湖论剑_sharkp参考wp:  ​	iot 逆向思路:西湖论剑WriteUp | CN-SEC 中文网 ​	web思路: 西湖论剑 By 金石滩小鲨鱼 | Ya1orin🍭 ​	官方wp: 第八届西湖论剑·中国杭州网络安全技能大赛初赛官方Write Up（上） 流量分析法 恶意文件可以使用在线安全沙箱来分析出恶意ip  导出文件(又记了一次_悲_)(但是实际上这次不在这里): 首先确认">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-04-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T03:07:59.766Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="wireshark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >hacktb_第八届西湖论剑_sharkp</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"01/25/2024 03:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 11:07:59"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            hacktb_第八届西湖论剑_sharkp
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="第八届西湖论剑-sharkp"><a href="#第八届西湖论剑-sharkp" class="headerlink" title="第八届西湖论剑_sharkp"></a>第八届西湖论剑_sharkp</h1><p>参考wp: </p>
+<p>​	<code>iot 逆向思路</code>:<a target="_blank" rel="noopener" href="https://cn-sec.com/archives/3646467.html">西湖论剑<code>WriteUp</code> | CN-SEC 中文网</a></p>
+<p>​	<code>web思路</code>: <a target="_blank" rel="noopener" href="https://ya1orin.github.io/posts/9451627c">西湖论剑 By 金石滩小鲨鱼 | Ya1orin🍭</a></p>
+<p>​	<code>官方wp</code>: <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qefJ0YkKgXBUH0gyKGhImA">第八届西湖论剑·中国杭州网络安全技能大赛初赛官方Write Up（上）</a></p>
+<h2 id="流量分析法"><a href="#流量分析法" class="headerlink" title="流量分析法"></a>流量分析法</h2><ol>
+<li><p>恶意文件可以使用在线安全沙箱来分析出恶意ip</p>
+</li>
+<li><p>导出文件(又记了一次_悲_)(但是实际上这次不在这里):</p>
+<p>首先确认恶意文件是在http中上传的,然后就可以使用<code>导出对象</code>找到对应协议</p>
+<p>可以看到这里面有好几个协议,选择http</p>
+<p><img src="/2025/05/02/hello-world/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/image-20250420165603461.png" alt="image-20250420165603461"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后<code>wireshark</code>就会过滤出所有的http协议中有的内容,然后上选择对应的目标文件<code>setFirmwareUpgrade</code>另存</p>
+<p><img src="/2025/05/02/hello-world/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/image-20250420165722293.png" alt="image-20250420165722293"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li></li>
+</ol>
+<hr>
+<p>   然后是大大的<a href="#%E6%95%99%E8%AE%AD">教训</a></p>
+<hr>
+<ol start="4">
+<li><p>沙箱</p>
+<p><a target="_blank" rel="noopener" href="https://sandbox.dbappsecurity.com.cn/">安恒云沙箱-下一代沙箱的领航者</a></p>
+<p><a target="_blank" rel="noopener" href="https://s.threatbook.com/report/file/8b1ef19f610871f32dca6755f0d6af47015efa756208dbbffa49dcfef2a39f5b">样本报告-微步在线云沙箱</a></p>
+<p><a target="_blank" rel="noopener" href="https://sandbox.ti.qianxin.com/sandbox/page">奇安信情报沙箱</a></p>
+</li>
+<li><p>与他人wp中hash相同但是一直无法检测出外联行为,无法进行,疑似木马检测了时间,设置了发送时间限制,故无法从沙箱中判断</p>
+</li>
+<li><p>所以需要尝试逆向来进行ip获取</p>
+</li>
+</ol>
+<h2 id="逆向解法"><a href="#逆向解法" class="headerlink" title="逆向解法"></a>逆向解法</h2><ol>
+<li><p>f5将汇编翻译成c语言</p>
+<p><img src="/2025/05/02/hello-world/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/image-20250420183200482.png" alt="image-20250420183200482"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>搜索<code>syscall 0x40404</code>发现上下文</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">.shellcode:00410114                 syscall 0x40404</span><br><span class="line">.shellcode:00410118                 move    $s5, $v0</span><br><span class="line">.shellcode:0041011C                 bnez    $v0, main_lab</span><br><span class="line">.shellcode:00410120                 nop</span><br><span class="line">.shellcode:00410124                 li      $t9, 0xFFFFFFFD</span><br><span class="line">.shellcode:00410128                 nor     $a0, $t9, $zero</span><br><span class="line">.shellcode:0041012C                 li      $t9, 0xFFFFFFFD</span><br><span class="line">.shellcode:00410130                 nor     $a1, $t9, $zero</span><br><span class="line">.shellcode:00410134                 slti    $a2, $zero, -1</span><br><span class="line">.shellcode:00410138                 li      $v0, 0x1057</span><br><span class="line">.shellcode:0041013C                 syscall 0x40404</span><br><span class="line">.shellcode:00410140                 sw      $v0, var_4($sp)</span><br><span class="line">.shellcode:00410144                 lw      $s0, var_4($sp)</span><br><span class="line">.shellcode:00410148                 li      $t9, 0x47DDFFFD</span><br><span class="line">.shellcode:00410150                 nor     $t1, $t9, $zero</span><br><span class="line">.shellcode:00410154                 sw      $t1, var_8($sp)</span><br><span class="line">.shellcode:00410158                 li      $t1, 0xA158C373</span><br><span class="line">.shellcode:00410160                 sw      $t1, var_4($sp)</span><br><span class="line">.shellcode:00410164                 addiu   $sp, -8</span><br><span class="line">.shellcode:00410168                 sw      $s0, 8+var_10+4($sp)</span><br></pre></td></tr></table></figure>
+
+<p>ai发现注入了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.shellcode:00410158  li $t1, 0xA158C373    # 写入魔数</span><br><span class="line">.shellcode:00410160  sw $t1, var_4($sp)    # 存储到栈</span><br></pre></td></tr></table></figure>
+
+<p><code>0xA158C373</code>转化过来是</p>
+<p><img src="/2025/05/02/hello-world/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/image-20250420183355437.png" alt="image-20250420183355437"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>对于<code>1010 0001 0101 1000 1100 0011 0111 0011</code>,ip地址的编码规则是8位二进制分,解析出来是</p>
+<p><strong>161.88.195.115</strong>,实际上答案应该是:<strong>115.195.88.161</strong></p>
+</li>
+<li><p>存在字节序问题</p>
+<p>你发现了一个关键细节！<strong><code>0xA158C373</code> 在不同字节序下会解析出不同的 IP 地址</strong>。以下是完整解释：</p>
+<hr>
+<h3 id="1-根本原因：字节序（Endianness）问题"><a href="#1-根本原因：字节序（Endianness）问题" class="headerlink" title="1. 根本原因：字节序（Endianness）问题"></a><strong>1. 根本原因：字节序（Endianness）问题</strong></h3><p><code>0xA158C373</code> 是 <strong>32位十六进制值</strong>，但它在内存中的存储方式取决于 CPU 的字节序：</p>
+<ul>
+<li><strong>大端序（Big-Endian）</strong>：高位字节在前 → <code>A1 58 C3 73</code> → <strong>161.88.195.115</strong><br>（人类直觉顺序，网络传输标准）</li>
+<li><strong>小端序（Little-Endian）</strong>：低位字节在前 → <code>73 C3 58 A1</code> → <strong>115.195.88.161</strong><br>（x86&#x2F;ARM等常见CPU的默认顺序）</li>
+</ul>
+<hr>
+<h3 id="2-你的代码场景分析"><a href="#2-你的代码场景分析" class="headerlink" title="2. 你的代码场景分析"></a><strong>2. 你的代码场景分析</strong></h3><h4 id="1-MIPS架构的字节序"><a href="#1-MIPS架构的字节序" class="headerlink" title="(1) MIPS架构的字节序"></a><strong>(1) MIPS架构的字节序</strong></h4><ul>
+<li><p>MIPS CPU 可能是大端或小端（取决于具体型号）：</p>
+<ul>
+<li>如果你在 <strong>小端序 MIPS</strong> 系统（或模拟器）中运行代码，<code>0xA158C373</code> 会被当作 <code>73 C3 58 A1</code> 解析 → <strong>115.195.88.161</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>如果是 <strong>大端序 MIPS</strong>，则解析为 <strong>161.88.195.115</strong>。</li>
+</ul>
+<h4 id="2-指令中的隐式转换"><a href="#2-指令中的隐式转换" class="headerlink" title="(2) 指令中的隐式转换"></a><strong>(2) 指令中的隐式转换</strong></h4><p>   当代码执行以下操作时：</p>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">li  $t1, 0xA158C373    # 将值加载到寄存器</span><br><span class="line">   sw  $t1, var_4($sp)    # 存储到内存</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong><code>li</code> 指令</strong>：直接加载 <code>0xA158C373</code> 到寄存器，<strong>不改变字节序</strong>。</p>
+<ul>
+<li><strong><code>sw</code> 指令</strong>：将寄存器的值按当前CPU字节序写入内存。</li>
+</ul>
+<hr>
+</li>
+</ul>
+<h3 id="3-如何验证正确的IP？"><a href="#3-如何验证正确的IP？" class="headerlink" title="3. 如何验证正确的IP？"></a><strong>3. 如何验证正确的IP？</strong></h3><h4 id="1-动态调试检查"><a href="#1-动态调试检查" class="headerlink" title="(1) 动态调试检查"></a><strong>(1) 动态调试检查</strong></h4><p>   在调试器中查看 <code>$t1</code> 寄存器的实际字节排列：</p>
+   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/4xb <span class="variable">$t1</span>    <span class="comment"># 显示$t1的4个字节</span></span><br><span class="line">   0x73 0xc3 0x58 0xa1  <span class="comment"># 小端序 → 115.195.88.161</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-代码上下文"><a href="#2-代码上下文" class="headerlink" title="(2) 代码上下文"></a><strong>(2) 代码上下文</strong></h4><ul>
+<li><p>如果后续代码将 <code>$t1</code> 作为 <strong>网络数据包</strong> 发送（如通过 <code>sendto</code>），需按 <strong>大端序（网络字节序）</strong> 转换：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">li    $t1, 0xA158C373</span><br><span class="line">swl   $t1, 0($sp)     # 强制按大端序存储</span><br></pre></td></tr></table></figure>
+<p>此时IP为 <strong>161.88.195.115</strong>。</p>
+</li>
+<li><p>如果直接用于 <strong>本地计算</strong>（如加密密钥），则保持小端序 <strong>115.195.88.161</strong>。</p>
+</li>
+</ul>
+<h2 id="收集wireshark使用方法"><a href="#收集wireshark使用方法" class="headerlink" title="收集wireshark使用方法"></a>收集<code>wireshark</code>使用方法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.request.method == &quot;POST&quot;</span><br></pre></td></tr></table></figure>
+
+<p>过滤出二进制流传输判断传输了文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.content_type == &quot;application/octet-stream&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="教训"><a href="#教训" class="headerlink" title="教训"></a>教训</h2><ol>
+<li><p>遇到意义不明的二进制流放沙箱! 是否改后缀无所谓,但是一定要通过导出对象</p>
+</li>
+<li><p><strong>另存为只能获得txt!</strong></p>
+<p>获取response返回的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.content_type == &quot;application/octet-stream&quot;</span><br></pre></td></tr></table></figure>
+
+<p>找到之后选择另存为</p>
+<p><img src="/2025/05/02/hello-world/%E7%AC%AC%E5%85%AB%E5%B1%8A%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_sharkp/image-20250420172518508.png" alt="image-20250420172518508"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><strong>总结发现这个另存为只会被识别为text</strong>!</p>
+</li>
+</ol>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/04/30/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/%E9%9B%B6%E7%A2%8E%E5%8D%95%E9%A2%98/wireshark%E8%A7%A3%E6%9E%90%E5%99%A8/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">ev3_basic_wireshark解析器</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/04/30</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/04/18/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/hacktb/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94SU_forensics/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">hacktb_应急响应SU_forensics</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/04/18</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="第八届西湖论剑_sharkp"><a rel="nofollow" class="trm-toc-link" href="#第八届西湖论剑-sharkp"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">第八届西湖论剑_sharkp</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="流量分析法"><a rel="nofollow" class="trm-toc-link" href="#流量分析法"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">流量分析法</span></a></li><li class="trm-toc-item trm-toc-level-2" title="逆向解法"><a rel="nofollow" class="trm-toc-link" href="#逆向解法"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">逆向解法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1. 根本原因：字节序（Endianness）问题"><a rel="nofollow" class="trm-toc-link" href="#1-根本原因：字节序（Endianness）问题"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">1. 根本原因：字节序（Endianness）问题</span></a></li><li class="trm-toc-item trm-toc-level-3" title="2. 你的代码场景分析"><a rel="nofollow" class="trm-toc-link" href="#2-你的代码场景分析"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">2. 你的代码场景分析</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="(1) MIPS架构的字节序"><a rel="nofollow" class="trm-toc-link" href="#1-MIPS架构的字节序"><span class="trm-toc-number">1.2.2.1.</span> <span class="trm-toc-text">(1) MIPS架构的字节序</span></a></li><li class="trm-toc-item trm-toc-level-4" title="(2) 指令中的隐式转换"><a rel="nofollow" class="trm-toc-link" href="#2-指令中的隐式转换"><span class="trm-toc-number">1.2.2.2.</span> <span class="trm-toc-text">(2) 指令中的隐式转换</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="3. 如何验证正确的IP？"><a rel="nofollow" class="trm-toc-link" href="#3-如何验证正确的IP？"><span class="trm-toc-number">1.2.3.</span> <span class="trm-toc-text">3. 如何验证正确的IP？</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="(1) 动态调试检查"><a rel="nofollow" class="trm-toc-link" href="#1-动态调试检查"><span class="trm-toc-number">1.2.3.1.</span> <span class="trm-toc-text">(1) 动态调试检查</span></a></li><li class="trm-toc-item trm-toc-level-4" title="(2) 代码上下文"><a rel="nofollow" class="trm-toc-link" href="#2-代码上下文"><span class="trm-toc-number">1.2.3.2.</span> <span class="trm-toc-text">(2) 代码上下文</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="收集wireshark使用方法"><a rel="nofollow" class="trm-toc-link" href="#收集wireshark使用方法"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">收集wireshark使用方法</span></a></li><li class="trm-toc-item trm-toc-level-2" title="教训"><a rel="nofollow" class="trm-toc-link" href="#教训"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">教训</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
