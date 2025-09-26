@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="解题思路 下载apk,打开发现除了一个输入窗口,还有一个框,点击进去是一个什么[ 邦布图鉴提交处 ],有一个BBTUJAIN的标识   那么就使用jadx打开压缩包搜索这个BBTUJAIN可以找到这个  12345&#x27;鲨牙布&#x27;, &#x27;S&#x27;,&#x27;VVcwNWRt&#x27;  --&gt;  不知道是啥&#x27;左轮布&#x27;, &#x27;S&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iscc2025_邦布出击">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/05/11/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/ISCC2025/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="解题思路 下载apk,打开发现除了一个输入窗口,还有一个框,点击进去是一个什么[ 邦布图鉴提交处 ],有一个BBTUJAIN的标识   那么就使用jadx打开压缩包搜索这个BBTUJAIN可以找到这个  12345&#x27;鲨牙布&#x27;, &#x27;S&#x27;,&#x27;VVcwNWRt&#x27;  --&gt;  不知道是啥&#x27;左轮布&#x27;, &#x27;S&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-05-11T02:16:14.000Z">
+<meta property="article:modified_time" content="2025-05-20T18:11:00.573Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="re">
+<meta property="article:tag" content="mobile">
+<meta property="article:tag" content="frida">
+<meta property="article:tag" content="sqlcipher">
+<meta property="article:tag" content="DataGrip">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >iscc2025_邦布出击</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-21 02:11:00"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            iscc2025_邦布出击
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/11
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:16
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li><p>下载apk,打开发现除了一个输入窗口,还有一个框,点击进去是一个什么[ 邦布图鉴提交处 ],有一个<code>BBTUJAIN</code>的标识</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/78050d6e2a941c2cfe978b5a0c57145.jpg" alt="78050d6e2a941c2cfe978b5a0c57145"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>那么就使用<code>jadx</code>打开压缩包搜索这个<code>BBTUJAIN</code>可以找到这个</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511102309820.png" alt="image-20250511102309820"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x27;鲨牙布&#x27;, &#x27;S&#x27;,&#x27;VVcwNWRt&#x27;  --&gt;  不知道是啥</span><br><span class="line">&#x27;左轮布&#x27;, &#x27;S&#x27;,&#x27;UkhhSEJp&#x27;   --&gt;  不知道是啥</span><br><span class="line">&#x27;格列佛探员&#x27;, &#x27;S&#x27;,&#x27;UjNjOQ==&#x27;   --&gt;  不知道是啥</span><br><span class="line">&#x27;绳网情报&#x27;, &#x27;SSR&#x27;,&#x27;VGhyZWUgZGVjcnlwdGlvbnM=&#x27;  --&gt;   Three decryptions</span><br><span class="line">&#x27;f0LaG?&#x27;, &#x27;SSS&#x27;,&#x27;e2ZsYWcwLm8/a2V5by4wfWNjc2w=&#x27;  --&gt;  &#123;flag0.o?keyo.0&#125;ccsl</span><br></pre></td></tr></table></figure>
+
+
+
+<p>把前三个拼起来base64炒三次: <code>VVcwNWRtUkhhSEJpUjNjOQ==</code> –&gt;  Boothill</p>
+<p>试了下这玩意不是flag,那就是key, [o.0 | 0.o ]你妈原来是大眼瞪小眼</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511102647130.png" alt="image-20250511102647130"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>题目中还给了一个数据库sqlite的形式,但是似乎打不开(DataGrip),所以猜测这玩意就是加密的key, 单独提出来(<a href="#%E5%A6%82%E4%BD%95%E6%89%93%E5%BC%80%60SqlCipher%60%E5%8A%A0%E5%AF%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><code>SqlCiper</code>解密手段</a>)</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511125203967.png" alt="image-20250511125203967"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>对3的unicode进行解码 –&gt; \ahe falg is false but the key is True</p>
+<p>好吧发现个key: <code>A7bCdEfGhIjKlMnO</code></p>
+<ol start="4">
+<li><p>搜索这个<code>blowfish</code>发现一个函数,有个<code>hiddenString</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CWrv7qxLTdlwvWoMVxDfkoRy+d5GuXiN</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">b</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">hiddenString</span> <span class="operator">=</span> <span class="string">&quot;CWrv7qxLTdlwvWoMVxDfkoRy+d5GuXiN&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">b</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">HashMap</span> <span class="variable">hashMap</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">            <span class="type">HashMap</span> <span class="variable">hashMap2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">            hashMap2.put(<span class="string">&quot;hiddenString&quot;</span>, hiddenString);</span><br><span class="line">            hashMap.put(<span class="string">&quot;level1&quot;</span>, hashMap2);</span><br><span class="line">            <span class="type">HashMap</span> <span class="variable">hashMap3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">            hashMap3.put(<span class="string">&quot;level2&quot;</span>, hashMap);</span><br><span class="line">            <span class="type">Field</span> <span class="variable">declaredField</span> <span class="operator">=</span> b.class.getDeclaredField(<span class="string">&quot;hiddenString&quot;</span>);</span><br><span class="line">            declaredField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> (String) declaredField.get(<span class="literal">null</span>);</span><br><span class="line">            <span class="keyword">return</span> (String) ((Map) ((Map) hashMap3.get(<span class="string">&quot;level2&quot;</span>)).get(<span class="string">&quot;level1&quot;</span>)).get(<span class="string">&quot;hiddenString&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">c</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">d</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Blowfish/ECB/PKCS5Padding&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用<code>blowfish</code>进行解密</p>
+<p>得到<code>WTF6I0EyYiRDM2QlRTRmXkc1aA==</code> –&gt; <code>Y1z#A2b$C3d%E4f^G5h</code></p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511125735910.png" alt="image-20250511125735910"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>查看函数b()的引用发现一个函数a()的引用,发现<code>Jformat</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">Jformat</span><span class="params">(String str)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (str.length() &gt;= <span class="number">7</span> &amp;&amp; str.substring(<span class="number">0</span>, <span class="number">5</span>).equals(<span class="string">&quot;ISCC&#123;&quot;</span>) &amp;&amp; str.charAt(str.length() - <span class="number">1</span>) == <span class="string">&#x27;&#125;&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">a</span> <span class="operator">=</span> a.a();</span><br><span class="line">            Log.d(<span class="string">&quot;str1&quot;</span>, <span class="string">&quot;des加密明文: &quot;</span> + a);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">encrypt</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DESHelper</span>().encrypt(a, <span class="string">&quot;WhItenet&quot;</span>, getiv());</span><br><span class="line">                Log.d(<span class="string">&quot;DEBUG_RES&quot;</span>, <span class="string">&quot;加密结果 res: &quot;</span> + encrypt);</span><br><span class="line">                <span class="keyword">return</span> str.substring(<span class="number">5</span>, str.length() - <span class="number">1</span>).equals(encrypt);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还差一个<code>getiv()</code>静态分析分了个寂寞,初步判断是个硬编码, ai启动搞个frida<a href="#frida%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95">frida动态调试</a>出来</p>
+<p>执行得到IV： IbaovdjvbskPlzjhwl<img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511130308288.png" alt="image-20250511130308288"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>DES加密得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ISCC&#123;CO1uvILOscxApRz7t/lVGHTN+DL8Ctob&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511130437185.png" alt="image-20250511130437185"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="如何打开SqlCipher加密的数据库"><a href="#如何打开SqlCipher加密的数据库" class="headerlink" title="如何打开SqlCipher加密的数据库"></a>如何打开<code>SqlCipher</code>加密的数据库</h2><h3 id="直接使用sqlcipher导出没有密码的版本"><a href="#直接使用sqlcipher导出没有密码的版本" class="headerlink" title="直接使用sqlcipher导出没有密码的版本"></a>直接使用<code>sqlcipher</code>导出没有密码的版本</h3><p><a target="_blank" rel="noopener" href="https://github.com/sqlcipher/sqlcipher">sqlcipher - github</a></p>
+<p>建议在linux中打开,可以自己clone编译,也可以直接使用命令安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install sqlcipher</span><br></pre></td></tr></table></figure>
+
+
+
+<p>ai启动,需要注意的是这里地方的兼容模式需要调整为3,因为加密的时候的版本是旧的3版本,但是解密版本较新,默认用的兼容模式是4,所以需要手动设置为3</p>
+<p>这个方式是新设置一个空的没有加密的数据库导出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-- 1. 输入密码解密（使用你已知的正确密码）</span><br><span class="line">PRAGMA key = <span class="string">&#x27;Boothill&#x27;</span>;</span><br><span class="line"></span><br><span class="line">-- 2. 设置兼容模式（如果需要）</span><br><span class="line">PRAGMA cipher_compatibility = 3;  -- 可尝试1-4</span><br><span class="line"></span><br><span class="line">-- 3. 创建并附加一个新的未加密数据库</span><br><span class="line">ATTACH DATABASE <span class="string">&#x27;plain.db&#x27;</span> AS plaintext KEY <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">-- 4. 导出数据到未加密数据库</span><br><span class="line">SELECT sqlcipher_export(<span class="string">&#x27;plaintext&#x27;</span>);</span><br><span class="line"></span><br><span class="line">-- 5. 分离新数据库</span><br><span class="line">DETACH DATABASE plaintext;</span><br><span class="line"></span><br><span class="line">-- 6. 退出</span><br><span class="line">.quit</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511125113261.png" alt="image-20250511125113261"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后导出到<code>DataGrip</code>中可以发现</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511125152256.png" alt="image-20250511125152256"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="DataGrip打开SQLCipher方法"><a href="#DataGrip打开SQLCipher方法" class="headerlink" title="DataGrip打开SQLCipher方法"></a><code>DataGrip</code>打开<code>SQLCipher</code>方法</h3><p>网上找了一下发现给sqlite加密的一般是<code>SqlCipher</code><a target="_blank" rel="noopener" href="https://github.com/sqlcipher/sqlcipher">github</a>,还真有人问过这个<code>DataGrip</code>如何如何使用<code>SqlCipher</code>的问题: <a target="_blank" rel="noopener" href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/360007633799-How-to-open-SQLCipher-passwrd-protected-file-in-Datagrip">How to open SQLCipher passwrd protected file in Datagrip – IDEs Support (IntelliJ Platform) | JetBrains</a></p>
+<ol>
+<li><p>去下载对应的<code>sqlite-jdbc-crypt</code>也就是一个sqlite的启动器<a target="_blank" rel="noopener" href="https://github.com/Willena/sqlite-jdbc-crypt/releases">github</a></p>
+</li>
+<li><p>然后在DataGrip的 File -&gt; New -&gt; Driver 来新建一个User Drivers,给他取名叫做<code>SQLCipher</code>(其实你爱叫啥叫啥关我屁事),然后具体设置</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511104537610.png" alt="image-20250511104537610"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>但是这个官方的介绍没有任何意义,但是抛砖引玉,下面有了很多热心网友的评价,我也借此学习了一下[<code>DataGrip URL template</code>的命名规则](#<code>DataGrip URL template</code>的命名规则)</p>
+</li>
+<li><p>佬<a target="_blank" rel="noopener" href="https://intellij-support.jetbrains.com/hc/en-us/profiles/12783001523090-Shz">Shz</a>的思路</p>
+<p>I succeed with <strong>Yuriy Vinogradov</strong>‘s solution. But, in my case, additionally I needed to add <code>slf4j-api-1.7.36.jar</code> file(which is mentioned on the <a target="_blank" rel="noopener" href="https://github.com/Willena/sqlite-jdbc-crypt?tab=readme-ov-file#usage">Usage part of the sqlite-jdbc-crypt</a>) to the Driver Files list. After added the file path, I can select <code>org.sqlite.JDBC</code> class and connect to db with “jdbc:sqlite:&#x2F;path&#x2F;to&#x2F;db?cipher&#x3D;sqlcipher&amp;key&#x3D;{key phrase}&amp;legacy&#x3D;4” this url format (Actually i didn’t set the url templates)</p>
+<p>I hope my comments can help save your time.</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/01JCMGHKERFYJC6PSA68FCP1AB.png" alt="img"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可能是有用的,但是在这里屁用没有</p>
+</li>
+</ol>
+<h4 id="DataGrip-URL-template的命名规则"><a href="#DataGrip-URL-template的命名规则" class="headerlink" title="DataGrip URL template的命名规则"></a><code>DataGrip URL template</code>的命名规则</h4><p>先贴个图</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511113808074.png" alt="image-20250511113808074"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>在这篇学习中,我似乎搞懂了这个<code>URL templates</code>是干嘛的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jdbc:sqlite:/path/to/my/encrypted.db?cipher=sqlcipher&amp;key=thepassword&amp;legacy=3\</span><br><span class="line">jdbc:sqlite:file:&#123;file&#125;?cipher=aes256cbc&amp;key=&#123;password&#125;&amp;cipher_compatibility=3</span><br></pre></td></tr></table></figure>
+
+<p>实际上对于<code>DataGrip</code>来说,连接数据库的操作还是要靠驱动(driver file)<code>*.jar</code>来执行,所以也就是说,前面花里胡哨的配置都是前端的配置,真正在起到作用的还是这个<code>sqlite-jdbc-crypt-3.49.10.jar</code>在执行真正的连接作用</p>
+<p>那么对于<code>URL templates</code>来说JDBC URL 是整个连接的核心 —— 它告诉驱动程序连接哪个数据库、在哪里、用什么参数、是否启用密码、兼容模式等。</p>
+<p>在<code>DataGrip</code>中提供了几个模版: <code>&#123;file&#125;,&#123;user&#125;,&#123;password&#125;</code>,虽然{user},{password}会成对出现(这是由于DataGrip的GUI设计导致的),但是如果<code>URL templates</code>中没有对于{user}的引用,那么实际上是不会传入任何参数的,比如在这个题目中就只需要password,那么对于输入User来说,就是输入什么都行,因为他不会作为参数传递给驱动</p>
+<h2 id="frida动态调试"><a href="#frida动态调试" class="headerlink" title="frida动态调试"></a>frida动态调试</h2><h3 id="frida环境配置"><a href="#frida环境配置" class="headerlink" title="frida环境配置"></a>frida环境配置</h3><blockquote>
+<p>设备: 小米8青春版(已经解锁)<br>windows: 为frida建立虚拟环境<br>adb: 有线连接,调试安卓</p>
+</blockquote>
+<h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><p><code>pycharm</code>新建一个project之后安装以下库,挂梯子更快</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install frida</span><br><span class="line">pip install frida-tools</span><br></pre></td></tr></table></figure>
+
+<h4 id="手机安装frida环境"><a href="#手机安装frida环境" class="headerlink" title="手机安装frida环境"></a>手机安装frida环境</h4><ol>
+<li><p>查看手机cpu版本<br>有线连接之后打开adb调试,打开开发者模式,打开USB调试<br>电脑端cmd在<code>adb.exe</code>存在的目录在使用命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell</span><br><span class="line">getprop ro.product.cpu.abi <span class="comment">#查看cpu版本</span></span><br><span class="line">&gt;&gt; arm64-v8a <span class="comment"># 通常大多数手机(包括演示设备)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找<code>amd64</code>对应的frida版本</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">Releases · frida&#x2F;frida</a></p>
+<p>需要注意的是,这里下载的是对应版本的<code>frida-server</code>,下载到的文件格式应该是这个样子的<code>frida-server-16.7.14-android-arm64.xz</code>,需要在<code>release</code>里面展开查询,不要下载错咯</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250507002953211.png" alt="image-20250507002953211"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250507003042149.png" alt="image-20250507003042149"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>(解压后的文件)推送到手机的<code>/data/local/tmp</code>上去</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push frida-server-16.7.14-android-arm64 /data/local/tmp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250507003307169.png" alt="image-20250507003307169"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后再执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">su <span class="comment"># 注意在手机上授权</span></span><br><span class="line"><span class="built_in">cd</span> /data/local/tmp</span><br><span class="line"><span class="built_in">mv</span> frida-server-16.7.14-android-arm64 frida</span><br><span class="line"><span class="built_in">chmod</span> 777 frida</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后运行</span></span><br><span class="line">./frida</span><br></pre></td></tr></table></figure>
+
+<p>在安装了frida环境的python环境中起一个powershell(直接在pycharm中也行)执行</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida<span class="literal">-ps</span> <span class="literal">-U</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250507003621166.png" alt="image-20250507003621166"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>注意:</p>
+<p>需要注意的是,需要在运行<code>./frida</code>的情况下才可以运行<code>frida-ps -U</code>才能查看到对应的内容</p>
+</li>
+</ol>
+<h4 id="通过adb进行文件推送"><a href="#通过adb进行文件推送" class="headerlink" title="通过adb进行文件推送"></a>通过adb进行文件推送</h4><p>termux方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/com.termux/files/home/storage/shared</span><br></pre></td></tr></table></figure>
+
+
+
+<p>原生文件管理方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/storage/emulated/0</span><br></pre></td></tr></table></figure>
+
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>手机上</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida -U -f com.example.mobile02 -l frida_script.js --runtime=v8</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过adb进行安装软件"><a href="#通过adb进行安装软件" class="headerlink" title="通过adb进行安装软件"></a>通过adb进行安装软件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install <span class="string">&quot;D:\test file\test.apk&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="动态调试解题过程"><a href="#动态调试解题过程" class="headerlink" title="动态调试解题过程"></a>动态调试解题过程</h3><h4 id="直接上payload吧"><a href="#直接上payload吧" class="headerlink" title="直接上payload吧"></a>直接上payload吧</h4><p>这个版本是网上找的版本</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Java</span>.<span class="title function_">perform</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> cls1 = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.DESHelper&quot;</span>);</span><br><span class="line">        cls1.<span class="property">encrypt</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">data, key, iv</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[*] DESHelper.encrypt() called!&quot;</span>);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; Plaintext (from a.a()): &quot;</span> + data);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; Key: &quot;</span> + key);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; IV (from getiv()): &quot;</span> + iv);</span><br><span class="line">            <span class="keyword">var</span> enc_data = <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(data, key, iv);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; Encrypted Result (Ciphertext): &quot;</span> + enc_data);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; &gt;&gt;&gt; Potential Flag Middle Part: &quot;</span> + enc_data);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; &gt;&gt;&gt; Likely Full Flag: ISCC&#123;&quot;</span> + enc_data + <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> enc_data;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[+] Hooked com.example.mobile01.DESHelper.encrypt()&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;[-] Failed to hook DESHelper.encrypt: &quot;</span> + err);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> cls2 = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.a&quot;</span>);</span><br><span class="line">        cls2.<span class="property">a</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> res = <span class="variable language_">this</span>.<span class="title function_">a</span>();</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[*] com.example.mobile01.a.a() called, returned: &quot;</span> + res);</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[+] Hooked com.example.mobile01.a.a()&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;[-] Failed to hook com.example.mobile01.a.a(): &quot;</span> + err);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> cls3 = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.MainActivity&quot;</span>);</span><br><span class="line">        cls3.<span class="property">getiv</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> iv_val = <span class="variable language_">this</span>.<span class="title function_">getiv</span>();</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[*] MainActivity.getiv() called, returned: &quot;</span> + iv_val);</span><br><span class="line">            <span class="keyword">return</span> iv_val;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[+] Hooked com.example.mobile01.MainActivity.getiv()&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;[-] Failed to hook MainActivity.getiv: &quot;</span> + err);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> cls4 = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.MainActivity&quot;</span>);</span><br><span class="line">        cls4.<span class="property">Jformat</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">inp</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[*] MainActivity.Jformat() called with input: &quot;</span> + inp);</span><br><span class="line">            <span class="keyword">var</span> res = <span class="variable language_">this</span>.<span class="title class_">Jformat</span>(inp);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot; Jformat result (boolean): &quot;</span> + res);</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[+] Hooked com.example.mobile01.MainActivity.Jformat()&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;[-] Failed to hook MainActivity.Jformat(): &quot;</span> + err);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个版本是ai修改过的 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Java</span>.<span class="title function_">perform</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 1. 初始化检查</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[*] Starting hooks installation...&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. DESHelper 加密监控</span></span><br><span class="line">    <span class="keyword">var</span> <span class="title class_">DESHelper</span> = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.DESHelper&quot;</span>);</span><br><span class="line">    <span class="title class_">DESHelper</span>.<span class="property">encrypt</span>.<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params">data, key, iv</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`</span></span><br><span class="line"><span class="string">        [DES] Encrypt called</span></span><br><span class="line"><span class="string">        Data: <span class="subst">$&#123;data&#125;</span> (<span class="subst">$&#123;data ? data.length : <span class="number">0</span>&#125;</span> bytes)</span></span><br><span class="line"><span class="string">        Key: <span class="subst">$&#123;key&#125;</span> (<span class="subst">$&#123;key ? key.length : <span class="number">0</span>&#125;</span> bytes)</span></span><br><span class="line"><span class="string">        IV: <span class="subst">$&#123;iv&#125;</span> (<span class="subst">$&#123;iv ? iv.length : <span class="number">0</span>&#125;</span> bytes)</span></span><br><span class="line"><span class="string">        `</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 记录原始参数</span></span><br><span class="line">        <span class="keyword">var</span> backup = &#123; <span class="attr">data</span>: data, <span class="attr">key</span>: key, <span class="attr">iv</span>: iv &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">var</span> result = <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(data, key, iv);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[DES] Success: <span class="subst">$&#123;result&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[DES] Failed: <span class="subst">$&#123;e&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 尝试修复常见问题</span></span><br><span class="line">            <span class="keyword">if</span> (e.<span class="title function_">toString</span>().<span class="title function_">includes</span>(<span class="string">&quot;BadPadding&quot;</span>)) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[!] Attempting IV fix...&quot;</span>);</span><br><span class="line">                <span class="keyword">var</span> fixedIV = <span class="string">&quot;01234567&quot;</span>; <span class="comment">// 示例固定IV</span></span><br><span class="line">                <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(data, key, fixedIV);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 关键方法监控</span></span><br><span class="line">    <span class="keyword">var</span> <span class="title class_">MainActivity</span> = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.MainActivity&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// getiv() 增强版</span></span><br><span class="line">    <span class="title class_">MainActivity</span>.<span class="property">getiv</span>.<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> iv = <span class="variable language_">this</span>.<span class="title function_">getiv</span>();</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[IV] Current IV: <span class="subst">$&#123;iv&#125;</span> (<span class="subst">$&#123;iv ? iv.length : <span class="number">0</span>&#125;</span> bytes)`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 验证IV有效性</span></span><br><span class="line">        <span class="keyword">if</span> (!iv || iv.<span class="property">length</span> !== <span class="number">8</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;[IV] Invalid IV detected!&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;00000000&quot;</span>; <span class="comment">// 返回安全值</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> iv;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Jformat() 安全增强</span></span><br><span class="line">    <span class="title class_">MainActivity</span>.<span class="property">Jformat</span>.<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params">input</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[Jformat] Input: <span class="subst">$&#123;input&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取加密环境状态</span></span><br><span class="line">        <span class="keyword">var</span> iv = <span class="variable language_">this</span>.<span class="title function_">getiv</span>();</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[Jformat] Using IV: <span class="subst">$&#123;iv&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">var</span> result = <span class="variable language_">this</span>.<span class="title class_">Jformat</span>(input);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`[Jformat] Success: <span class="subst">$&#123;result&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[Jformat] Error: <span class="subst">$&#123;e&#125;</span>\n<span class="subst">$&#123;e.stack&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 应急处理方案</span></span><br><span class="line">            <span class="keyword">if</span> (e.<span class="title function_">toString</span>().<span class="title function_">includes</span>(<span class="string">&quot;BadPadding&quot;</span>)) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[!] Attempting input fix...&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title class_">Jformat</span>(input.<span class="title function_">substring</span>(<span class="number">0</span>, <span class="number">4</span>)); <span class="comment">// 尝试缩短输入</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[√] All hooks installed successfully&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h4><h5 id="闪退"><a href="#闪退" class="headerlink" title="闪退"></a>闪退</h5><p>实际上使用时候出现了一大堆问题, 对于这个函数一调用就会直接闪退,确定的逻辑主要是在app中输入flag的时候,如果不按照格式<code>ISCC&#123;.*&#125;</code>那就是正常报错,什么问题都不会出现. 但是如果当输入了正确的格式了, 那就立刻会发生闪退, 这个问题在我换了两台root真机,一台雷电模拟器都没有得到解决(实际上在最开始的小米8青春版上是可以正常报错的,但是我用frida去hook了几次,他就破费了,后面是稳定闪退)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">Jformat</span><span class="params">(String str)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (str.length() &gt;= <span class="number">7</span> &amp;&amp; str.substring(<span class="number">0</span>, <span class="number">5</span>).equals(<span class="string">&quot;ISCC&#123;&quot;</span>) &amp;&amp; str.charAt(str.length() - <span class="number">1</span>) == <span class="string">&#x27;&#125;&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">a</span> <span class="operator">=</span> a.a();</span><br><span class="line">            Log.d(<span class="string">&quot;str1&quot;</span>, <span class="string">&quot;des加密明文: &quot;</span> + a);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">encrypt</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DESHelper</span>().encrypt(a, <span class="string">&quot;WhItenet&quot;</span>, getiv());</span><br><span class="line">                Log.d(<span class="string">&quot;DEBUG_RES&quot;</span>, <span class="string">&quot;加密结果 res: &quot;</span> + encrypt);</span><br><span class="line">                <span class="keyword">return</span> str.substring(<span class="number">5</span>, str.length() - <span class="number">1</span>).equals(encrypt);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e2) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="尝试hookgetiv"><a href="#尝试hookgetiv" class="headerlink" title="尝试hookgetiv()"></a>尝试hook<code>getiv()</code></h5><p>鬼知道是啥动静,我需要的值就是<code>getiv()</code>的返回值,那么我现在大概就需要去hook他获取他的返回值,于是</p>
+<p>jadx中复制frida尝试hook<code>getiv()</code>片段</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title class_">MainActivity</span> = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.MainActivity&quot;</span>);</span><br><span class="line"><span class="title class_">MainActivity</span>[<span class="string">&quot;getiv&quot;</span>].<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`MainActivity.getiv is called`</span>);</span><br><span class="line">    <span class="keyword">let</span> result = <span class="variable language_">this</span>[<span class="string">&quot;getiv&quot;</span>]();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`MainActivity.getiv result=<span class="subst">$&#123;result&#125;</span>`</span>);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>但是问题就出现了啊, 就一直报错, 鬼知道是什么动静, 一直闪退,根本无法调试, 我让ai写的防止这个<code>getiv()</code>返回的加解密值不一样导致的闪退情况, 尝试去写入一个安全值了, 但是也是无济于事</p>
+<h6 id="ai给出的常见闪退原因"><a href="#ai给出的常见闪退原因" class="headerlink" title="ai给出的常见闪退原因"></a>ai给出的常见闪退原因</h6><ol>
+<li><p>线程问题</p>
+</li>
+<li><p>参数&#x2F;返回值类型不匹配</p>
+</li>
+<li><p>反调试检测</p>
+</li>
+</ol>
+<h6 id="ai给出的常见闪退应对方法"><a href="#ai给出的常见闪退应对方法" class="headerlink" title="ai给出的常见闪退应对方法"></a>ai给出的常见闪退应对方法</h6><ol>
+<li><p>方法1：不调用原始方法(绕过这个方法) 重新定义注入直接返回一个定值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MainActivity</span>[<span class="string">&quot;getiv&quot;</span>].<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;绕过原始方法调用&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">12345</span>; <span class="comment">// 返回模拟值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法2：修改返回值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MainActivity</span>[<span class="string">&quot;getiv&quot;</span>].<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="variable language_">this</span>[<span class="string">&quot;getiv&quot;</span>]();</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;原始返回值:&quot;</span>, result);</span><br><span class="line">    <span class="keyword">return</span> result + <span class="number">1</span>; <span class="comment">// 修改返回值</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>当然根据这些方法尝试之后都没用</p>
+<h4 id="尝试hookDESHelper"><a href="#尝试hookDESHelper" class="headerlink" title="尝试hookDESHelper()"></a>尝试hook<code>DESHelper()</code></h4><h5 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h5><p>向前分析可以发现调用了这个函数<code>DESHelper()</code>, 那来都来了, hook一下吧</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">String</span> encrypt = <span class="keyword">new</span> <span class="title class_">DESHelper</span>().<span class="title function_">encrypt</span>(a, <span class="string">&quot;WhItenet&quot;</span>, <span class="title function_">getiv</span>());</span><br></pre></td></tr></table></figure>
+
+<p>在jadx中复制一下frida片段, 看看能不能获取调用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title class_">DESHelper</span> = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.DESHelper&quot;</span>);</span><br><span class="line"><span class="title class_">DESHelper</span>[<span class="string">&quot;$init&quot;</span>].<span class="title function_">overload</span>().<span class="property">implementation</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`DESHelper.$init is called`</span>);</span><br><span class="line">    <span class="variable language_">this</span>[<span class="string">&quot;$init&quot;</span>]();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是如果直接这样执行的话会出问题,会直接去干扰加解密导致直接闪退报错, 所以需要具体的<code>DESHelper</code>这个类, 保证不去干扰加密的执行过程, 只去获取中间变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DESHelper</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ALGORITHM</span> <span class="operator">=</span> <span class="string">&quot;DES/CBC/PKCS5Padding&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">KEY_ALGORITHM</span> <span class="operator">=</span> <span class="string">&quot;DES&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> IvParameterSpec ivParameterSpec;</span><br><span class="line">    <span class="keyword">private</span> SecretKeySpec secretKey;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DESHelper</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DESHelper</span><span class="params">(String str, String str2)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.secretKey = <span class="keyword">new</span> <span class="title class_">SecretKeySpec</span>(process(str), KEY_ALGORITHM);</span><br><span class="line">        <span class="built_in">this</span>.ivParameterSpec = <span class="keyword">new</span> <span class="title class_">IvParameterSpec</span>(process(str2));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">byte</span>[] process(String str) &#123;</span><br><span class="line">        <span class="type">byte</span>[] bArr = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">8</span>];</span><br><span class="line">        <span class="type">byte</span>[] bytes = str.getBytes();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; bytes.length) &#123;</span><br><span class="line">                bArr[i] = bytes[i];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                bArr[i] = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> bArr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">encrypt</span><span class="params">(String str, String str2, String str3)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">SecretKeySpec</span> <span class="variable">secretKeySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SecretKeySpec</span>(process(str2), KEY_ALGORITHM);</span><br><span class="line">        <span class="type">IvParameterSpec</span> <span class="variable">ivParameterSpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IvParameterSpec</span>(process(str3));</span><br><span class="line">        <span class="type">Cipher</span> <span class="variable">cipher</span> <span class="operator">=</span> Cipher.getInstance(ALGORITHM);</span><br><span class="line">        cipher.init(<span class="number">1</span>, secretKeySpec, ivParameterSpec);</span><br><span class="line">        <span class="keyword">return</span> Base64.encodeToString(cipher.doFinal(str.getBytes(<span class="string">&quot;UTF-8&quot;</span>)), <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">decrypt</span><span class="params">(String str, String str2, String str3)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">SecretKeySpec</span> <span class="variable">secretKeySpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SecretKeySpec</span>(process(str2), KEY_ALGORITHM);</span><br><span class="line">        <span class="type">IvParameterSpec</span> <span class="variable">ivParameterSpec</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">IvParameterSpec</span>(process(str3));</span><br><span class="line">        <span class="type">Cipher</span> <span class="variable">cipher</span> <span class="operator">=</span> Cipher.getInstance(ALGORITHM);</span><br><span class="line">        cipher.init(<span class="number">2</span>, secretKeySpec, ivParameterSpec);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(cipher.doFinal(Base64.decode(str, <span class="number">0</span>)), <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按照这个类让ai编写</p>
+<h5 id="ai编写代码"><a href="#ai编写代码" class="headerlink" title="ai编写代码"></a>ai编写代码</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Java</span>.<span class="title function_">perform</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="title class_">DESHelper</span> = <span class="title class_">Java</span>.<span class="title function_">use</span>(<span class="string">&quot;com.example.mobile01.DESHelper&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook 无参构造函数</span></span><br><span class="line">        <span class="title class_">DESHelper</span>.<span class="property">$init</span>.<span class="title function_">overload</span>().<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;\n[DESHelper] Constructor called: $init()&quot;</span>);</span><br><span class="line">            <span class="keyword">const</span> result = <span class="variable language_">this</span>.$init();</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;[DESHelper] Constructor completed&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook 带参构造函数</span></span><br><span class="line">        <span class="title class_">DESHelper</span>.<span class="property">$init</span>.<span class="title function_">overload</span>(<span class="string">&#x27;java.lang.String&#x27;</span>, <span class="string">&#x27;java.lang.String&#x27;</span>).<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">str, str2</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n[DESHelper] Constructor called: $init(str, str2)&#x27;</span>);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Arg1 (key):&#x27;</span>, str);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Arg2 (iv):&#x27;</span>, str2);</span><br><span class="line">            <span class="keyword">const</span> result = <span class="variable language_">this</span>.$init(str, str2);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[DESHelper] Constructor completed&#x27;</span>);</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook encrypt 方法</span></span><br><span class="line">        <span class="title class_">DESHelper</span>.<span class="property">encrypt</span>.<span class="title function_">overload</span>(<span class="string">&#x27;java.lang.String&#x27;</span>, <span class="string">&#x27;java.lang.String&#x27;</span>, <span class="string">&#x27;java.lang.String&#x27;</span>).<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">str, str2, str3</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n[DESHelper] encrypt() called&#x27;</span>);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Plaintext:&#x27;</span>, str);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Key:&#x27;</span>, str2);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] IV:&#x27;</span>, str3);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> result = <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(str, str2, str3);</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Result (Base64):&#x27;</span>, result);</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;[!] Encrypt error:&#x27;</span>, e);</span><br><span class="line">                <span class="keyword">throw</span> e; <span class="comment">// 保持原有异常行为</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook decrypt 方法</span></span><br><span class="line">        <span class="title class_">DESHelper</span>.<span class="property">decrypt</span>.<span class="title function_">overload</span>(<span class="string">&#x27;java.lang.String&#x27;</span>, <span class="string">&#x27;java.lang.String&#x27;</span>, <span class="string">&#x27;java.lang.String&#x27;</span>).<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">str, str2, str3</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n[DESHelper] decrypt() called&#x27;</span>);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Ciphertext (Base64):&#x27;</span>, str);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Key:&#x27;</span>, str2);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] IV:&#x27;</span>, str3);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> result = <span class="variable language_">this</span>.<span class="title function_">decrypt</span>(str, str2, str3);</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Decrypted:&#x27;</span>, result);</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;[!] Decrypt error:&#x27;</span>, e);</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Hook 内部 process 方法（可选）</span></span><br><span class="line">        <span class="title class_">DESHelper</span>.<span class="property">process</span>.<span class="title function_">overload</span>(<span class="string">&#x27;java.lang.String&#x27;</span>).<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">str</span>) &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;\n[DESHelper] process() called&#x27;</span>);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Input:&#x27;</span>, str);</span><br><span class="line">            <span class="keyword">const</span> result = <span class="variable language_">this</span>.<span class="title function_">process</span>(str);</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] Processed bytes:&#x27;</span>, <span class="title function_">byteArrayToString</span>(result));</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[+] DESHelper hooks installed successfully&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;[!] Hook error:&#x27;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 辅助函数：将 byte[] 转为可读字符串</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">byteArrayToString</span>(<span class="params">byteArray</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(byteArray, <span class="function"><span class="params">byte</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">&#x27;0&#x27;</span> + (byte &amp; <span class="number">0xFF</span>).<span class="title function_">toString</span>(<span class="number">16</span>)).<span class="title function_">slice</span>(-<span class="number">2</span>);</span><br><span class="line">    &#125;).<span class="title function_">join</span>(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是出现了报错然后闪退</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Spawned `com.example.mobile01`. Resuming main thread!               </span><br><span class="line">[MI 8 Lite::com.example.mobile01 ]-&gt; [+] DESHelper hooks installed successfully</span><br><span class="line">Process crashed: javax.crypto.BadPaddingException: pad block corrupted</span><br></pre></td></tr></table></figure>
+
+<p>这就很sad了</p>
+<blockquote>
+<p>这个错误 (<code>BadPaddingException: pad block corrupted</code>) 表明 DES 加密&#x2F;解密过程中出现了问题，通常是由于 <strong>密钥、IV 或数据被意外修改</strong> 导致的。你的 Hook 代码可能 <strong>间接干扰了加密流程</strong>，即使你没有直接修改返回值。</p>
+</blockquote>
+<p><strong>很好!</strong></p>
+<h5 id="为什么刚才的代码会出现报错"><a href="#为什么刚才的代码会出现报错" class="headerlink" title="为什么刚才的代码会出现报错?"></a>为什么刚才的代码会出现报错?</h5><ol>
+<li>Hook 时机问题<br>如果 Hook 代码在 DES 操作过程中执行了额外操作（如日志打印），可能会 延迟加密&#x2F;解密流程，导致数据异常。<br>某些 Android 设备对加密操作 时间敏感，延迟可能导致填充错误。</li>
+<li>参数或返回值被修改<br>即使你没有显式修改数据，Frida 的 Hook 机制可能会 临时改变内存状态，导致加密&#x2F;解密失败。</li>
+<li>多线程竞争<br>如果 DESHelper 被多个线程调用，Hook 代码可能会导致 线程同步问题，进而引发 BadPaddingException。</li>
+<li>当然通过上帝之眼发现了这个iv值就是不对长度不对导致的直接报错,但是要如何通过动态调试发现呢</li>
+<li>好问题我没解决,在这里插个眼</li>
+</ol>
+<h3 id="为什么最上面的ai修正payload就可以执行了"><a href="#为什么最上面的ai修正payload就可以执行了" class="headerlink" title="为什么最上面的ai修正payload就可以执行了"></a>为什么最上面的ai修正payload就可以执行了</h3><p>使用了<strong>多层防御式编程设计</strong>(什么鸟)，针对加密流程的每个关键环节都做了智能处理。以下是对其工作原理的深度解析：</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511152123745.png" alt="image-20250511152123745"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h4 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h4><p>实际上就是对那些关键函数进行了重写(不叫这个名字,但是是这个作用),然后在执行之前检查, 对于不符合规范的强行修正</p>
+<table>
+<thead>
+<tr>
+<th align="center">特性</th>
+<th align="center">传统重写 (Override)</th>
+<th align="center">Frida Hook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>修改位置</strong></td>
+<td align="center">类定义文件</td>
+<td align="center">运行时内存</td>
+</tr>
+<tr>
+<td align="center"><strong>作用域</strong></td>
+<td align="center">全局永久生效</td>
+<td align="center">仅当前进程有效</td>
+</tr>
+<tr>
+<td align="center"><strong>原始方法访问</strong></td>
+<td align="center">需通过super调用</td>
+<td align="center">通过<code>this.method.call()</code>访问</td>
+</tr>
+<tr>
+<td align="center"><strong>线程安全性</strong></td>
+<td align="center">依赖Java同步机制</td>
+<td align="center">原子指针替换保证安全</td>
+</tr>
+<tr>
+<td align="center"><strong>兼容性</strong></td>
+<td align="center">需重新编译</td>
+<td align="center">即时生效，无视加固&#x2F;混淆</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>DES加密监控（关键突破点）</strong></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">DESHelper</span>.<span class="property">encrypt</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">data, key, iv</span>) &#123;</span><br><span class="line">    <span class="comment">// ① 完整参数捕获</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Data: <span class="subst">$&#123;data&#125;</span>, Key: <span class="subst">$&#123;key&#125;</span>, IV: <span class="subst">$&#123;iv&#125;</span>`</span>); </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ② 异常处理框架</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// ③ 原始调用保持流程完整</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(data, key, iv); </span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="comment">// ④ 智能修复机制</span></span><br><span class="line">        <span class="keyword">if</span> (e.<span class="title function_">includes</span>(<span class="string">&quot;BadPadding&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">encrypt</span>(data, key, <span class="string">&quot;01234567&quot;</span>); <span class="comment">// 强制修正IV</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么有效？</strong></p>
+<ul>
+<li><strong>不破坏调用链</strong>：通过<code>this.encrypt()</code>维持原始方法调用</li>
+<li><strong>错误隔离</strong>：异常被控制在当前方法内，不会导致全局崩溃</li>
+<li><strong>自动修复</strong>：检测到填充错误时自动使用标准IV</li>
+</ul>
+<ol start="2">
+<li><strong>IV生成监控（安全关键）</strong></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MainActivity</span>.<span class="property">getiv</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> iv = <span class="variable language_">this</span>.<span class="title function_">getiv</span>(); <span class="comment">// 原始调用</span></span><br><span class="line">    <span class="keyword">if</span> (!iv || iv.<span class="property">length</span> !== <span class="number">8</span>) &#123; <span class="comment">// 严格校验</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;Invalid IV!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;00000000&quot;</span>; <span class="comment">// 安全值</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> iv;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>防御策略：</strong></p>
+<ul>
+<li><strong>长度强制校验</strong>：确保返回8字节IV</li>
+<li><strong>默认值保护</strong>：异常时返回全零IV避免崩溃</li>
+<li><strong>日志追踪</strong>：记录原始值用于调试</li>
+</ul>
+<ol start="3">
+<li><strong>业务逻辑监控（Jformat）</strong></li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">MainActivity</span>.<span class="property">Jformat</span>.<span class="property">implementation</span> = <span class="keyword">function</span>(<span class="params">input</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title class_">Jformat</span>(input); </span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">return</span> input.<span class="title function_">substring</span>(<span class="number">0</span>,<span class="number">4</span>); <span class="comment">// 输入截断保护</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>熔断机制：</strong></p>
+<ul>
+<li><strong>输入过滤</strong>：异常时自动缩减输入长度</li>
+<li><strong>业务降级</strong>：返回false避免连锁崩溃</li>
+</ul>
+<h4 id="关键技术点"><a href="#关键技术点" class="headerlink" title="关键技术点"></a><strong>关键技术点</strong></h4><ol>
+<li><p><strong>方法签名处理</strong></p>
+<ul>
+<li>使用<code>.implementation</code>而非<code>.overload()</code>自动适配重载</li>
+<li>避免因签名不匹配导致的Hook失效</li>
+</ul>
+</li>
+<li><p><strong>上下文保持</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确保留this上下文</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="title function_">encrypt</span>(...) </span><br><span class="line"><span class="comment">// 而不是 DESHelper.encrypt(...)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>错误处理金字塔</p>
+<p><img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511153556217.png" alt="image-20250511153556217"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    A[原始调用] --&gt; B&#123;成功?&#125;</span><br><span class="line">    B --&gt;|是| C[返回结果]</span><br><span class="line">    B --&gt;|否| D[识别错误类型]</span><br><span class="line">    D --&gt; E[IV错误?]</span><br><span class="line">    E --&gt;|是| F[修正IV重试]</span><br><span class="line">    E --&gt;|否| G[输入错误?]</span><br><span class="line">    G --&gt;|是| H[修正输入]</span><br><span class="line">    G --&gt;|否| I[抛出异常]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="为何其他方案会失败？"><a href="#为何其他方案会失败？" class="headerlink" title="为何其他方案会失败？"></a><strong>为何其他方案会失败？</strong></h4><table>
+<thead>
+<tr>
+<th align="center">问题方案</th>
+<th align="center">本方案的解决方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">直接修改参数破坏加密流程</td>
+<td align="center">保持原始参数传递路径</td>
+</tr>
+<tr>
+<td align="center">缺少异常处理导致崩溃</td>
+<td align="center">多层try-catch隔离</td>
+</tr>
+<tr>
+<td align="center">未考虑IV长度校验</td>
+<td align="center">强制8字节标准化</td>
+</tr>
+<tr>
+<td align="center">丢失方法上下文</td>
+<td align="center">正确使用this调用</td>
+</tr>
+</tbody></table>
+<h4 id="性能影响评估"><a href="#性能影响评估" class="headerlink" title="性能影响评估"></a><strong>性能影响评估</strong></h4><ol>
+<li><strong>内存开销</strong><br>每个Hook方法增加约50-100ms延迟（主要来自日志输出）</li>
+<li><strong>CPU占用</strong><br>异常处理分支增加约5%的CPU消耗</li>
+<li><strong>稳定性补偿</strong><br>通过错误处理降低整体崩溃率90%+</li>
+</ol>
+<hr>
+<p>这种设计完美平衡了<strong>监控需求</strong>与<strong>系统稳定性</strong>，其核心在于：</p>
+<ol>
+<li><strong>最小侵入原则</strong>：保持原始调用链完整</li>
+<li><strong>防御式编程</strong>：每个环节都有安全降级方案</li>
+<li><strong>智能修复</strong>：自动识别常见错误模式并补偿</li>
+</ol>
+<h2 id="尝试进行逆向"><a href="#尝试进行逆向" class="headerlink" title="尝试进行逆向"></a>尝试进行逆向</h2><p>其实没搞出来,但是学了点东西</p>
+<ol>
+<li><p>ida按g搜索位置</p>
+</li>
+<li><p>shitf + F12 可以找出字符串集</p>
+</li>
+<li><p>搜索地址<code>0x9A9F</code>但是却跳转到了<code>0x9A90</code>的位置,这是由于因为 IDA 中的 <strong><code>.rodata</code> 段默认以字符串形式显示，而不是每一个字节都有 label。</strong></p>
+<p>也就是说他是按照开始0号位才给的label,如图所示,只有<code>0x9A90</code>,<code>0x9AA0</code>,<code>0x9AB0</code>,<code>0x9AC0</code>才有独立的label<img src="/2025/05/02/hello-world/5/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/image-20250511152245419.png" alt="image-20250511152245419"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>ai要求我提供<code>0x09A9F</code> 开始的 22 字节, 那么就需要界定一个字节是多少,一个字节是用两个十六进制来表示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0x9A9F: 75 6E 77 69 6E 64 3A 20 6D 61 6C 66 6F 72 6D 65</span><br><span class="line">        u  n  w  i  n  d  :     m  a  l  f  o  r  m  e</span><br><span class="line">0x9AAF: 64 20 44 57 5F 43</span><br><span class="line">        d     D  W  _  C</span><br></pre></td></tr></table></figure>
+
+
+<p>可以发现是这个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">75 6E 77 69 6E 64 3A 20 6D 61 6C 66 6F 72 6D 65 64 20 44 57 5F 43 41</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/VRF%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">VRF协议学习</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/13</li>
+                <li>09:39</li>
+                <li>协议学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/06/%E9%9B%B6%E7%A2%8E%E5%AD%A6%E4%B9%A0/linux_%E5%AE%8C%E6%95%B4%E7%9A%84linux%E8%BD%AF%E4%BB%B6%E4%B8%8B%E8%BD%BD%E8%BF%87%E7%A8%8B/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">linux_完整的linux软件下载过程</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/06</li>
+                <li>12:55</li>
+                <li>零碎学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="解题思路"><a rel="nofollow" class="trm-toc-link" href="#解题思路"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">解题思路</span></a></li><li class="trm-toc-item trm-toc-level-2" title="如何打开SqlCipher加密的数据库"><a rel="nofollow" class="trm-toc-link" href="#如何打开SqlCipher加密的数据库"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">如何打开SqlCipher加密的数据库</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="直接使用sqlcipher导出没有密码的版本"><a rel="nofollow" class="trm-toc-link" href="#直接使用sqlcipher导出没有密码的版本"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">直接使用sqlcipher导出没有密码的版本</span></a></li><li class="trm-toc-item trm-toc-level-3" title="DataGrip打开SQLCipher方法"><a rel="nofollow" class="trm-toc-link" href="#DataGrip打开SQLCipher方法"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">DataGrip打开SQLCipher方法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="DataGrip URL template的命名规则"><a rel="nofollow" class="trm-toc-link" href="#DataGrip-URL-template的命名规则"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">DataGrip URL template的命名规则</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="frida动态调试"><a rel="nofollow" class="trm-toc-link" href="#frida动态调试"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">frida动态调试</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="frida环境配置"><a rel="nofollow" class="trm-toc-link" href="#frida环境配置"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">frida环境配置</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="环境配置"><a rel="nofollow" class="trm-toc-link" href="#环境配置"><span class="trm-toc-number">3.1.1.</span> <span class="trm-toc-text">环境配置</span></a></li><li class="trm-toc-item trm-toc-level-4" title="手机安装frida环境"><a rel="nofollow" class="trm-toc-link" href="#手机安装frida环境"><span class="trm-toc-number">3.1.2.</span> <span class="trm-toc-text">手机安装frida环境</span></a></li><li class="trm-toc-item trm-toc-level-4" title="通过adb进行文件推送"><a rel="nofollow" class="trm-toc-link" href="#通过adb进行文件推送"><span class="trm-toc-number">3.1.3.</span> <span class="trm-toc-text">通过adb进行文件推送</span></a></li><li class="trm-toc-item trm-toc-level-4" title="运行"><a rel="nofollow" class="trm-toc-link" href="#运行"><span class="trm-toc-number">3.1.4.</span> <span class="trm-toc-text">运行</span></a></li><li class="trm-toc-item trm-toc-level-4" title="通过adb进行安装软件"><a rel="nofollow" class="trm-toc-link" href="#通过adb进行安装软件"><span class="trm-toc-number">3.1.5.</span> <span class="trm-toc-text">通过adb进行安装软件</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="动态调试解题过程"><a rel="nofollow" class="trm-toc-link" href="#动态调试解题过程"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">动态调试解题过程</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="直接上payload吧"><a rel="nofollow" class="trm-toc-link" href="#直接上payload吧"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text">直接上payload吧</span></a></li><li class="trm-toc-item trm-toc-level-4" title="出现的问题"><a rel="nofollow" class="trm-toc-link" href="#出现的问题"><span class="trm-toc-number">3.2.2.</span> <span class="trm-toc-text">出现的问题</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="闪退"><a rel="nofollow" class="trm-toc-link" href="#闪退"><span class="trm-toc-number">3.2.2.1.</span> <span class="trm-toc-text">闪退</span></a></li><li class="trm-toc-item trm-toc-level-5" title="尝试hookgetiv()"><a rel="nofollow" class="trm-toc-link" href="#尝试hookgetiv"><span class="trm-toc-number">3.2.2.2.</span> <span class="trm-toc-text">尝试hookgetiv()</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-6" title="ai给出的常见闪退原因"><a rel="nofollow" class="trm-toc-link" href="#ai给出的常见闪退原因"><span class="trm-toc-number">3.2.2.2.1.</span> <span class="trm-toc-text">ai给出的常见闪退原因</span></a></li><li class="trm-toc-item trm-toc-level-6" title="ai给出的常见闪退应对方法"><a rel="nofollow" class="trm-toc-link" href="#ai给出的常见闪退应对方法"><span class="trm-toc-number">3.2.2.2.2.</span> <span class="trm-toc-text">ai给出的常见闪退应对方法</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="尝试hookDESHelper()"><a rel="nofollow" class="trm-toc-link" href="#尝试hookDESHelper"><span class="trm-toc-number">3.2.3.</span> <span class="trm-toc-text">尝试hookDESHelper()</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="尝试"><a rel="nofollow" class="trm-toc-link" href="#尝试"><span class="trm-toc-number">3.2.3.1.</span> <span class="trm-toc-text">尝试</span></a></li><li class="trm-toc-item trm-toc-level-5" title="ai编写代码"><a rel="nofollow" class="trm-toc-link" href="#ai编写代码"><span class="trm-toc-number">3.2.3.2.</span> <span class="trm-toc-text">ai编写代码</span></a></li><li class="trm-toc-item trm-toc-level-5" title="为什么刚才的代码会出现报错?"><a rel="nofollow" class="trm-toc-link" href="#为什么刚才的代码会出现报错"><span class="trm-toc-number">3.2.3.3.</span> <span class="trm-toc-text">为什么刚才的代码会出现报错?</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="为什么最上面的ai修正payload就可以执行了"><a rel="nofollow" class="trm-toc-link" href="#为什么最上面的ai修正payload就可以执行了"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">为什么最上面的ai修正payload就可以执行了</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="核心模块"><a rel="nofollow" class="trm-toc-link" href="#核心模块"><span class="trm-toc-number">3.3.1.</span> <span class="trm-toc-text">核心模块</span></a></li><li class="trm-toc-item trm-toc-level-4" title="关键技术点"><a rel="nofollow" class="trm-toc-link" href="#关键技术点"><span class="trm-toc-number">3.3.2.</span> <span class="trm-toc-text">关键技术点</span></a></li><li class="trm-toc-item trm-toc-level-4" title="为何其他方案会失败？"><a rel="nofollow" class="trm-toc-link" href="#为何其他方案会失败？"><span class="trm-toc-number">3.3.3.</span> <span class="trm-toc-text">为何其他方案会失败？</span></a></li><li class="trm-toc-item trm-toc-level-4" title="性能影响评估"><a rel="nofollow" class="trm-toc-link" href="#性能影响评估"><span class="trm-toc-number">3.3.4.</span> <span class="trm-toc-text">性能影响评估</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="尝试进行逆向"><a rel="nofollow" class="trm-toc-link" href="#尝试进行逆向"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">尝试进行逆向</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

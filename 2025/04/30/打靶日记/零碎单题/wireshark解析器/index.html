@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="wireshark解析器问题树 12345678910111213141516171819# 对于乐高编程特有的命令ev3使用了加载器来打开对应的通信包wireshark -X lua_script:ev3_dissector.lua在wireshark中可以看到指令的通信但是导出成json保存却看不到对应的通信## 能否利用这个加载器来对一些数据做一下预处理比如说解http跟踪流的base64#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ev3_basic_wireshark解析器">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/04/30/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/%E9%9B%B6%E7%A2%8E%E5%8D%95%E9%A2%98/wireshark%E8%A7%A3%E6%9E%90%E5%99%A8/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="wireshark解析器问题树 12345678910111213141516171819# 对于乐高编程特有的命令ev3使用了加载器来打开对应的通信包wireshark -X lua_script:ev3_dissector.lua在wireshark中可以看到指令的通信但是导出成json保存却看不到对应的通信## 能否利用这个加载器来对一些数据做一下预处理比如说解http跟踪流的base64#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-04-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T05:03:18.708Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="wireshark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >ev3_basic_wireshark解析器</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 13:03:18"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            ev3_basic_wireshark解析器
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/30
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="wireshark解析器"><a href="#wireshark解析器" class="headerlink" title="wireshark解析器"></a>wireshark解析器</h1><h2 id="问题树"><a href="#问题树" class="headerlink" title="问题树"></a>问题树</h2><p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429103306874.png" alt="image-20250429103306874"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 对于乐高编程特有的命令ev3使用了加载器来打开对应的通信包wireshark -X lua_script:ev3_dissector.lua在wireshark中可以看到指令的通信但是导出成json保存却看不到对应的通信</span><br><span class="line"></span><br><span class="line">## 能否利用这个加载器来对一些数据做一下预处理比如说解http跟踪流的base64</span><br><span class="line"></span><br><span class="line">## wireshark如何解析http命令</span><br><span class="line"></span><br><span class="line">### Wireshark如何体现对协议的解析</span><br><span class="line">#### wiresharkGUI中什么展现什么不展现</span><br><span class="line">##### Wireshark对象导出中的json格式的文件中关于数据包部分什么展现什么不展现</span><br><span class="line"></span><br><span class="line">### Wireshark -X可以导入自定义解析器，那么对于http是否使用默认的解析器</span><br><span class="line">#### Wireshark对于http的解析逻辑是什么样的</span><br><span class="line">##### 什么东西是解析出来的 什么东西不是解析出来的原来就是有的</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### wireshark对于json的导出逻辑是什么</span><br><span class="line">#### 这是原来的通信包原本的内容吗</span><br><span class="line">##### 通信包在解析前的信息存储形式是什么样的？</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="wireshark-加载规则"><a href="#wireshark-加载规则" class="headerlink" title="wireshark 加载规则"></a>wireshark 加载规则</h2><p>wireshark页面上的数据包有一部分是加载出来的，很多不是原始包内的数据就是这样的，原始包的数据可以通过导出json查看</p>
+<h3 id="对于http协议来说"><a href="#对于http协议来说" class="headerlink" title="对于http协议来说"></a>对于http协议来说</h3><ol>
+<li><p>get模式的数据包正常来讲就是明文传输的，wireshark数据流能看到的基本在json中也可以看到</p>
+</li>
+<li><p>POST协议可能就会出现差异</p>
+<p>这是wireshark中的POST的http数据流的效果</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429194326750.png" alt="image-20250429194326750"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>在json中的POST格式是这样的</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;urlencoded-form&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">       <span class="attr">&quot;Form item: \&quot;ReplySuccessPage\&quot; = \&quot;advanced.htm\&quot;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ReplySuccessPage&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;advanced.htm&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">       ······</span><br><span class="line">       <span class="attr">&quot;Form item: \&quot;AdminPassword\&quot; = \&quot;63c56363c523637c126363ab636bab63c7c76363232363961263c305639a1263c7c76363232363961263c305639a1263c7c76363232363961263c305639a1263\&quot;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AdminPassword&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;63c56363c523637c126363ab636bab63c7c76363232363961263c305639a1263c7c76363232363961263c305639a1263c7c76363232363961263c305639a1263&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;Form item: \&quot;SessionKey\&quot; = \&quot;1735219692\&quot;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SessionKey&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1735219692&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;Form item: \&quot;ConfigSystemAdmin\&quot; = \&quot;Apply\&quot;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ConfigSystemAdmin&quot;</span><span class="punctuation">,</span></span><br><span class="line">         <span class="attr">&quot;urlencoded-form.value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Apply&quot;</span></span><br><span class="line">       <span class="punctuation">&#125;</span></span><br><span class="line">     <span class="punctuation">&#125;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="对于非标准通信协议来说"><a href="#对于非标准通信协议来说" class="headerlink" title="对于非标准通信协议来说"></a>对于非标准通信协议来说</h3><p>在这个乐高通信协议中倒还是一样</p>
+<ol>
+<li><p>wireshark解析的结果</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429230436580.png" alt="image-20250429230436580"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>json导出的结果</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429230734626.png" alt="image-20250429230734626"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ol>
+<h3 id="似乎目前尚且没有能导出加载器加载后的内容的方法"><a href="#似乎目前尚且没有能导出加载器加载后的内容的方法" class="headerlink" title="似乎目前尚且没有能导出加载器加载后的内容的方法"></a>似乎目前尚且没有能导出加载器加载后的内容的方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r ev3_basic.pklg -X lua_script:ev3_dissector.lua -Y &quot;ev3&quot; -T json &gt; T.json</span><br></pre></td></tr></table></figure>
+
+<p>这是最接近可能导出加载完加载器之后以json格式导出文件的命令了，但是即便是这样，这个命令导出的json也仍然没有以明文的形式表示<code>EV3 Message</code>(图片中)那样效果的内容</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429221255611.png" alt="image-20250429221255611"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="AI总结"><a href="#AI总结" class="headerlink" title="AI总结"></a>AI总结</h3><table>
+<thead>
+<tr>
+<th>在 Wireshark 界面</th>
+<th>在导出的 JSON 文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分层显示（Frame &#x2F; Ethernet &#x2F; IP &#x2F; TCP &#x2F; HTTP）</td>
+<td><code>layers</code> 字段下有对应协议名</td>
+</tr>
+<tr>
+<td>每一层字段人类可读、解释得很清楚</td>
+<td>每一层字段作为 JSON 键值出现，原始值保存</td>
+</tr>
+<tr>
+<td>HTTP报文一行一行展开</td>
+<td>HTTP字段拆成单独的 key:value 保存</td>
+</tr>
+<tr>
+<td>动态解析部分（比如详细参数解释）只在GUI显示</td>
+<td>JSON只保留基本字段，<strong>不会包含详细解析描述</strong></td>
+</tr>
+</tbody></table>
+<h2 id="蓝牙协议学习"><a href="#蓝牙协议学习" class="headerlink" title="蓝牙协议学习"></a>蓝牙协议学习</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xubin341719/article/details/38305331">蓝牙核心技术概述（四）：蓝牙协议规范（HCI、L2CAP、SDP、RFOCMM）-CSDN博客</a></p>
+<p>HCI、L2CAP、SDP、RFCOMM。对比于英特网五层结构来说：HCI相当于与物理层打交道的协议，L2CAP协议则是链路层相关协议，SDP和RFCOMM则是运输层相关协议，当然其上也有对应的应用层相关的一些协议。SDP用来发现周围蓝牙服务，然后由L2CAP来建立信道链接，然后传输由上层RFCOMM给予的数据分组。</p>
+</blockquote>
+<h2 id="wireshark使用加载器"><a href="#wireshark使用加载器" class="headerlink" title="wireshark使用加载器"></a>wireshark使用加载器</h2><h3 id="加载器启动分类"><a href="#加载器启动分类" class="headerlink" title="加载器启动分类"></a>加载器启动分类</h3><h4 id="命令启动dissector"><a href="#命令启动dissector" class="headerlink" title="命令启动dissector"></a>命令启动dissector</h4><p>伴随加载器启动wireshark</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wireshark -X lua_script:ev3_dissector.lua</span><br></pre></td></tr></table></figure>
+<h4 id="配置默认启动项-允许wireshark启动的时候自动加载自定义加载器"><a href="#配置默认启动项-允许wireshark启动的时候自动加载自定义加载器" class="headerlink" title="配置默认启动项, 允许wireshark启动的时候自动加载自定义加载器"></a>配置默认启动项, 允许wireshark启动的时候自动加载自定义加载器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bashCopyEdit~/.config/wireshark/init.lua      # Linux/macOS</span><br><span class="line">%APPDATA%\Wireshark\init.lua      # Windows</span><br></pre></td></tr></table></figure>
+
+<p>在里面加入：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dofile</span>(<span class="string">&quot;C:\\path\\to\\your\\http_base64_dissector.lua&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后你只需要双击 <code>.pcapng</code> 文件，Wireshark 启动就会自动加载这个 dissector！</p>
+<h3 id="本题中使用了ev3格式的加载器"><a href="#本题中使用了ev3格式的加载器" class="headerlink" title="本题中使用了ev3格式的加载器"></a>本题中使用了ev3格式的加载器</h3><p><a target="_blank" rel="noopener" href="https://github.com/ev3dev/lms-hacker-tools/tree/master/EV3">https://github.com/ev3dev/lms-hacker-tools/tree/master/EV3</a></p>
+<blockquote>
+<p>Any packets to or from TCP port 5555 will be interpreted as “EV3” protocol. USB interrupt data with class IF_CLASS_UNKNOWN will also be interpreted as “EV3” protocol.<br>进出 TCP 端口 5555 的任何数据包都将被解释为“EV3” 协议。类为 IF_CLASS_UNKNOWN 的 USB 中断数据也将被解释为“EV3” 协议。</p>
+<p>You can also use the filter to search for packets that contain certain types of data. For example if you want to search for all packets that use the <code>LIST_FILES</code> system command, then you would use <code>ev3.sys_cmd == 0x99</code> for the filter.<br>您还可以使用筛选条件来搜索包含某些类型数据的数据包。例如，如果要搜索使用 <code>LIST_FILES</code> system 命令，则使用 <code>ev3.sys_cmd == 0x99</code> 作为过滤器。</p>
+</blockquote>
+<p>通过以上方式直接定义出一个EV3的类型(对比没加载器之前)</p>
+<p>比如 <code>hitCON CTF&#39;18</code>的<code>EV3-Basic</code>题目,实际上使用的蓝牙通信是直接通过16进制来进行传输直接控制机器,机器硬编码了一个映射表,对于传输进去的十六进制会直接变成机器语言执行,但是对于人来说进行wireshark审计就非常不方便, 所以使用加载器(ev3)进行加载,但是实际上并没有改变原来的十六进制实际上的数据包</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429214036605.png" alt="image-20250429214036605"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>加载器内对这些用十六进制传输的数据进行了映射,也就是说在使用这个拓展的wireshark打开这个数据包的时候就直接对着相应的数据进行了编码, 让人可以直观的看到是什么意思</p>
+<p>翻译前如下：</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429214926106.png" alt="image-20250429214926106"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>翻译后如下:</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250429214605056.png" alt="image-20250429214605056"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>通过对比可以清晰的发现这个<code>Dessector</code>的作用主要有两个：</p>
+<ol>
+<li>定义什么是<code>ev3</code>协议，并且做出归类标记，方便被过滤</li>
+<li>按照<code>ev3</code>的映射关系进行了翻译</li>
+</ol>
+<h2 id="自定义加载器可以解决很多问题-dissector"><a href="#自定义加载器可以解决很多问题-dissector" class="headerlink" title="自定义加载器可以解决很多问题 dissector"></a>自定义加载器可以解决很多问题 dissector</h2><h3 id="先从简单出发-假设http包只有一个tcp包就完成"><a href="#先从简单出发-假设http包只有一个tcp包就完成" class="headerlink" title="先从简单出发,假设http包只有一个tcp包就完成"></a>先从简单出发,假设http包只有一个tcp包就完成</h3><h4 id="生成过程"><a href="#生成过程" class="headerlink" title="生成过程"></a>生成过程</h4><p>这是一个demo，主要的解决问题如下：</p>
+<ol>
+<li><p>能够处理http数据流，处理分片传输的http包（tcp分片）</p>
+</li>
+<li><p>先使用原生从<code>http_dissector</code>进行解析，然后对解析的结果寻找POST Body在进行base64解码</p>
+<h5 id="以下是拦截监听时候对base64加密http包的处理"><a href="#以下是拦截监听时候对base64加密http包的处理" class="headerlink" title="以下是拦截监听时候对base64加密http包的处理"></a>以下是拦截监听时候对base64加密http包的处理</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义一个新的 Wireshark 协议 dissector，协议名为 &quot;b64http&quot;，显示名为 &quot;HTTP Base64 Inspector&quot;</span></span><br><span class="line"><span class="keyword">local</span> b64_proto = Proto(<span class="string">&quot;b64http&quot;</span>, <span class="string">&quot;HTTP Base64 Inspector&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 定义一个供显示用的字段，用于展示解码后的 Base64 内容</span></span><br><span class="line"><span class="keyword">local</span> f_decoded = ProtoField.<span class="built_in">string</span>(<span class="string">&quot;b64http.decoded&quot;</span>, <span class="string">&quot;Decoded Base64 Content&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 把字段绑定到协议中</span></span><br><span class="line">b64_proto.fields = &#123; f_decoded &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 获取已有的 HTTP dissector（内置的 http 协议解析器）</span></span><br><span class="line"><span class="keyword">local</span> http_dissector = Dissector.get(<span class="string">&quot;http&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Base64 解码函数（纯 Lua 实现，无需外部库）</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">decode_b64</span><span class="params">(data)</span></span></span><br><span class="line">    <span class="keyword">local</span> b=<span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span> <span class="comment">-- Base64 字符表</span></span><br><span class="line">    data = data:<span class="built_in">gsub</span>(<span class="string">&#x27;[^&#x27;</span>..b..<span class="string">&#x27;=]&#x27;</span>, <span class="string">&#x27;&#x27;</span>) <span class="comment">-- 移除所有非 Base64 合法字符</span></span><br><span class="line">    <span class="keyword">return</span> (data:<span class="built_in">gsub</span>(<span class="string">&#x27;.&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span></span><br><span class="line">        <span class="keyword">if</span> (x == <span class="string">&#x27;=&#x27;</span>) <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span> <span class="comment">-- padding 无需转换</span></span><br><span class="line">        <span class="keyword">local</span> r,f=<span class="string">&#x27;&#x27;</span>,(b:<span class="built_in">find</span>(x)<span class="number">-1</span>) <span class="comment">-- 找到字符对应的索引（0~63）</span></span><br><span class="line">        <span class="keyword">for</span> i=<span class="number">6</span>,<span class="number">1</span>,<span class="number">-1</span> <span class="keyword">do</span></span><br><span class="line">            r=r..(f%<span class="number">2</span>^i - f%<span class="number">2</span>^(i<span class="number">-1</span>) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;0&#x27;</span>) <span class="comment">-- 转为6位二进制字符串</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br><span class="line">    <span class="keyword">end</span>):<span class="built_in">gsub</span>(<span class="string">&#x27;%d%d%d?%d?%d?%d?%d?%d?&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span> <span class="comment">-- 每8位转换为1个字节</span></span><br><span class="line">        <span class="keyword">if</span> (#x ~= <span class="number">8</span>) <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">local</span> c=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i=<span class="number">1</span>,<span class="number">8</span> <span class="keyword">do</span> c=c + (x:<span class="built_in">sub</span>(i,i)==<span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> <span class="number">2</span>^(<span class="number">8</span>-i) <span class="keyword">or</span> <span class="number">0</span>) <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">string</span>.<span class="built_in">char</span>(c) <span class="comment">-- 转成字符</span></span><br><span class="line">    <span class="keyword">end</span>))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 主解析函数（每次抓包调用）</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b64_proto.dissector</span><span class="params">(buffer, pinfo, tree)</span></span></span><br><span class="line">    pinfo.cols.protocol = <span class="string">&quot;B64HTTP&quot;</span> <span class="comment">-- 修改协议列显示名称为 B64HTTP</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 使用默认 HTTP dissector 先处理 HTTP 协议</span></span><br><span class="line">    http_dissector:call(buffer, pinfo, tree)</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 如果不是“被访问过”的包（可能是 TCP 片段，还没组装完整），则不处理，避免重复</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> pinfo.visited <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 将整个 buffer 转为字符串，方便文本匹配</span></span><br><span class="line">    <span class="keyword">local</span> payload = buffer():<span class="built_in">string</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 从 HTTP 头部提取 Content-Length，用来确认 body 的长度</span></span><br><span class="line">    <span class="keyword">local</span> content_length = payload:<span class="built_in">match</span>(<span class="string">&quot;Content%-Length: (%d+)&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> content_length <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line">    content_length = <span class="built_in">tonumber</span>(content_length)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 找到 HTTP 头部结束位置（\r\n\r\n）</span></span><br><span class="line">    <span class="keyword">local</span> header_end = payload:<span class="built_in">find</span>(<span class="string">&quot;\r\n\r\n&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> header_end <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span> body_start = header_end + <span class="number">4</span> <span class="comment">-- body 起始位置</span></span><br><span class="line">    <span class="keyword">local</span> body_actual_len = #payload - body_start + <span class="number">1</span> <span class="comment">-- 实际已经收到的 body 长度</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 如果实际长度不够 Content-Length，说明数据还没收完，需要等待更多 TCP 数据</span></span><br><span class="line">    <span class="keyword">if</span> body_actual_len &lt; content_length <span class="keyword">then</span></span><br><span class="line">        pinfo.desegment_len = content_length - body_actual_len <span class="comment">-- 告诉 Wireshark 需要继续重组</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">        <span class="comment">-- 提取完整的 body 数据（从 payload 中截取）</span></span><br><span class="line">    <span class="keyword">local</span> body = payload:<span class="built_in">sub</span>(body_start, body_start + content_length - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 从 JSON 中提取 base64 字符串（假设格式是：&quot;file&quot;: &quot;....&quot;）</span></span><br><span class="line">    <span class="keyword">local</span> base64_content = body:<span class="built_in">match</span>(<span class="string">&#x27;&quot;file&quot;%s*:%s*&quot;([^&quot;]+)&quot;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> base64_content <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 解码 base64 内容</span></span><br><span class="line">    <span class="keyword">local</span> decoded = decode_b64(base64_content)</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 在 Wireshark 界面上添加新的子树显示解析结果</span></span><br><span class="line">    <span class="keyword">local</span> subtree = tree:add(b64_proto, buffer(), <span class="string">&quot;HTTP Base64 Analysis&quot;</span>)</span><br><span class="line">    subtree:add(f_decoded, decoded)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将 dissector 注册到指定 TCP 端口（这里是 8080，表示监听所有 8080 的 TCP 流量）</span></span><br><span class="line"><span class="keyword">local</span> tcp_port = DissectorTable.get(<span class="string">&quot;tcp.port&quot;</span>)</span><br><span class="line">tcp_port:add(<span class="number">8080</span>, b64_proto)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用python手动生成一个符合这个加载器加载解析base64的数据包</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> scapy.layers.inet <span class="keyword">import</span> IP, TCP</span><br><span class="line"><span class="keyword">from</span> scapy.packet <span class="keyword">import</span> Raw</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造 HTTP POST 请求内容（包含 Base64 编码字段）</span></span><br><span class="line">http_request = (</span><br><span class="line">    <span class="string">&quot;POST /upload HTTP/1.1\r\n&quot;</span></span><br><span class="line">    <span class="string">&quot;Host: example.com\r\n&quot;</span></span><br><span class="line">    <span class="string">&quot;Content-Type: application/json\r\n&quot;</span></span><br><span class="line">    <span class="string">&quot;Content-Length: 28\r\n&quot;</span></span><br><span class="line">    <span class="string">&quot;\r\n&quot;</span></span><br><span class="line">    <span class="string">&#x27;&#123; &quot;file&quot;: &quot;SGVsbG8gV29ybGQh&quot; &#125;&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造 TCP/IP 包</span></span><br><span class="line">packet = IP(src=<span class="string">&quot;192.168.0.2&quot;</span>, dst=<span class="string">&quot;192.168.0.1&quot;</span>) / \</span><br><span class="line">         TCP(sport=<span class="number">12345</span>, dport=<span class="number">8080</span>, flags=<span class="string">&quot;PA&quot;</span>, seq=<span class="number">1000</span>, ack=<span class="number">1</span>) / \</span><br><span class="line">         Raw(load=http_request)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存为 .pcapng 文件</span></span><br><span class="line">wrpcap(<span class="string">&quot;http_base64_example.pcapng&quot;</span>, [packet])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;✅ 流量包已保存为 http_base64_example.pcapng&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用命令打开加载器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wireshark -X lua_script:http_base64_dissector.lua</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h4><p>没有使用加载器</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430003015890.png" alt="image-20250430003015890"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用加载器之后就出现了新的一行单独展现数据包的内容</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430002923657.png" alt="image-20250430002923657"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="实际上http由多个tcp包完成"><a href="#实际上http由多个tcp包完成" class="headerlink" title="实际上http由多个tcp包完成"></a>实际上http由多个tcp包完成</h3><h4 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wireshark -X lua_script:http_base64_split_dissector.lua http_base64_split_example.pcapng</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="效果展示-1"><a href="#效果展示-1" class="headerlink" title="效果展示"></a>效果展示</h4><p>对于多个组成的http POST包直接增加一行进行翻译</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430012227180.png" alt="image-20250430012227180"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用加载器前</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430012337309.png" alt="image-20250430012337309"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h4 id="生成过程-1"><a href="#生成过程-1" class="headerlink" title="生成过程"></a>生成过程</h4><p>由于 Scapy 构造的两个“孤立包”看起来像是 TCP，但 <strong>Wireshark 不能对它们做 TCP 重组</strong>，所以 HTTP dissector <strong>不会</strong>解析出完整 body，自然也不会 Base64 解码逻辑。</p>
+<p>也就是说这原来的连个tcp包,他们</p>
+<ul>
+<li>没有 <strong>三次握手（SYN&#x2F;SYN-ACK&#x2F;ACK）</strong></li>
+<li>没有 <strong>TCP 连接状态管理</strong></li>
+<li>没有 <strong>ACK 回包</strong></li>
+<li><strong>Wireshark不会认为这两个包属于同一个 TCP 流，无法做重组！</strong></li>
+</ul>
+<p>所以需要使用抓包监听来获取真实的流量数据而不仅仅是模拟</p>
+<ol>
+<li><p>使用flask起一个服务,不可以使用<code>python -m http.server 8080</code>因为只可以接受GET请求,但是问题是现在要的就是POST请求</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/upload&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">upload</span>():</span><br><span class="line">    data = request.get_json()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;收到数据：&quot;</span>, data)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;OK&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用curl或者requests进行发包,这里选择的是requests</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;file&quot;</span>: base64.b64encode(<span class="string">b&quot;Hello World!&quot;</span>).decode()</span><br><span class="line">&#125;</span><br><span class="line">requests.post(<span class="string">&quot;http://127.0.0.1:8080/upload&quot;</span>, json=data)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用wireshark监听回环地址</p>
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430012923127.png" alt="image-20250430012923127"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>直接保存为<code>http_base64_split_example.pcapng</code></p>
+</li>
+</ol>
+<h4 id="构建解析器"><a href="#构建解析器" class="headerlink" title="构建解析器"></a>构建解析器</h4><p>这种 dissector <strong>不会取代 HTTP 协议本身</strong>，但能在 GUI 中<strong>添加额外显示内容</strong></p>
+<p>如果加入以下命令可以看到<code>lua console</code>弹出的消息</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b64_post.dissector</span><span class="params">(buffer, pinfo, tree)</span></span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;&gt;&gt;&gt; Base64 dissector called on frame:&quot;</span>, pinfo.number)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2025/05/02/hello-world/reshark%E8%A7%A3%E6%9E%90%E5%99%A8/image-20250430013851953.png" alt="image-20250430013851953"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义一个新的后解析器（post-dissector）协议，名称为 &quot;b64post&quot;，描述为 &quot;Base64 Post Dissector&quot;</span></span><br><span class="line"><span class="keyword">local</span> b64_post = Proto(<span class="string">&quot;b64post&quot;</span>, <span class="string">&quot;Base64 Post Dissector&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 定义一个字段，用于展示解码后的 Base64 内容，字段名为 &quot;b64post.decoded&quot;，显示名为 &quot;Decoded Base64 Content&quot;</span></span><br><span class="line"><span class="keyword">local</span> f_decoded = ProtoField.<span class="built_in">string</span>(<span class="string">&quot;b64post.decoded&quot;</span>, <span class="string">&quot;Decoded Base64 Content&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将定义好的字段添加到协议中</span></span><br><span class="line">b64_post.fields = &#123; f_decoded &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 从 JSON 协议解析结果中提取名为 &quot;value.string&quot; 的字段（Wireshark 的 json dissector 生成的字段）</span></span><br><span class="line"><span class="keyword">local</span> json_value = Field.new(<span class="string">&quot;json.value.string&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 定义一个函数：手动实现 Base64 解码（不依赖外部库）</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">decode_b64</span><span class="params">(data)</span></span></span><br><span class="line">    <span class="comment">-- Base64 编码表</span></span><br><span class="line">    <span class="keyword">local</span> b=<span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line">    <span class="comment">-- 去掉所有非法字符（非 base64 字符）</span></span><br><span class="line">    data = data:<span class="built_in">gsub</span>(<span class="string">&#x27;[^&#x27;</span>..b..<span class="string">&#x27;=]&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="comment">-- 将每个 base64 字符转换为对应的6位二进制，并拼接所有位</span></span><br><span class="line">    <span class="keyword">return</span> (data:<span class="built_in">gsub</span>(<span class="string">&#x27;.&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span></span><br><span class="line">        <span class="keyword">if</span> (x == <span class="string">&#x27;=&#x27;</span>) <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span> <span class="comment">-- padding 不转换</span></span><br><span class="line">        <span class="keyword">local</span> r,f=<span class="string">&#x27;&#x27;</span>,(b:<span class="built_in">find</span>(x)<span class="number">-1</span>) <span class="comment">-- 找到字符索引（从0开始）</span></span><br><span class="line">        <span class="keyword">for</span> i=<span class="number">6</span>,<span class="number">1</span>,<span class="number">-1</span> <span class="keyword">do</span> </span><br><span class="line">            r=r..(f%<span class="number">2</span>^i - f%<span class="number">2</span>^(i<span class="number">-1</span>) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;0&#x27;</span>) </span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br><span class="line">    <span class="comment">-- 每8位一组还原为原始字符</span></span><br><span class="line">    <span class="keyword">end</span>):<span class="built_in">gsub</span>(<span class="string">&#x27;%d%d%d?%d?%d?%d?%d?%d?&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span></span><br><span class="line">        <span class="keyword">if</span> (#x ~= <span class="number">8</span>) <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span> <span class="comment">-- 位数不足8位，忽略</span></span><br><span class="line">        <span class="keyword">local</span> c=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i=<span class="number">1</span>,<span class="number">8</span> <span class="keyword">do</span> </span><br><span class="line">            c=c + (x:<span class="built_in">sub</span>(i,i)==<span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> <span class="number">2</span>^(<span class="number">8</span>-i) <span class="keyword">or</span> <span class="number">0</span>) </span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">string</span>.<span class="built_in">char</span>(c) <span class="comment">-- 转换为字符</span></span><br><span class="line">    <span class="keyword">end</span>))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 定义解析器的主函数，每次数据包载入后调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b64_post.dissector</span><span class="params">(buffer, pinfo, tree)</span></span></span><br><span class="line">    <span class="comment">-- 获取 JSON 协议中的 value.string 字段</span></span><br><span class="line">    <span class="keyword">local</span> value_field = json_value()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> value_field <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span> <span class="comment">-- 若无该字段，则跳过处理</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 转换字段为字符串（base64 字符串）</span></span><br><span class="line">    <span class="keyword">local</span> base64 = <span class="built_in">tostring</span>(value_field)</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 可选：判断字符串是否为合法的 base64 字符串（避免误解析）</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> base64:<span class="built_in">match</span>(<span class="string">&quot;^[A-Za-z0-9+/=]+$&quot;</span>) <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 调用 decode_b64 解码</span></span><br><span class="line">    <span class="keyword">local</span> decoded = decode_b64(base64)</span><br><span class="line">    <span class="keyword">if</span> decoded <span class="keyword">then</span></span><br><span class="line">        <span class="comment">-- 创建一个子树节点，显示解析内容</span></span><br><span class="line">        <span class="keyword">local</span> subtree = tree:add(b64_post, <span class="string">&quot;Base64 JSON Analysis&quot;</span>)</span><br><span class="line">        subtree:add(f_decoded, decoded) <span class="comment">-- 添加解码后的字段到子树中</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注册该协议为 Wireshark 的后解析器（即所有协议分析完后，再调用这个）</span></span><br><span class="line">register_postdissector(b64_post)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这是专门针对json做的优化,由于base64数据是包含在json中发送的,所以需要去解析这个json获取base64编码的密文来进行解码</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> json_value = Field.new(<span class="string">&quot;json.value.string&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="增强版解析器"><a href="#增强版解析器" class="headerlink" title="增强版解析器"></a>增强版解析器</h4><p>为了<strong>支持多层嵌套和多个字段的 Base64 解码</strong>，可以将原脚本扩展为以下功能：</p>
+<ul>
+<li>遍历所有 <code>json.value.string</code> 字段；</li>
+<li>对每个字段尝试 base64 解码；</li>
+<li>显示每一个成功解码的内容；</li>
+<li>同样使用当前的 base64 解码函数。</li>
+</ul>
+<p>下面是改进后的完整脚本：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义协议和字段</span></span><br><span class="line"><span class="keyword">local</span> b64_post = Proto(<span class="string">&quot;b64post&quot;</span>, <span class="string">&quot;Base64 Post Dissector&quot;</span>)</span><br><span class="line"><span class="keyword">local</span> f_decoded = ProtoField.<span class="built_in">string</span>(<span class="string">&quot;b64post.decoded&quot;</span>, <span class="string">&quot;Decoded Base64 Content&quot;</span>)</span><br><span class="line">b64_post.fields = &#123; f_decoded &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 引用所有 json.value.string 字段（可能有多个）</span></span><br><span class="line"><span class="keyword">local</span> json_values = &#123; Field.new(<span class="string">&quot;json.value.string&quot;</span>) &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Base64 解码函数</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">decode_b64</span><span class="params">(data)</span></span></span><br><span class="line">    <span class="keyword">local</span> b = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line">    data = data:<span class="built_in">gsub</span>(<span class="string">&#x27;[^&#x27;</span>..b..<span class="string">&#x27;=]&#x27;</span>, <span class="string">&#x27;&#x27;</span>) <span class="comment">-- 过滤非法字符</span></span><br><span class="line">    <span class="keyword">return</span> (data:<span class="built_in">gsub</span>(<span class="string">&#x27;.&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span></span><br><span class="line">        <span class="keyword">if</span> x == <span class="string">&#x27;=&#x27;</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">local</span> r, f = <span class="string">&#x27;&#x27;</span>, (b:<span class="built_in">find</span>(x) - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i = <span class="number">6</span>, <span class="number">1</span>, <span class="number">-1</span> <span class="keyword">do</span></span><br><span class="line">            r = r .. (f % <span class="number">2</span>^i - f % <span class="number">2</span>^(i<span class="number">-1</span>) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br><span class="line">    <span class="keyword">end</span>):<span class="built_in">gsub</span>(<span class="string">&#x27;%d%d%d?%d?%d?%d?%d?%d?&#x27;</span>, <span class="function"><span class="keyword">function</span><span class="params">(x)</span></span></span><br><span class="line">        <span class="keyword">if</span> #x ~= <span class="number">8</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">local</span> c = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i = <span class="number">1</span>, <span class="number">8</span> <span class="keyword">do</span></span><br><span class="line">            c = c + (x:<span class="built_in">sub</span>(i, i) == <span class="string">&#x27;1&#x27;</span> <span class="keyword">and</span> <span class="number">2</span>^(<span class="number">8</span> - i) <span class="keyword">or</span> <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">string</span>.<span class="built_in">char</span>(c)</span><br><span class="line">    <span class="keyword">end</span>))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 主解析函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b64_post.dissector</span><span class="params">(buffer, pinfo, tree)</span></span></span><br><span class="line">    <span class="keyword">local</span> has_output = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">local</span> subtree = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 遍历所有匹配字段</span></span><br><span class="line">    <span class="keyword">for</span> _, getter <span class="keyword">in</span> <span class="built_in">ipairs</span>(json_values) <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">local</span> field = getter()</span><br><span class="line">        <span class="keyword">if</span> field <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">local</span> base64 = <span class="built_in">tostring</span>(field)</span><br><span class="line"></span><br><span class="line">            <span class="comment">-- 检查是否可能是 base64 编码</span></span><br><span class="line">            <span class="keyword">if</span> base64:<span class="built_in">match</span>(<span class="string">&quot;^[A-Za-z0-9+/=]+$&quot;</span>) <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">local</span> decoded = decode_b64(base64)</span><br><span class="line">                <span class="keyword">if</span> decoded <span class="keyword">and</span> decoded:<span class="built_in">match</span>(<span class="string">&quot;%C&quot;</span>) <span class="keyword">then</span>  <span class="comment">-- %C: 非空白字符</span></span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> subtree <span class="keyword">then</span></span><br><span class="line">                        subtree = tree:add(b64_post, <span class="string">&quot;Base64 JSON Analysis&quot;</span>)</span><br><span class="line">                    <span class="keyword">end</span></span><br><span class="line">                    subtree:add(f_decoded, decoded)</span><br><span class="line">                    has_output = <span class="literal">true</span></span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注册为后解析器</span></span><br><span class="line">register_postdissector(b64_post)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="加载器无法运用在http跟踪流的窗口"><a href="#加载器无法运用在http跟踪流的窗口" class="headerlink" title="加载器无法运用在http跟踪流的窗口!"></a>加载器无法运用在http跟踪流的窗口!</h2><p>Wireshark 中的“<strong>跟踪流（Follow Stream）</strong>”功能是<strong>原始 TCP 字节流的重建视图</strong>，它展示的是通信双方“看到”的原始数据，不经过 dissector 插件处理（也就是说，不调用 <code>dissector()</code> 函数）。这是设计上的决策，目的是让用户看到协议最原始的内容（用于取证、协议逆向等）</p>
+<h2 id="wireshark各类端口过滤命令"><a href="#wireshark各类端口过滤命令" class="headerlink" title="wireshark各类端口过滤命令"></a>wireshark各类端口过滤命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tcp.dstport == 1234 过滤目标端口</span><br><span class="line">tcp.srcport == 1234 过滤源端口</span><br><span class="line">port == 1234 过滤端口</span><br><span class="line">dst port == 1234 同上</span><br></pre></td></tr></table></figure>
+
+<p>数据包标号：<code>Frame Number</code></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/02/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/python/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">python_异步编程笔记</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/02</li>
+                <li>00:00</li>
+                <li>代码审计</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/04/23/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/GPG%E5%AF%86%E9%92%A5%E5%AF%86%E9%92%A5%E8%BF%87%E6%9C%9F/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">GPG密钥过期</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/04/23</li>
+                <li>19:44</li>
+                <li>协议学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="wireshark解析器"><a rel="nofollow" class="trm-toc-link" href="#wireshark解析器"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">wireshark解析器</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="问题树"><a rel="nofollow" class="trm-toc-link" href="#问题树"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">问题树</span></a></li><li class="trm-toc-item trm-toc-level-2" title="wireshark 加载规则"><a rel="nofollow" class="trm-toc-link" href="#wireshark-加载规则"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">wireshark 加载规则</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="对于http协议来说"><a rel="nofollow" class="trm-toc-link" href="#对于http协议来说"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">对于http协议来说</span></a></li><li class="trm-toc-item trm-toc-level-3" title="对于非标准通信协议来说"><a rel="nofollow" class="trm-toc-link" href="#对于非标准通信协议来说"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">对于非标准通信协议来说</span></a></li><li class="trm-toc-item trm-toc-level-3" title="似乎目前尚且没有能导出加载器加载后的内容的方法"><a rel="nofollow" class="trm-toc-link" href="#似乎目前尚且没有能导出加载器加载后的内容的方法"><span class="trm-toc-number">1.2.3.</span> <span class="trm-toc-text">似乎目前尚且没有能导出加载器加载后的内容的方法</span></a></li><li class="trm-toc-item trm-toc-level-3" title="AI总结"><a rel="nofollow" class="trm-toc-link" href="#AI总结"><span class="trm-toc-number">1.2.4.</span> <span class="trm-toc-text">AI总结</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="蓝牙协议学习"><a rel="nofollow" class="trm-toc-link" href="#蓝牙协议学习"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">蓝牙协议学习</span></a></li><li class="trm-toc-item trm-toc-level-2" title="wireshark使用加载器"><a rel="nofollow" class="trm-toc-link" href="#wireshark使用加载器"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">wireshark使用加载器</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="加载器启动分类"><a rel="nofollow" class="trm-toc-link" href="#加载器启动分类"><span class="trm-toc-number">1.4.1.</span> <span class="trm-toc-text">加载器启动分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="命令启动dissector"><a rel="nofollow" class="trm-toc-link" href="#命令启动dissector"><span class="trm-toc-number">1.4.1.1.</span> <span class="trm-toc-text">命令启动dissector</span></a></li><li class="trm-toc-item trm-toc-level-4" title="配置默认启动项, 允许wireshark启动的时候自动加载自定义加载器"><a rel="nofollow" class="trm-toc-link" href="#配置默认启动项-允许wireshark启动的时候自动加载自定义加载器"><span class="trm-toc-number">1.4.1.2.</span> <span class="trm-toc-text">配置默认启动项, 允许wireshark启动的时候自动加载自定义加载器</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="本题中使用了ev3格式的加载器"><a rel="nofollow" class="trm-toc-link" href="#本题中使用了ev3格式的加载器"><span class="trm-toc-number">1.4.2.</span> <span class="trm-toc-text">本题中使用了ev3格式的加载器</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="自定义加载器可以解决很多问题 dissector"><a rel="nofollow" class="trm-toc-link" href="#自定义加载器可以解决很多问题-dissector"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text">自定义加载器可以解决很多问题 dissector</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="先从简单出发,假设http包只有一个tcp包就完成"><a rel="nofollow" class="trm-toc-link" href="#先从简单出发-假设http包只有一个tcp包就完成"><span class="trm-toc-number">1.5.1.</span> <span class="trm-toc-text">先从简单出发,假设http包只有一个tcp包就完成</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="生成过程"><a rel="nofollow" class="trm-toc-link" href="#生成过程"><span class="trm-toc-number">1.5.1.1.</span> <span class="trm-toc-text">生成过程</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="以下是拦截监听时候对base64加密http包的处理"><a rel="nofollow" class="trm-toc-link" href="#以下是拦截监听时候对base64加密http包的处理"><span class="trm-toc-number">1.5.1.1.1.</span> <span class="trm-toc-text">以下是拦截监听时候对base64加密http包的处理</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="效果展示"><a rel="nofollow" class="trm-toc-link" href="#效果展示"><span class="trm-toc-number">1.5.1.2.</span> <span class="trm-toc-text">效果展示</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="实际上http由多个tcp包完成"><a rel="nofollow" class="trm-toc-link" href="#实际上http由多个tcp包完成"><span class="trm-toc-number">1.5.2.</span> <span class="trm-toc-text">实际上http由多个tcp包完成</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="启动命令"><a rel="nofollow" class="trm-toc-link" href="#启动命令"><span class="trm-toc-number">1.5.2.1.</span> <span class="trm-toc-text">启动命令</span></a></li><li class="trm-toc-item trm-toc-level-4" title="效果展示"><a rel="nofollow" class="trm-toc-link" href="#效果展示-1"><span class="trm-toc-number">1.5.2.2.</span> <span class="trm-toc-text">效果展示</span></a></li><li class="trm-toc-item trm-toc-level-4" title="生成过程"><a rel="nofollow" class="trm-toc-link" href="#生成过程-1"><span class="trm-toc-number">1.5.2.3.</span> <span class="trm-toc-text">生成过程</span></a></li><li class="trm-toc-item trm-toc-level-4" title="构建解析器"><a rel="nofollow" class="trm-toc-link" href="#构建解析器"><span class="trm-toc-number">1.5.2.4.</span> <span class="trm-toc-text">构建解析器</span></a></li><li class="trm-toc-item trm-toc-level-4" title="增强版解析器"><a rel="nofollow" class="trm-toc-link" href="#增强版解析器"><span class="trm-toc-number">1.5.2.5.</span> <span class="trm-toc-text">增强版解析器</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="加载器无法运用在http跟踪流的窗口!"><a rel="nofollow" class="trm-toc-link" href="#加载器无法运用在http跟踪流的窗口"><span class="trm-toc-number">1.6.</span> <span class="trm-toc-text">加载器无法运用在http跟踪流的窗口!</span></a></li><li class="trm-toc-item trm-toc-level-2" title="wireshark各类端口过滤命令"><a rel="nofollow" class="trm-toc-link" href="#wireshark各类端口过滤命令"><span class="trm-toc-number">1.7.</span> <span class="trm-toc-text">wireshark各类端口过滤命令</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

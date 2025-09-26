@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="有点麻烦的非局域网远程桌面方法：开源项目frp  发展历程 在内网环境中出门不想要带电脑，希望能够免费实现远程控制 离开内网环境还希望使用远程控制 离开内网环境仍然希望使用内网资源，但是同时用不想使用官方的VPN，希望自建隧道 管理登录信息,做好未授权登录溯源准备  能够自己控制的外网远程桌面frp配置 作为go语言编码的程序，frp适用于所有平台，在本次案例使用中，将主要使用tcp和stcp，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="局域网远程控制一站式解决方案">
+<meta property="og:url" content="https://aaaaaamua.github.io/2024/12/12/%E6%8A%80%E6%9C%AF/%E9%AB%98%E6%A0%A1%E7%BD%91%E7%BB%9C%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="有点麻烦的非局域网远程桌面方法：开源项目frp  发展历程 在内网环境中出门不想要带电脑，希望能够免费实现远程控制 离开内网环境还希望使用远程控制 离开内网环境仍然希望使用内网资源，但是同时用不想使用官方的VPN，希望自建隧道 管理登录信息,做好未授权登录溯源准备  能够自己控制的外网远程桌面frp配置 作为go语言编码的程序，frp适用于所有平台，在本次案例使用中，将主要使用tcp和stcp，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-12-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-26T15:54:24.762Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="VNC">
+<meta property="article:tag" content="远程桌面">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >局域网远程控制一站式解决方案</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-09-26 23:54:24"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            局域网远程控制一站式解决方案
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            12/12
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <blockquote>
+<p>有点麻烦的非局域网远程桌面方法：开源项目<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp"><strong>frp</strong></a></p>
+</blockquote>
+<h2 id="发展历程"><a href="#发展历程" class="headerlink" title="发展历程"></a>发展历程</h2><ol>
+<li>在内网环境中出门不想要带电脑，希望能够免费实现远程控制</li>
+<li>离开内网环境还希望使用远程控制</li>
+<li>离开内网环境仍然希望使用内网资源，但是同时用不想使用官方的VPN，希望自建隧道</li>
+<li>管理登录信息,做好未授权登录溯源准备</li>
+</ol>
+<h2 id="能够自己控制的外网远程桌面"><a href="#能够自己控制的外网远程桌面" class="headerlink" title="能够自己控制的外网远程桌面"></a>能够自己控制的外网远程桌面</h2><h3 id="frp配置"><a href="#frp配置" class="headerlink" title="frp配置"></a>frp配置</h3><blockquote>
+<p>作为go语言编码的程序，frp适用于所有平台，在本次案例使用中，将主要使用tcp和stcp，<a target="_blank" rel="noopener" href="https://gofrp.org/zh-cn/docs/">官方参考文档</a></p>
+<p>frp是一个内外穿透的解决方案，用来对抗大内网环境下多层Nat不同环境下的设备无法直接通信的的问题，实现原理就是通过内网设备不断向一个具有公网IP的服务器发送数据来保持连接，当需要内网穿透的时候，就把内网的某个特定端口0数据发送到该服务器的特定端口上1，由该台服务器进行转发到另一个特定端口2；而当特定端口2收到数据后，就会原封不动的进行转发到内网设备的特定端口0上</p>
+</blockquote>
+<h3 id="模式区别"><a href="#模式区别" class="headerlink" title="模式区别"></a>模式区别</h3><ol>
+<li>TCP：顾名思义，就是代理内网的端口数据传输层都是使用tcp，例如本文中提到的对于VNC，RDP都是使用了tcp进行传输。而下文出现的http模式本质也是在传输层使用了http，所以对于需要穿透多个http服务，也可以使用tcp模式</li>
+<li>STCP：就是给tcp数据包进行加密，就要求在内网穿透的两台设备：提供安全的 TCP 内网代理，要求在被访问者和访问者的机器上都部署 frpc，不需要在服务端暴露端口。这样可以在一定程度上保证信息传递的安全性，然而由于是静态对称密钥并且多层NAT中转服务器不可能被全部信任，传输的信息也并不是绝对安全。而且由于加密解密，可能会出现卡顿的情况。</li>
+<li>UDP：穿透端口的服务使用udp</li>
+<li>SUDP：提供安全的 UDP 内网代理，与 STCP 类似，需要在被访问者和访问者的机器上都部署 </li>
+<li>HTTP：专为 HTTP 应用设计，支持修改 Host Header 和增加鉴权等额外功能。</li>
+<li>HTTPS：类似于 HTTP 代理，但专门用于处理 HTTPS 流量。</li>
+<li>XTCP：点对点内网穿透代理，与 STCP 类似，但流量不需要经过服务器中转。但实际上在多层NAT的国内环境下，该模式的使用条件严重受限</li>
+<li>XTCP：点对点内网穿透代理，与 STCP 类似，但流量不需要经过服务器中转。</li>
+</ol>
+<h3 id="配置文档"><a href="#配置文档" class="headerlink" title="配置文档"></a>配置文档</h3><ol>
+<li><p>Server</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">dashboard_user</span>=admin</span><br><span class="line"><span class="attr">dashboard_pwd</span>=admin123</span><br><span class="line"><span class="attr">dashboard_port</span>=<span class="number">7777</span></span><br><span class="line"><span class="attr">bind_port</span>=<span class="number">7778</span></span><br><span class="line"><span class="attr">bind_addr</span>=<span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line"><span class="attr">dashboard_addr</span>=<span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line"><span class="attr">token</span>=aaabbbbccc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Client</p>
+ <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = <span class="number">10.159</span>.<span class="number">103.181</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7778</span></span><br><span class="line"><span class="attr">token</span>=aaabbbbccc</span><br><span class="line"></span><br><span class="line"><span class="section">[proxy2]</span></span><br><span class="line"><span class="attr">type</span> = tcp </span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">50050</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">50050</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h3><p>对于个平台下的frp都需要使用命令行进行启动：应用 + 参数 + 配置文档</p>
+<ol>
+<li>Linux <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./frpc -c ./frpc.toml</span><br><span class="line">nohup ./frps -c ./frps.ini &gt; test.log 2&gt;&amp;1 &amp; #服务端使用了绝对路径需要保存日志，&gt;&gt;输出到test.log</span><br></pre></td></tr></table></figure></li>
+<li>Windows<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\frpc -c .\frpc.toml</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="内网远程桌面"><a href="#内网远程桌面" class="headerlink" title="内网远程桌面"></a>内网远程桌面</h2><blockquote>
+<p>本文使用了VNC和RDP进行实现远程桌面<br>选择VNC服务的时候使用了<strong>VNC server</strong>当然<strong>tigerVNC</strong>也不愧为一个好选择，本文只介绍<strong>VNC server</strong></p>
+</blockquote>
+<h3 id="Windows实现免休眠"><a href="#Windows实现免休眠" class="headerlink" title="Windows实现免休眠"></a>Windows实现免休眠</h3><h4 id="系统免休眠"><a href="#系统免休眠" class="headerlink" title="系统免休眠"></a>系统免休眠</h4><ol>
+<li><p><strong>win + r</strong>输入<strong>control</strong>打开控制面板，切换路径：<strong>控制面板\硬件和声音</strong><br> <img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8801.png" alt="控制面板\硬件和声音"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>编辑电源选项</p>
+<p>​    更改计算机睡眠时间，设置为插电状态下永不熄屏</p>
+</li>
+<li><p>切换路径：<strong>控制面板\硬件和声音\电源选项\系统设置</strong> ，在其中关闭启动快速启动</p>
+<p> <img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8802.png" alt="控制面板\硬件和声音\电源选项\系统设置"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>可以进一步设置，合上盖子后不休眠，设置操作为不进行任何操作</p>
+<ol>
+<li><p>就可以实现合上盖子之后仍然使用远程桌面。</p>
+</li>
+<li><p>然而实际上合上盖子之后会认为屏幕停止工作而无法使用vnc，所以需要购买显卡欺骗器或者是安装驱动实现一个虚拟屏幕的作用。</p>
+</li>
+<li><p>我本人更加推荐显卡欺骗器，主要是因为功耗的原因，当然具体的功耗差异也并没有下功夫实际去测量过</p>
+</li>
+<li><p>这两种方法使用之后使用sunshine进行串流使用其他设备当副屏时也是一个很好的选择。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="网卡免休眠"><a href="#网卡免休眠" class="headerlink" title="网卡免休眠"></a>网卡免休眠</h4><ol>
+<li><strong>win + r</strong> 呼出运行，输入<strong>devmgmt.msc</strong>打开设备管理器</li>
+<li>在<strong>网络适配器</strong>中找到对应网卡，打开属性</li>
+<li>在<strong>电源管理</strong>标签中取消<strong>允许计算机关闭此设备以节约电源</strong></li>
+<li>但是默认并不能找到这个标签，打开cmd输入以下命令即可出现该页面，如何执行2-3<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\System\CurrentControlSet\Control\Power /v PlatformAoAcOverride /t REG_DWORD /d 0</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="realVNC服务端下载："><a href="#realVNC服务端下载：" class="headerlink" title="realVNC服务端下载："></a>realVNC服务端下载：</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/vnc/">官方网址</a></li>
+<li>[学习者测试版本私链下载](链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1C3R0gfQVsw75ECwiwvGhqw">https://pan.baidu.com/s/1C3R0gfQVsw75ECwiwvGhqw</a> 提取码: 4svv 复制这段内容后打开百度网盘手机App，操作更方便哦)<br> 激活码：FBV9V-7Z3V9-MED3U-47SEU-85T3A</li>
+</ol>
+<h3 id="VNCViewer下载"><a href="#VNCViewer下载" class="headerlink" title="VNCViewer下载"></a>VNCViewer下载</h3><blockquote>
+<p>作为远程访问软件，VNCViewer支持远程控制所有使用VNC服务的设备</p>
+<ol start="0">
+<li><a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/vnc/">官网下载</a></li>
+</ol>
+</blockquote>
+<ol>
+<li>安卓端：<a target="_blank" rel="noopener" href="https://play.google.com/store/search?q=vncviewer&c=apps">GooglePlay下载</a></li>
+<li>Windows端：私链下载：[①](链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/12vct5MEDoBORnaU26cl1DQ">https://pan.baidu.com/s/12vct5MEDoBORnaU26cl1DQ</a> 提取码: vcat 复制这段内容后打开百度网盘手机App，操作更方便哦)，[②](链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1wgyn-e4j9dQhC4ed9MtfTg">https://pan.baidu.com/s/1wgyn-e4j9dQhC4ed9MtfTg</a> 提取码: 24fe 复制这段内容后打开百度网盘手机App，操作更方便哦)</li>
+<li>ios端：AppStore下载</li>
+</ol>
+<h3 id="RDP实现"><a href="#RDP实现" class="headerlink" title="RDP实现"></a>RDP实现</h3><h4 id="实现条件"><a href="#实现条件" class="headerlink" title="实现条件"></a>实现条件</h4><blockquote>
+<p>Windows专业版</p>
+</blockquote>
+<h5 id="打开指南："><a href="#打开指南：" class="headerlink" title="打开指南："></a>打开指南：</h5><p>   设置 - 系统 - 远程桌面</p>
+<h5 id="若是非专业版："><a href="#若是非专业版：" class="headerlink" title="若是非专业版："></a>若是非专业版：</h5><ul>
+<li>按照提示正常进入商店页面升级Windows版本选择“开始”&gt;“设置”&gt;“系统”&gt;“激活”。</li>
+<li>在“激活”页面顶部，可以看到你的版本：家庭版或专业版。 你还将在“激活状态”下看到是否已激活。  </li>
+<li>选择使用产品密钥进行升级，百度参考：<a target="_blank" rel="noopener" href="https://m.xitongtiandi.net/wenzhang/win10/26466.html">①</a>，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xmyfsj/p/11169604.html">②</a>，<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/mobile?id=33349324">③</a></li>
+</ul>
+<h5 id="突发情况解决："><a href="#突发情况解决：" class="headerlink" title="突发情况解决："></a>突发情况解决：</h5><blockquote>
+<p>对于Windows的某些版本，可能出现密钥验证通过但是无法激活</p>
+</blockquote>
+<ol>
+<li>断网激活：<br>在最后的激活步骤的时候关闭网络，尝试离线激活，但是如果重启后显示为未激活的专业版则需要见2</li>
+<li>使用代码进行激活:<br>新建一个文本文档，粘贴以下代码并且填入专业版密钥后修改文件格式为.bat，双击运行<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slmgr /ipk &lt;粘贴密钥&gt;</span><br><span class="line">slmgr /skms kms.<span class="number">03</span>k.org </span><br><span class="line">slmgr /ato</span><br></pre></td></tr></table></figure>
+会出现小窗页面，一路确定即可</li>
+</ol>
+<h4 id="启动RDP"><a href="#启动RDP" class="headerlink" title="启动RDP"></a>启动RDP</h4><p>在设置中搜索远程桌面并且打开</p>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8803.png" alt="远程桌面"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h4 id="异常情况无法正常登录"><a href="#异常情况无法正常登录" class="headerlink" title="异常情况无法正常登录"></a>异常情况无法正常登录</h4><p>有可能是登录了微软账户导致本地权限不足,可以在设置-&gt;远程桌面-&gt;远程桌面用户 中添加权限<br><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8825917.png" alt="远程桌面"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="安全解决情况"><a href="#安全解决情况" class="headerlink" title="安全解决情况"></a>安全解决情况</h2><h3 id="端口修改"><a href="#端口修改" class="headerlink" title="端口修改"></a>端口修改</h3><blockquote>
+<p>各类扫描工具中的快速扫描都会对于这些端口进行着重扫描，若是想要避开扫描工具的全网段快速扫描行为，就务必要对端口进行修改建议端口修改范围为：10000 - 65536，并且应该尽量避开大整数的端口</p>
+<ol start="0">
+<li>修改端口后需要手动开放防火墙端口<br>设置 - 隐私和安全中心 - Windows安全中心 - 打开Windows安全中心 - 防火墙和网络程序保护</li>
+</ol>
+</blockquote>
+<p>   <img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8804.png" alt="防火墙和网络程序保护"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>打开<strong>高级设置</strong></p>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8805.png" alt="高级设置"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li><p>编辑出入站规则，添加对应应用程序和希望自定义的端口</p>
+</li>
+<li><p>在以下的修改端口操作完成后，想用访问设备，由于不是默认端口，需要手动指定端口，因此在输入IP地址的时候需要手动添加端口，例如IP为127.0.0.1，端口为13389则</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:13389</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol>
+<li>VNC的默认端口为5900，在options - Connections - Port中进行修改<br> <img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8806.png" alt="VNC_port_edit"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></li>
+<li>RDP的默认端口为3389</li>
+</ol>
+<ul>
+<li><strong>win + r</strong>输入<strong>regedit</strong>打开注册表</li>
+<li>依次在注册表左侧找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentContro1Set\Control\Tenninal Server\WinStations\RDP-Tcp</li>
+<li>右侧找到Portnumber，默认端口为3389</li>
+</ul>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8807.png" alt="NoloseWind"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li>双击打开，用十进制修改为目标端口</li>
+</ul>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%8808.png" alt="修改端口"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="登录日志查看"><a href="#登录日志查看" class="headerlink" title="登录日志查看"></a>登录日志查看</h2><h3 id="VNC-Server"><a href="#VNC-Server" class="headerlink" title="VNC Server"></a>VNC Server</h3><p>win+r输入<code>eventvwr.msc</code>或者win搜索事件,进入windwos事件查看器</p>
+<p>导航到<code>Windows 日志 → Application（应用程序日志）</code>使用功能: 查找 -&gt; VNC Server</p>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/image-20250418100204115.png" alt="image-20250418100204115"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>发现对应的登录事件ID是 256</p>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/image-20250418100233289.png" alt="image-20250418100233289"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>筛选当前日志</p>
+<p><img src="/img/picture/%E9%AB%98%E6%A0%A1%E7%BD%91%E8%B7%AF%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/image-20250418100305414.png" alt="image-20250418100305414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="RDP-登录日志"><a href="#RDP-登录日志" class="headerlink" title="RDP 登录日志"></a>RDP 登录日志</h3><p>使用win+r打开运行键入<code>eventvwr.msc</code>打开事件查看器</p>
+<p>导航到：<code>应用程序和服务日志 --&gt; Microsoft --&gt; Windows --&gt; TerminalServices- RemoteConnectionManager</code>，右键单击<strong>Operational</strong>并选择<strong>筛选当前日志</strong>。</p>
+<p>远程事件id: 1149, 其他同上</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/09/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/rce/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">pikachu_rce</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/09</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/10/04/%E6%8A%80%E6%9C%AF/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%A1%B9%E7%9B%AE/pythonWXWapi/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">python中API发送自建应用消息</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/10/04</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="发展历程"><a rel="nofollow" class="trm-toc-link" href="#发展历程"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">发展历程</span></a></li><li class="trm-toc-item trm-toc-level-2" title="能够自己控制的外网远程桌面"><a rel="nofollow" class="trm-toc-link" href="#能够自己控制的外网远程桌面"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">能够自己控制的外网远程桌面</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="frp配置"><a rel="nofollow" class="trm-toc-link" href="#frp配置"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">frp配置</span></a></li><li class="trm-toc-item trm-toc-level-3" title="模式区别"><a rel="nofollow" class="trm-toc-link" href="#模式区别"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">模式区别</span></a></li><li class="trm-toc-item trm-toc-level-3" title="配置文档"><a rel="nofollow" class="trm-toc-link" href="#配置文档"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">配置文档</span></a></li><li class="trm-toc-item trm-toc-level-3" title="启动命令"><a rel="nofollow" class="trm-toc-link" href="#启动命令"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text">启动命令</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="内网远程桌面"><a rel="nofollow" class="trm-toc-link" href="#内网远程桌面"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">内网远程桌面</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="Windows实现免休眠"><a rel="nofollow" class="trm-toc-link" href="#Windows实现免休眠"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">Windows实现免休眠</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="系统免休眠"><a rel="nofollow" class="trm-toc-link" href="#系统免休眠"><span class="trm-toc-number">3.1.1.</span> <span class="trm-toc-text">系统免休眠</span></a></li><li class="trm-toc-item trm-toc-level-4" title="网卡免休眠"><a rel="nofollow" class="trm-toc-link" href="#网卡免休眠"><span class="trm-toc-number">3.1.2.</span> <span class="trm-toc-text">网卡免休眠</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="realVNC服务端下载："><a rel="nofollow" class="trm-toc-link" href="#realVNC服务端下载："><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">realVNC服务端下载：</span></a></li><li class="trm-toc-item trm-toc-level-3" title="VNCViewer下载"><a rel="nofollow" class="trm-toc-link" href="#VNCViewer下载"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">VNCViewer下载</span></a></li><li class="trm-toc-item trm-toc-level-3" title="RDP实现"><a rel="nofollow" class="trm-toc-link" href="#RDP实现"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text">RDP实现</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="实现条件"><a rel="nofollow" class="trm-toc-link" href="#实现条件"><span class="trm-toc-number">3.4.1.</span> <span class="trm-toc-text">实现条件</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="打开指南："><a rel="nofollow" class="trm-toc-link" href="#打开指南："><span class="trm-toc-number">3.4.1.1.</span> <span class="trm-toc-text">打开指南：</span></a></li><li class="trm-toc-item trm-toc-level-5" title="若是非专业版："><a rel="nofollow" class="trm-toc-link" href="#若是非专业版："><span class="trm-toc-number">3.4.1.2.</span> <span class="trm-toc-text">若是非专业版：</span></a></li><li class="trm-toc-item trm-toc-level-5" title="突发情况解决："><a rel="nofollow" class="trm-toc-link" href="#突发情况解决："><span class="trm-toc-number">3.4.1.3.</span> <span class="trm-toc-text">突发情况解决：</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="启动RDP"><a rel="nofollow" class="trm-toc-link" href="#启动RDP"><span class="trm-toc-number">3.4.2.</span> <span class="trm-toc-text">启动RDP</span></a></li><li class="trm-toc-item trm-toc-level-4" title="异常情况无法正常登录"><a rel="nofollow" class="trm-toc-link" href="#异常情况无法正常登录"><span class="trm-toc-number">3.4.3.</span> <span class="trm-toc-text">异常情况无法正常登录</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="安全解决情况"><a rel="nofollow" class="trm-toc-link" href="#安全解决情况"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">安全解决情况</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="端口修改"><a rel="nofollow" class="trm-toc-link" href="#端口修改"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">端口修改</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="登录日志查看"><a rel="nofollow" class="trm-toc-link" href="#登录日志查看"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">登录日志查看</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="VNC Server"><a rel="nofollow" class="trm-toc-link" href="#VNC-Server"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text">VNC Server</span></a></li><li class="trm-toc-item trm-toc-level-3" title="RDP 登录日志"><a rel="nofollow" class="trm-toc-link" href="#RDP-登录日志"><span class="trm-toc-number">5.2.</span> <span class="trm-toc-text">RDP 登录日志</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

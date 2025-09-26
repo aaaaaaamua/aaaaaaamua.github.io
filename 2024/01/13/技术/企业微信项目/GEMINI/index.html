@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="前提 复现b站大佬“技术爬爬虾”按照GitHub开源项目“chatgpt-on-wechat”的项目。该项目利用的是微信的官方接口接入最时髦的谷歌机器人GEMINI，不存在任何的账号风险。B站大佬项目地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;read&#x2F;cv29550040&#x2F;GitHub项目地址：https:&#x2F;&#x2F;github.com&#x2F;zhayujie&#x2F;chatgpt-on-wechat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信机器人">
+<meta property="og:url" content="https://aaaaaamua.github.io/2024/01/13/%E6%8A%80%E6%9C%AF/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%A1%B9%E7%9B%AE/GEMINI/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="前提 复现b站大佬“技术爬爬虾”按照GitHub开源项目“chatgpt-on-wechat”的项目。该项目利用的是微信的官方接口接入最时髦的谷歌机器人GEMINI，不存在任何的账号风险。B站大佬项目地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;read&#x2F;cv29550040&#x2F;GitHub项目地址：https:&#x2F;&#x2F;github.com&#x2F;zhayujie&#x2F;chatgpt-on-wechat">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T02:30:12.722Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="wechat-ai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >微信机器人</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 10:30:12"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/picture/fwq/cover.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            微信机器人
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            01/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><blockquote>
+<p>复现b站大佬“技术爬爬虾”按照GitHub开源项目“chatgpt-on-wechat”的项目。该项目利用的是微信的官方接口接入最时髦的谷歌机器人GEMINI，不存在任何的账号风险。<br>B站大佬项目地址：<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv29550040/">https://www.bilibili.com/read/cv29550040/</a><br>GitHub项目地址：<a target="_blank" rel="noopener" href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a></p>
+</blockquote>
+<h2 id="环境声明"><a href="#环境声明" class="headerlink" title="环境声明"></a>环境声明</h2><ol>
+<li>本次复现实验使用的服务器有：华为云提供的云函数（不用钱）（用于企业微信应用中&lt;网页授权及JS-SDK&gt;验证）以及阿里云提供的轻量应用服务器（[亚太-新加坡-包年-学生优惠&#x3D;免费](<a target="_blank" rel="noopener" href="https://common-buy.aliyun.com/?spm=5176.161059.J_5253785160.2.3b16a505WHYCnL&commodityCode=swas&request=%7B%22ord_time%22:%2212:Month%22,%22order_num%22:1,%22instance_type%22:%22server%22,%22app_image%22:%220e41d20bf73e481db7d0023dd255c0bd%22,%22datadisk_type%22:%22essddatadisk%22,%22version_type%22:%22swas.s2.c2m1s40b3t04%22,%22image_type%22:%22appimage%22%7D&regionId=ap-southeast-1">轻量应用服务器 (aliyun.com)</a>)）（用于部署主体docker转发提供AI服务的服务器和企业微信机器人之间的流量）</li>
+<li>Ubuntu22.04</li>
+<li>docker version 24.0.7</li>
+</ol>
+<h2 id="复现过程困难"><a href="#复现过程困难" class="headerlink" title="复现过程困难"></a>复现过程困难</h2><ol>
+<li><p>在验证&lt;网页授权及JS-SDK&gt;时候的出现验证失败的问题：<br> 1.1 在选择云函数实例的时候需要选择北京的服务器，如果选择其他地区的服务器则会出现下一步校验可信域名的时候找不到相关的代码区；<br> 1.2 需要先点击申请校验域名后下载文件，用文本打开文件后复制到华为云函数中的代码中后才可以进行确定（只有在这个时候才会真正地开始校验）；</p>
+</li>
+<li><p>最后一设置api接收的时候一直出现<strong>api回调地址请求不通过</strong>，是由于服务器没有开放9898端口，这是阿里云做的整体防护，不能够直接在服务器系统上进行端口开放，需要在阿里云服务器-轻量应用服务器中的防火墙中手动打开9898端口,具体操作为：轻量应用服务器-小盾牌图标-防火墙-管理规则-添加规则。</p>
+<p><img src="/img/picture/fwq/fwq.1.png" alt="fwq.1"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ol>
+<h2 id="B站大佬原文"><a href="#B站大佬原文" class="headerlink" title="B站大佬原文"></a>B站大佬原文</h2><p>这不是普通微信好友，这是我的家族企业微信，我们点进去看看，其实里面就我一个活人，其他都是AI机器人。这些机器人对接了各类AI大模型，甚至还提供电影下载，智能家居等服务。这些机器人使用的是微信的官方接口，不会对微信账号带来任何风险。并且微信天然支持语音图片输入，能承接AI的多模态功能。所以使用企业微信对接AI机器人，是一个非常好的解决方案。  本期我来分享下如何免费注册一个人的企业，白嫖企业微信的全部功能。企业微信设置繁琐，内容十分硬核，建议收藏多看几遍，视频制作不易希望各位观众老爷点赞支持下。  </p>
+<p>项目主页：<a target="_blank" rel="noopener" href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a><br>项目文档；<a target="_blank" rel="noopener" href="https://docs.link-ai.tech/cow/quick-start">https://docs.link-ai.tech/cow/quick-start</a><br>本教程没讲到的细节请参考文档。  </p>
+<ol>
+<li><p>注册企业微信<br><a target="_blank" rel="noopener" href="https://work.weixin.qq.com/wework_admin/register_wx?from=loginpage">https://work.weixin.qq.com/wework_admin/register_wx?from=loginpage</a>  </p>
+</li>
+<li><p>创建企业机器人<br>应用管理–&gt;应用–&gt;创建应用 ，应用名称跟描述随便填,可见范围选整个公司<br>这样就创建好了一个企业机器人。</p>
+</li>
+</ol>
+<p><img src="/img/picture/fwq/2.png" alt="2"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ol start="3">
+<li>配置可信域名<br>如果未认证的企业可以使用华为云的域名，认证企业则必须</li>
+</ol>
+<p>3.1. 登陆华为云<br>  <a target="_blank" rel="noopener" href="https://activity.huaweicloud.com/">https://activity.huaweicloud.com/</a> ，完成实名认证</p>
+<p>3.2. 创建云函数<br>搜索云函数，点击立即使用。右上角创建函数，选择HTTP函数，函数名称随便填。</p>
+<p><img src="/img/picture/fwq/3.png" alt="3"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.3. 创建触发器<br>切换到设置 触发器-创建触发器</p>
+<p><img src="/img/picture/fwq/4.png" alt="4"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>安全认证选None ，分组随意创建一个 </p>
+<p><img src="/img/picture/fwq/5.png" alt="5"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.4. 获得URL</p>
+<p><img src="/img/picture/fwq/6.png" alt="6"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>下一步 打开企业微信 –&gt;进入刚才创建的机器人–&gt;设置可信域名</p>
+<p><img src="/img/picture/fwq/7.png" alt="7"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可信域名填3.4步骤中的URL，类似以下格式（注意去掉http:&#x2F;&#x2F; 与 最后的&#x2F;）</p>
+<p>5d1c0cceabb04d8e8413c2b615790846.apig.cn-north-1.huaweicloudapis.com</p>
+<p>3.5. 获得乱码<br>点击申请校验域名-&gt;下载文件, 将文件里面的乱码复制下来  大约长这样： 1tg27Cpi9hYTjFFq </p>
+<p><img src="/img/picture/fwq/8.png" alt="8"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>3.6. 绑定可信域名<br>回到华为云，  代码-&gt;index.js 修改第九行为文件里的乱码（见3.5小节获得的乱码），点击部署 </p>
+<p><img src="/img/picture/fwq/9.png" alt="9"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>部署完成 回到企业微信-&gt;点击确定  可信域名即完成绑定</p>
+<ol start="4">
+<li>Gemini对接企业微信</li>
+</ol>
+<p>我们使用这个项目  chatgpt-on-wechat</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zhayujie/chatgpt-on-wechat">https://github.com/zhayujie/chatgpt-on-wechat</a></p>
+<p>4.1. 申请Google Gemini<br>申请一个API key</p>
+<p><a target="_blank" rel="noopener" href="https://makersuite.google.com/app/apikey">https://makersuite.google.com/app/apikey</a></p>
+<p>4.2. ubuntu系统安装docker<br>找一个国外IP的服务器，先安装docker ，下面脚本已ubuntu为例</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt-get install ca-certificates curl gnupg lsb-release software-properties-common</span><br><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io </span><br></pre></td></tr></table></figure>
+<p>4.3. 下载docker compose<br>执行以下命令下载 docker-compose.yml：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://open-<span class="number">1317903499</span>.cos.ap-guangzhou.myqcloud.com/docker-compose.yml</span><br></pre></td></tr></table></figure>
+<p>修改docker compose文件，主要配置从24行以下开始 </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">version: &#x27;2.0&#x27;</span></span><br><span class="line"><span class="function"><span class="title">services</span>:</span></span><br><span class="line"><span class="function">  <span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span>:</span></span><br><span class="line"><span class="function">    <span class="title">image</span>: <span class="title">zhayujie</span>/<span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span></span></span><br><span class="line"><span class="function">    <span class="title">container_name</span>: <span class="title">chatgpt</span>-<span class="title">on</span>-<span class="title">wechat</span></span></span><br><span class="line"><span class="function">    <span class="title">security_opt</span>:</span></span><br><span class="line"><span class="function">      - <span class="title">seccomp:unconfined</span></span></span><br><span class="line"><span class="function">    <span class="title">environment</span>:</span></span><br><span class="line"><span class="function">      <span class="title">OPEN_AI_API_KEY</span>: &#x27;<span class="title">YOUR</span> <span class="title">KEY</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">PROXY</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">SINGLE_CHAT_PREFIX</span>: &#x27;[&quot;<span class="title">bot</span>&quot;, &quot;@<span class="title">bot</span>&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">SINGLE_CHAT_REPLY_PREFIX</span>: &#x27;&quot;[<span class="title">bot</span>] &quot;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">GROUP_CHAT_PREFIX</span>: &#x27;[&quot;@<span class="title">bot</span>&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">GROUP_NAME_WHITE_LIST</span>: &#x27;[&quot;测试群&quot;, &quot;测试群2&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">IMAGE_CREATE_PREFIX</span>: &#x27;[&quot;画&quot;, &quot;看&quot;, &quot;找&quot;]&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CONVERSATION_MAX_TOKENS</span>: 1000</span></span><br><span class="line"><span class="function">      <span class="title">SPEECH_RECOGNITION</span>: &#x27;<span class="title">False</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CHARACTER_DESC</span>: &#x27;你是<span class="title">Gemini</span>, 你旨在回答并解决人们的任何问题&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">EXPIRES_IN_SECONDS</span>: 3600</span></span><br><span class="line"><span class="function">      <span class="title">USE_GLOBAL_PLUGIN_CONFIG</span>: &#x27;<span class="title">True</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">USE_LINKAI</span>: &#x27;<span class="title">False</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">LINKAI_API_KEY</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">LINKAI_APP_CODE</span>: &#x27;&#x27;</span></span><br><span class="line"><span class="function">      ## 配置从以下开始</span></span><br><span class="line"><span class="function">      <span class="title">MODEL</span>: &#x27;<span class="title">gemini</span>&#x27;</span></span><br><span class="line"><span class="function">      # 4.1小节申请的 <span class="title">gemini</span> <span class="title">api</span> <span class="title">key</span></span></span><br><span class="line"><span class="function">      <span class="title">GEMINI_API_KEY</span>: &#x27;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&#x27;</span></span><br><span class="line"><span class="function">      <span class="title">CHANNEL_TYPE</span>: &quot;<span class="title">wechatcom_app</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;我的企业-&gt;企业<span class="title">ID</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOM_CORP_ID</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;<span class="title">Secret</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_SECRET</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;<span class="title">AgentId</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_AGENT_ID</span>: &quot;<span class="title">xxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;接收消息-&gt;设置<span class="title">API</span>接收-&gt;<span class="title">Token</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_TOKEN</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      # 企业微信-&gt;应用管理-&gt;应用-&gt;接收消息-&gt;设置<span class="title">API</span>接收-&gt;<span class="title">EncodingAESKey</span></span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_AES_KEY</span>: &quot;<span class="title">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>&quot;</span></span><br><span class="line"><span class="function">      <span class="title">WECHATCOMAPP_PORT</span>&quot;: 9898</span></span><br><span class="line"><span class="function">    <span class="title">ports</span>:</span></span><br><span class="line"><span class="function">      - 9898:9898 </span></span><br></pre></td></tr></table></figure>
+<p>4.4. 启动docker<br>修改完成后将docker启动起来</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 启动docker</span><br><span class="line">sudo docker compose up -d</span><br><span class="line"># 查看日志</span><br><span class="line">sudo docker logs  chatgpt-on-wechat</span><br><span class="line"># 停止docker 如果修改配置文件必须先停止再启动</span><br><span class="line"># sudo docker compose down</span><br></pre></td></tr></table></figure>
+<p>启动完成后安装Gimini依赖</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 获取所有执行中的容器</span><br><span class="line">sudo docker ps</span><br><span class="line"># 在置顶容器安装 google-generativeai，注意修改xxxxxxxx为容器ID</span><br><span class="line">sudo docker exec xxxxxxxxxx pip3 install google-generativeai</span><br><span class="line"># 重启容器</span><br><span class="line">sudo docker restart xxxxxxxxxx</span><br></pre></td></tr></table></figure>
+<p>4.5. 企业微信设置<br>回到企业微信，填写好URL  ,按如下格式  </p>
+<p>http:&#x2F;&#x2F;服务器IP:9898&#x2F;wxcomapp</p>
+<p><img src="/img/picture/fwq/10.png" alt="10"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>注意Token与EncodingAESKey与docker配置一致。</p>
+<p>点击企业可信IP，填入服务器的公网IP</p>
+<p><img src="/img/picture/fwq/11.png" alt="11"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>4.6. 微信加入企业<br>我的企业-&gt;微信插件-&gt;邀请关注 ，使用微信扫码即加入企业，然后就可以开始应用机器人</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/01/17/%E6%8A%80%E6%9C%AF/%E7%81%AB%E7%BB%92%E5%89%91/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://cdn-www.huorong.cn/assets/v5/images/learnUs_04.png">
+                </span>
+                <h6 class="trm-op-title">火绒剑抓微信包</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/01/17</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2023/12/25/%E5%AD%A6%E6%A0%A1/%E8%84%9A%E6%9C%AC/%E6%98%AF%E8%B0%81%E7%BB%99%E6%88%91%E5%81%B7%E5%81%B7%E6%89%93%E4%BA%86100%E5%88%86/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/picture/who.png">
+                </span>
+                <h6 class="trm-op-title">是谁偷偷给我打了满分？</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/12/25</li>
+                <li>00:00</li>
+                <li>脚本</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="前提"><a rel="nofollow" class="trm-toc-link" href="#前提"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">前提</span></a></li><li class="trm-toc-item trm-toc-level-2" title="环境声明"><a rel="nofollow" class="trm-toc-link" href="#环境声明"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">环境声明</span></a></li><li class="trm-toc-item trm-toc-level-2" title="复现过程困难"><a rel="nofollow" class="trm-toc-link" href="#复现过程困难"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">复现过程困难</span></a></li><li class="trm-toc-item trm-toc-level-2" title="B站大佬原文"><a rel="nofollow" class="trm-toc-link" href="#B站大佬原文"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">B站大佬原文</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

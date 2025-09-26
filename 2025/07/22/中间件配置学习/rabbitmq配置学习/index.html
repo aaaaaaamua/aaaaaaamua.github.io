@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="环境配置下载平台windwos平台 erlang环境rabbitmq是基于erlang环境的,必须要具备erlang语言的环境才可以使用 以下是提供的erlang下载路径: Downloads - Erlang&#x2F;OTP 需要注意的是, 可能rabbitmq并不能支持最新版本的erlang,需要根据具体的官网信息来选择erlang版本,在rabbitmq官网会对此做具体声明: Erlang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windwos rabbitmq python配置学习">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/07/22/%E4%B8%AD%E9%97%B4%E4%BB%B6%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/rabbitmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="环境配置下载平台windwos平台 erlang环境rabbitmq是基于erlang环境的,必须要具备erlang语言的环境才可以使用 以下是提供的erlang下载路径: Downloads - Erlang&#x2F;OTP 需要注意的是, 可能rabbitmq并不能支持最新版本的erlang,需要根据具体的官网信息来选择erlang版本,在rabbitmq官网会对此做具体声明: Erlang">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-07-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-25T06:52:25.754Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="中间件">
+<meta property="article:tag" content="rabbitmq">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >windwos rabbitmq python配置学习</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-07-25 14:52:25"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            windwos rabbitmq python配置学习
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            07/22
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><h4 id="平台"><a href="#平台" class="headerlink" title="平台"></a>平台</h4><p>windwos平台</p>
+<h4 id="erlang环境"><a href="#erlang环境" class="headerlink" title="erlang环境"></a><code>erlang</code>环境</h4><p><code>rabbitmq</code>是基于erlang环境的,必须要具备erlang语言的环境才可以使用</p>
+<p>以下是提供的<code>erlang</code>下载路径: <a target="_blank" rel="noopener" href="https://www.erlang.org/downloads">Downloads - Erlang&#x2F;OTP</a></p>
+<p>需要注意的是, 可能<code>rabbitmq</code>并不能支持最新版本的<code>erlang</code>,需要根据具体的官网信息来选择<code>erlang</code>版本,在<code>rabbitmq</code>官网会对此做具体声明: <a target="_blank" rel="noopener" href="https://www.rabbitmq.com/docs/which-erlang">Erlang Version Requirements | RabbitMQ</a></p>
+<p>(by the way: erlang的安装非常受网络影响,建议选择美区节点)</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250722233713096.png" alt="image-20250722233713096"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>对于<code>erlang</code>来说, 他和一个正常的<code>python</code>包是一样的,都是语言环境,都需要对此做一个具体的环境变量配置(自行配置)</p>
+<p>安装完成,设置好环境变量之后,起一个新的终端页面(设置前打开的bash窗口暂未同步),来验证安装完成情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">erl或者</span><br><span class="line">erl -version()</span><br></pre></td></tr></table></figure>
+
+<p>安装成功!</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250722234820405.png" alt="image-20250722234820405"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h4 id="安装RabbitMQ本体"><a href="#安装RabbitMQ本体" class="headerlink" title="安装RabbitMQ本体"></a>安装<code>RabbitMQ</code>本体</h4><p>下载<code>RabbitMQ Server</code>,官方下载链接: <a target="_blank" rel="noopener" href="https://www.rabbitmq.com/docs/install-windows#installer">Installing on Windows | RabbitMQ</a></p>
+<p>注意需要在已经下载完<code>erlang</code>包并且正确配置到环境变量中才可以开始运行<code>RabbitMQ</code>安装包,否则根本无法运行</p>
+<p>尝试运行来检验是否成功安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<p>出现下面内容表示成功安装</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723000028422.png" alt="image-20250723000028422"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><strong>该命令的功能说明</strong></p>
+<ol>
+<li><strong>启用 Web 管理界面</strong><ul>
+<li>安装并激活 <code>rabbitmq_management</code> 插件后，会提供一个基于 Web 的图形化管理控制台（默认端口 <code>15672</code>）。</li>
+<li>通过浏览器访问 <code>http://localhost:15672</code> 即可登录管理界面（默认用户名&#x2F;密码为 <code>guest</code>&#x2F;<code>guest</code>）。</li>
+</ul>
+</li>
+<li><strong>提供监控与管理功能</strong><ul>
+<li>查看队列、交换机、绑定的实时状态。</li>
+<li>管理用户、权限、虚拟主机（vhost）。</li>
+<li>监控消息流量、连接数、节点健康状况等。</li>
+</ul>
+</li>
+<li><strong>暴露 HTTP API</strong><ul>
+<li>插件会提供一套 RESTful API（端口 <code>15672</code>），方便通过编程方式管理 RabbitMQ。</li>
+</ul>
+</li>
+<li><strong>注册windwos服务</strong><ul>
+<li>插件会注册windwos服务并且设置为自动启动，会占用这个15672端口以及部分资源</li>
+</ul>
+</li>
+</ol>
+<p>实际上是存在命令无法正常启动<code>RabbitMQ Server</code>,就需要在win r中启动”服务”来手动启动<code>RabbitMQ</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.msc</span><br></pre></td></tr></table></figure>
+
+<p>访问: <a target="_blank" rel="noopener" href="http://localhost:15672/">http://localhost:15672/</a></p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723002221691.png" alt="image-20250723002221691"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="正常启动关闭"><a href="#正常启动关闭" class="headerlink" title="正常启动关闭"></a>正常启动关闭</h3><p><code>rabbitmq</code>有多种启动和关闭方式,只要不要混用就不会出问题</p>
+<p>区分好以下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-server.bat <span class="comment"># 这个批命令不接受stop参数 使用就是启动</span></span><br><span class="line">rabbitmq-service.bat</span><br><span class="line">rabbitmqctl</span><br><span class="line">rabbitmq-plugins</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="正常启动"><a href="#正常启动" class="headerlink" title="正常启动"></a>正常启动</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动插件</span></span><br><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br><span class="line"></span><br><span class="line">rabbitmq-server.bat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否启动成功</span></span><br><span class="line">rabbitmq-server.bat status</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="正常关闭"><a href="#正常关闭" class="headerlink" title="正常关闭"></a>正常关闭</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins <span class="built_in">disable</span> rabbitmq_management</span><br><span class="line">rabbitmqctl stop</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723013509000.png" alt="image-20250723013509000"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="问题研究"><a href="#问题研究" class="headerlink" title="问题研究"></a>问题研究</h3><blockquote>
+<p>不知道在研究啥 几个命令试一试就行了 大不了重启</p>
+</blockquote>
+<ol>
+<li><p>启动命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br><span class="line">rabbitmq-server start</span><br></pre></td></tr></table></figure>
+
+<p>如果服务无法正常启动,就win+r输入<code>services.msc</code>手动启动这个服务</p>
+<p>尝试访问网页: <a target="_blank" rel="noopener" href="http://localhost:15672/#/">http://localhost:15672/#/</a></p>
+<p>密码为: guest guest</p>
+</li>
+<li><p>使用启动插件命令错误的时候<code>rabbitmq-plugins enable rabbitmq_management</code>,如果出现这种问题<br><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723005841758.png" alt="image-20250723005841758"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br>使用命令解决,重启插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins <span class="built_in">disable</span> rabbitmq_management</span><br><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>如何关闭rabbitmq(强制关闭无法正常访问的前提下)</p>
+<p>打开管理员下的cmd,执行命令杀死进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskkill /F /IM erl.exe</span><br></pre></td></tr></table></figure>
+
+<p>然后查看浏览器端口是否还在占用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr <span class="string">&quot;25672&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后发现还存在占用</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723011222852.png" alt="image-20250723011222852"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>强杀PID</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">taskkill /F /PID 37648</span><br><span class="line">重新检查端口</span><br><span class="line">netstat -ano | findstr <span class="string">&quot;25672&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果一直被拉起课尝试关闭(可能是注册了服务)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sc delete RabbitMQ <span class="comment"># 删除服务（本教程中不使用服务的方式开关</span></span><br><span class="line">rabbitmqctl stop</span><br><span class="line"><span class="comment"># 如果无效</span></span><br><span class="line">rabbitmq-service.bat stop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果在执行<code>rabbitmqctl stop</code>的时候出现了以下问题</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723015435972.png" alt="image-20250723015435972"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>这是由于<br>核心问题是：<strong>RabbitMQ节点 <code>rabbit@LAPTOP-HB2HIA34</code> 并未运行，导致 <code>rabbitmqctl stop</code> 命令无法执行</strong>。<br>可能已通过其他方式（如强制终止进程、服务崩溃等）关闭了RabbitMQ，但未通过正常流程停止，导致残留状态不一致。</p>
+<p>这个时候可以直接通过启动<code>rabbitmqserver</code>来解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br><span class="line">rabbitmq-server start</span><br></pre></td></tr></table></figure>
+
+<p>然后在执行<code>rabbitmqctl status</code>的时候会发现一切都正常起来了</p>
+<p><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723015902220.png" alt="image-20250723015902220"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>如果在执行完所有的命令之后确认: 网页无法访问&#x2F;windwos服务状态关闭&#x2F;端口监听关闭<br>然后执行命令<code>rabbitmqctl status</code><br><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250723020438101.png" alt="image-20250723020438101"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br>这个时候的报错是正常的,因为他的检查状态原理是和节点连接,但是节点已经关闭,下面是AI解释</p>
+<ul>
+<li><p><strong><code>rabbitmqctl status</code> 的工作原理</strong>    </p>
+<ul>
+<li><p>该命令需要与运行的RabbitMQ节点（Erlang虚拟机）建立连接，获取状态信息。</p>
+</li>
+<li><p><strong>节点未运行时</strong>：由于目标节点 <code>rabbit@LAPTOP-HB2HIA34</code> 已通过 <code>rabbitmqctl stop</code> 关闭，EPMD（Erlang端口映射守护进程）会直接返回“节点未运行”的提示（如诊断信息所示）。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>这是预期行为</strong>：节点停止后，<code>rabbitmqctl status</code> 必然报错，因为无法与不存在的进程通信。</p>
+</li>
+<li><p><strong>您的操作逻辑矛盾点</strong></p>
+</li>
+<li><p>您已明确停止服务（<code>rabbitmqctl stop</code>），此时节点进程已终止。</p>
+</li>
+<li><p><strong>端口无占用</strong>：5672（AMQP）和15672（管理插件）无监听，进一步证明服务已完全关闭。</p>
+</li>
+<li><p><strong>此时检查状态无意义</strong>：停止的服务无法返回状态信息，报错是正常的。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="RabbitMQ默认端口"><a href="#RabbitMQ默认端口" class="headerlink" title="RabbitMQ默认端口"></a><code>RabbitMQ</code>默认端口</h2><p>RabbitMQ的主要端口号</p>
+<p>RabbitMQ默认使用以下端口号：</p>
+<ul>
+<li><strong>5672</strong>：这是RabbitMQ的默认端口，用于AMQP协议（不带TLS）的客户端连接。</li>
+<li><strong>5671</strong>：当使用TLS加密连接时，AMQP协议会使用这个端口。</li>
+<li><strong>15672</strong>：如果启用了管理插件，这个端口用于访问RabbitMQ的Web管理界面，默认用户名和密码都是<em>guest</em>。</li>
+<li><strong>15674</strong>：这个端口与Web STOMP插件相关，允许通过WebSocket连接使用STOMP协议。</li>
+</ul>
+<h2 id="协同python"><a href="#协同python" class="headerlink" title="协同python"></a>协同python</h2><h3 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h3><ol>
+<li><p>启动<code>RabbbitMQ Server</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动插件</span></span><br><span class="line">rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br><span class="line"></span><br><span class="line">rabbitmq-server.bat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否启动成功</span></span><br><span class="line">rabbitmq-server.bat status</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Pycharm</code>启动一个新的项目(独立项目避免环境冲突)<br><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250725112358335.png" alt="image-20250725112358335"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br>路径 + 项目名<br><img src="/2025/05/02/hello-world/itmq%E9%85%8D%E7%BD%AE%E5%AD%A6%E4%B9%A0/image-20250725112534318.png" alt="image-20250725112534318"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>连接端口和密码,这里使用的都是默认的参数<br>账号密码: guest guest<br>端口: 5672<br>web管理页面(这是通过插件打开的): <a target="_blank" rel="noopener" href="http://localhost:15672/#/">http://localhost:15672/#/</a></p>
+</li>
+<li><p>生产者代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">credentials = pika.PlainCredentials(<span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>)  <span class="comment"># mq用户名和密码</span></span><br><span class="line"><span class="comment"># 虚拟队列需要指定参数 virtual_host，如果是默认的可以不填。</span></span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(host = <span class="string">&#x27;localhost&#x27;</span>,port = <span class="number">5672</span>,virtual_host = <span class="string">&#x27;/&#x27;</span>,credentials = credentials))</span><br><span class="line">channel=connection.channel()</span><br><span class="line"><span class="comment"># 声明消息队列，消息将在这个队列传递，如不存在，则创建</span></span><br><span class="line">result = channel.queue_declare(queue = <span class="string">&#x27;python-test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    message=json.dumps(&#123;<span class="string">&#x27;OrderId&#x27;</span>:<span class="string">&quot;1000%s&quot;</span>%i&#125;)</span><br><span class="line"><span class="comment"># 向队列插入数值 routing_key是队列名</span></span><br><span class="line">    channel.basic_publish(exchange = <span class="string">&#x27;&#x27;</span>,routing_key = <span class="string">&#x27;python-test&#x27;</span>,body = message)</span><br><span class="line">    <span class="built_in">print</span>(message)</span><br><span class="line">connection.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>消费者代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line">credentials = pika.PlainCredentials(<span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>)</span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(host = <span class="string">&#x27;localhost&#x27;</span>,port = <span class="number">5672</span>,virtual_host = <span class="string">&#x27;/&#x27;</span>,credentials = credentials))</span><br><span class="line">channel = connection.channel()</span><br><span class="line"><span class="comment"># 申明消息队列，消息在这个队列传递，如果不存在，则创建队列</span></span><br><span class="line">channel.queue_declare(queue = <span class="string">&#x27;python-test&#x27;</span>, durable = <span class="literal">False</span>)</span><br><span class="line"><span class="comment"># 定义一个回调函数来处理消息队列中的消息，这里是打印出来</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">ch, method, properties, body</span>):</span><br><span class="line">    ch.basic_ack(delivery_tag = method.delivery_tag)</span><br><span class="line">    <span class="built_in">print</span>(body.decode())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 告诉rabbitmq，用callback来接收消息</span></span><br><span class="line">channel.basic_consume(<span class="string">&#x27;python-test&#x27;</span>,callback)</span><br><span class="line"><span class="comment"># 开始接收信息，并进入阻塞状态，队列里有信息才会调用callback进行处理</span></span><br><span class="line">channel.start_consuming()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="协同AI"><a href="#协同AI" class="headerlink" title="协同AI"></a>协同AI</h3><p>本次使用的协同ai是gemini,申请api网址如下: </p>
+<h4 id="全局代理设置"><a href="#全局代理设置" class="headerlink" title="全局代理设置"></a>全局代理设置</h4><p>为了不去搞懂每个库的代理到底要怎么设置,直接偷个小懒,使用全局<code>socks5</code>代理,我使用的是v2ray,也可以代理到对应的代理端口上,注意Gemini Api的地区使用政策,如果发现挂了代理出页面但是不能直接上就可能是地区选择有问题</p>
+<ol>
+<li><p>库安装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requestments</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">pip install PySocks</span><br><span class="line">pip install pika</span><br><span class="line">pip install pip install google-genai</span><br></pre></td></tr></table></figure>
+
+<p>requestments</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">annotated-types==0.7.0</span><br><span class="line">anyio==4.9.0</span><br><span class="line">cachetools==5.5.2</span><br><span class="line">certifi==2025.7.14</span><br><span class="line">charset-normalizer==3.4.2</span><br><span class="line">colorama==0.4.6</span><br><span class="line">exceptiongroup==1.3.0</span><br><span class="line">google-ai-generativelanguage==0.6.15</span><br><span class="line">google-api-core==2.25.1</span><br><span class="line">google-api-python-client==2.177.0</span><br><span class="line">google-auth==2.40.3</span><br><span class="line">google-auth-httplib2==0.2.0</span><br><span class="line">google-genai==1.27.0</span><br><span class="line">google-generativeai==0.8.5</span><br><span class="line">googleapis-common-protos==1.70.0</span><br><span class="line">grpcio==1.74.0</span><br><span class="line">grpcio-status==1.71.2</span><br><span class="line">h11==0.16.0</span><br><span class="line">httpcore==1.0.9</span><br><span class="line">httplib2==0.22.0</span><br><span class="line">httpx==0.28.1</span><br><span class="line">idna==3.10</span><br><span class="line">pika==1.3.2</span><br><span class="line">proto-plus==1.26.1</span><br><span class="line">protobuf==5.29.5</span><br><span class="line">pyasn1==0.6.1</span><br><span class="line">pyasn1_modules==0.4.2</span><br><span class="line">pydantic==2.11.7</span><br><span class="line">pydantic_core==2.33.2</span><br><span class="line">pyparsing==3.2.3</span><br><span class="line">PySocks==1.7.1</span><br><span class="line">requests==2.32.4</span><br><span class="line">rsa==4.9.1</span><br><span class="line">sniffio==1.3.1</span><br><span class="line">tenacity==8.5.0</span><br><span class="line">tqdm==4.67.1</span><br><span class="line">typing-inspection==0.4.1</span><br><span class="line">typing_extensions==4.14.1</span><br><span class="line">uritemplate==4.2.0</span><br><span class="line">urllib3==2.5.0</span><br><span class="line">websockets==15.0.1</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>new socks5_global_proxy</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socks</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># Proxy details</span></span><br><span class="line">proxy_ip = <span class="string">&quot;127.0.0.1&quot;</span>  <span class="comment"># Replace with your SOCKS5 proxy IP address</span></span><br><span class="line">proxy_port = <span class="number">10808</span>  <span class="comment"># Replace with your SOCKS5 proxy port</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Optional: Authentication if your proxy requires it</span></span><br><span class="line"><span class="comment"># username = &quot;your_username&quot;</span></span><br><span class="line"><span class="comment"># password = &quot;your_password&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set up the SOCKS proxy</span></span><br><span class="line">socks.set_default_proxy(socks.SOCKS5, proxy_ip, proxy_port)</span><br><span class="line"><span class="comment"># If authentication is required:</span></span><br><span class="line"><span class="comment"># socks.set_default_proxy(socks.SOCKS5, proxy_ip, proxy_port, username=username, password=password)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Patch the default socket to use PySocks</span></span><br><span class="line">socket.socket = socks.socksocket</span><br></pre></td></tr></table></figure>
+
+<p>在需要代理的项目直接<code>import</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socks5_global_proxy <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="代码设置"><a href="#代码设置" class="headerlink" title="代码设置"></a>代码设置</h3><ol>
+<li><p>Gemini测试代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socks5_global_proxy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> google <span class="keyword">import</span> genai</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化客户端</span></span><br><span class="line">client = genai.Client(api_key=<span class="string">&quot;YOUR_API_KEY&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送请求</span></span><br><span class="line">response = client.models.generate_content(</span><br><span class="line">    model=<span class="string">&quot;gemini-2.5-pro&quot;</span>,</span><br><span class="line">    contents=<span class="string">&quot;你是谁&quot;</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出结果</span></span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
+
+<p>封装成接口来供调用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socks5_global_proxy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> google <span class="keyword">import</span> genai</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span> (<span class="string">&#x27;tishici.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    tishici = f.read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Gemini_replay</span>(<span class="params">contents</span>):</span><br><span class="line">    <span class="comment"># 初始化客户端</span></span><br><span class="line">    client = genai.Client(api_key=<span class="string">&quot;YOUR_API_KEY&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送请求</span></span><br><span class="line">    response = client.models.generate_content(</span><br><span class="line">        model=<span class="string">&quot;gemini-2.5-pro&quot;</span>,</span><br><span class="line">        contents=<span class="built_in">str</span>(tishici) + <span class="built_in">str</span>(contents),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 输出结果</span></span><br><span class="line">    <span class="keyword">return</span> response.text</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>消费者生产代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"><span class="keyword">from</span> 另一个封装好的对象类 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Gemini_api_test <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">credentials = pika.PlainCredentials(<span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>)</span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(host = <span class="string">&#x27;localhost&#x27;</span>,port = <span class="number">5672</span>,virtual_host = <span class="string">&#x27;/&#x27;</span>,credentials = credentials))</span><br><span class="line">channel = connection.channel()</span><br><span class="line"><span class="comment"># 申明消息队列，消息在这个队列传递，如果不存在，则创建队列</span></span><br><span class="line">channel.queue_declare(queue = <span class="string">&#x27;craxpro&#x27;</span>, durable = <span class="literal">False</span>)</span><br><span class="line"><span class="comment"># 定义一个回调函数来处理消息队列中的消息，这里是打印出来</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">AAAA = 另一个封装好的对象类()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">callback</span>(<span class="params">ch, method, properties, body</span>):</span><br><span class="line">    ch.basic_ack(delivery_tag = method.delivery_tag)</span><br><span class="line">    <span class="comment"># print(body.decode())</span></span><br><span class="line">    all_content = json.loads(body.decode())</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;正在处理:<span class="subst">&#123;all_content[<span class="string">&#x27;title&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">    post_url = all_content[<span class="string">&#x27;post_url&#x27;</span>]</span><br><span class="line">    content = AAAA.get_content(post_url)</span><br><span class="line">    all_content[<span class="string">&#x27;content&#x27;</span>] = content</span><br><span class="line">    <span class="built_in">print</span>(Gemini_replay(all_content))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 告诉rabbitmq，用callback来接收消息</span></span><br><span class="line">channel.basic_consume(<span class="string">&#x27;另一个封装好的对象类名&#x27;</span>,callback)</span><br><span class="line"><span class="comment"># 开始接收信息，并进入阻塞状态，队列里有信息才会调用callback进行处理</span></span><br><span class="line">channel.start_consuming()</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/09/23/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/vulhub%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/fastjson/1.2.24-rce/fastjson_1.2.24-rce/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">fastjson_1.2.24-rce</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/09/23</li>
+                <li>22:26</li>
+                <li>vulhub漏洞复现</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/06/17/%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">碎碎念</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/06/17</li>
+                <li>01:02</li>
+                <li>未分类</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="环境配置"><a rel="nofollow" class="trm-toc-link" href="#环境配置"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">环境配置</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="下载"><a rel="nofollow" class="trm-toc-link" href="#下载"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">下载</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="平台"><a rel="nofollow" class="trm-toc-link" href="#平台"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">平台</span></a></li><li class="trm-toc-item trm-toc-level-4" title="erlang环境"><a rel="nofollow" class="trm-toc-link" href="#erlang环境"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">erlang环境</span></a></li><li class="trm-toc-item trm-toc-level-4" title="安装RabbitMQ本体"><a rel="nofollow" class="trm-toc-link" href="#安装RabbitMQ本体"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">安装RabbitMQ本体</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="正常启动关闭"><a rel="nofollow" class="trm-toc-link" href="#正常启动关闭"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">正常启动关闭</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="正常启动"><a rel="nofollow" class="trm-toc-link" href="#正常启动"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">正常启动</span></a></li><li class="trm-toc-item trm-toc-level-4" title="正常关闭"><a rel="nofollow" class="trm-toc-link" href="#正常关闭"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">正常关闭</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="问题研究"><a rel="nofollow" class="trm-toc-link" href="#问题研究"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">问题研究</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="RabbitMQ默认端口"><a rel="nofollow" class="trm-toc-link" href="#RabbitMQ默认端口"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">RabbitMQ默认端口</span></a></li><li class="trm-toc-item trm-toc-level-2" title="协同python"><a rel="nofollow" class="trm-toc-link" href="#协同python"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">协同python</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="简单例子"><a rel="nofollow" class="trm-toc-link" href="#简单例子"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">简单例子</span></a></li><li class="trm-toc-item trm-toc-level-3" title="协同AI"><a rel="nofollow" class="trm-toc-link" href="#协同AI"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">协同AI</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="全局代理设置"><a rel="nofollow" class="trm-toc-link" href="#全局代理设置"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text">全局代理设置</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="代码设置"><a rel="nofollow" class="trm-toc-link" href="#代码设置"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">代码设置</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

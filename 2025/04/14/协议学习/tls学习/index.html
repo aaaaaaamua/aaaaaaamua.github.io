@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="双向tls认证定义双向tls是指在进行https认证的时候服务器和客户端都会彼此进行证书认证, 需要使用一个ca对客户端和服务端进行证书签发. 本次项目实现会使用Flask来进行部署 后端代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tls学习">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/04/14/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/tls%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="双向tls认证定义双向tls是指在进行https认证的时候服务器和客户端都会彼此进行证书认证, 需要使用一个ca对客户端和服务端进行证书签发. 本次项目实现会使用Flask来进行部署 后端代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-04-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-13T02:00:30.144Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="tls">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >tls学习</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-13 10:00:30"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            tls学习
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="双向tls认证"><a href="#双向tls认证" class="headerlink" title="双向tls认证"></a>双向<code>tls</code>认证</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><code>双向tls</code>是指在进行https认证的时候服务器和客户端都会彼此进行证书认证, 需要使用一个ca对客户端和服务端进行证书签发. 本次项目实现会使用Flask来进行部署</p>
+<h3 id="后端代码"><a href="#后端代码" class="headerlink" title="后端代码"></a>后端代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask, request, g, jsonify</span><br><span class="line">from OpenSSL import crypto</span><br><span class="line">import ssl</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"># 全局解析客户端证书</span><br><span class="line">@app.before_request</span><br><span class="line">def parse_client_cert():</span><br><span class="line">    # 检查是否启用 TLS 且客户端提供了证书</span><br><span class="line">    if not request.is_secure:</span><br><span class="line">        return jsonify(&#123;&quot;error&quot;: &quot;HTTPS required&quot;&#125;), 400</span><br><span class="line"></span><br><span class="line">    client_cert_pem = request.environ.get(&#x27;SSL_CLIENT_CERT&#x27;)</span><br><span class="line">    if not client_cert_pem:</span><br><span class="line">        return jsonify(&#123;&quot;error&quot;: &quot;Client certificate required&quot;&#125;), 403</span><br><span class="line"></span><br><span class="line">    try:</span><br><span class="line">        # 解析证书内容</span><br><span class="line">        cert = crypto.load_certificate(crypto.FILETYPE_PEM, client_cert_pem)</span><br><span class="line">        subject = cert.get_subject()</span><br><span class="line">        issuer = cert.get_issuer()</span><br><span class="line"></span><br><span class="line">        # 将证书信息存储在全局对象 g 中</span><br><span class="line">        g.client_cert = &#123;</span><br><span class="line">            &quot;common_name&quot;: subject.CN,</span><br><span class="line">            &quot;organization&quot;: subject.O,</span><br><span class="line">            &quot;issuer&quot;: issuer.CN,</span><br><span class="line">            &quot;expiry&quot;: cert.get_notAfter().decode(&#x27;utf-8&#x27;),</span><br><span class="line">            &quot;serial&quot;: cert.get_serial_number(),</span><br><span class="line">        &#125;</span><br><span class="line">    except Exception as e:</span><br><span class="line">        app.logger.error(f&quot;Failed to parse client certificate: &#123;str(e)&#125;&quot;)</span><br><span class="line">        return jsonify(&#123;&quot;error&quot;: &quot;Invalid client certificate&quot;&#125;), 403</span><br><span class="line"></span><br><span class="line"># 示例路由</span><br><span class="line">@app.route(&quot;/api/data&quot;)</span><br><span class="line">def get_data():</span><br><span class="line">    # 直接使用 g.client_cert 中的信息</span><br><span class="line">    return jsonify(&#123;</span><br><span class="line">        &quot;data&quot;: &quot;Sensitive information&quot;,</span><br><span class="line">        &quot;client&quot;: g.client_cert[&quot;common_name&quot;]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;/api/user&quot;)</span><br><span class="line">def get_user():</span><br><span class="line">    # 另一个路由同样可以访问证书信息</span><br><span class="line">    return jsonify(&#123;&quot;user&quot;: g.client_cert[&quot;common_name&quot;]&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    # 配置双向 TLS</span><br><span class="line">    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)</span><br><span class="line">    context.load_cert_chain(certfile=&quot;./server/server.crt&quot;, keyfile=&quot;./server/server.key&quot;)</span><br><span class="line">    context.load_verify_locations(cafile=&quot;./ca/ca.crt&quot;)  # 指定信任的 CA（用于验证客户端证书）</span><br><span class="line">    context.verify_mode = ssl.CERT_REQUIRED  # 强制要求客户端提供有效证书</span><br><span class="line"></span><br><span class="line">    app.run(host=&quot;0.0.0.0&quot;, port=5000, ssl_context=context, debug=False)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/img/picture/tls%E5%AD%A6%E4%B9%A0/image-20250414111759778.png" alt="image-20250414111759778"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="证书生成"><a href="#证书生成" class="headerlink" title="证书生成"></a>证书生成</h2><h3 id="常规部署"><a href="#常规部署" class="headerlink" title="常规部署"></a>常规部署</h3><ul>
+<li><strong>必须共享的文件</strong>：<ul>
+<li>CA公钥证书（ca.crt） - 需要分发给所有验证方</li>
+<li>签发好的终端证书（server.crt&#x2F;client.crt） - 给对应设备使用</li>
+</ul>
+</li>
+<li><strong>必须保密的内容</strong>：<ul>
+<li>CA私钥（<code>ca.key</code>） - 一旦泄露整个信任体系崩溃</li>
+<li>所有终端私钥（<code>server.key</code>&#x2F;<code>client.key</code>）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>多设备部署实例</strong></p>
+<p>假设有三台机器：</p>
+<ol>
+<li>CA服务器（安全环境）<ul>
+<li>生成：<code>ca.key</code> + <code>ca.crt</code></li>
+<li>只分发ca.crt给其他机器</li>
+</ul>
+</li>
+<li>Web服务器<ul>
+<li>生成：<code>server.key</code> + <code>server.csr</code></li>
+<li>将<code>server.csr</code>发送给CA签发</li>
+<li>获得：<code>server.crt</code></li>
+<li>最终保留：<code>server.key</code> + <code>server.crt</code> + <code>ca.crt</code></li>
+</ul>
+</li>
+<li>客户端设备<ul>
+<li>生成：<code>client.key</code> + <code>client.csr</code></li>
+<li>将<code>client.csr</code>发送给CA签发</li>
+<li>获得：<code>client.crt</code></li>
+<li>最终保留：<code>client.key</code> + <code>client.crt</code> + <code>ca.crt</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="概念分类"><a href="#概念分类" class="headerlink" title="概念分类"></a>概念分类</h3><table>
+<thead>
+<tr>
+<th align="center">扩展名</th>
+<th align="center">类型</th>
+<th align="center">格式</th>
+<th align="center">包含内容</th>
+<th align="center">典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>.key</code></td>
+<td align="center">私钥</td>
+<td align="center">PEM</td>
+<td align="center">私钥</td>
+<td align="center">服务器配置</td>
+</tr>
+<tr>
+<td align="center"><code>.crt/.cer</code></td>
+<td align="center">证书</td>
+<td align="center">PEM&#x2F;DER</td>
+<td align="center">公钥+CA签名</td>
+<td align="center">HTTPS 服务端证书</td>
+</tr>
+<tr>
+<td align="center"><code>.csr</code></td>
+<td align="center">证书签名请求</td>
+<td align="center">PEM</td>
+<td align="center">公钥+身份信息</td>
+<td align="center">向 CA 申请证书</td>
+</tr>
+<tr>
+<td align="center"><code>.pem</code></td>
+<td align="center">通用容器</td>
+<td align="center">PEM</td>
+<td align="center">证书&#x2F;私钥&#x2F;公钥</td>
+<td align="center">Unix 系统通用格式</td>
+</tr>
+<tr>
+<td align="center"><code>.der</code></td>
+<td align="center">二进制证书&#x2F;密钥</td>
+<td align="center">DER</td>
+<td align="center">二进制编码数据</td>
+<td align="center">Windows 系统</td>
+</tr>
+<tr>
+<td align="center"><code>.pfx</code></td>
+<td align="center">密钥库</td>
+<td align="center">PKCS#12</td>
+<td align="center">私钥+证书+证书链</td>
+<td align="center">IIS&#x2F;Java 应用</td>
+</tr>
+<tr>
+<td align="center"><code>.jks</code></td>
+<td align="center">Java 密钥库</td>
+<td align="center">二进制</td>
+<td align="center">私钥+证书（Java 专用）</td>
+<td align="center">Tomcat&#x2F;Java 应用</td>
+</tr>
+<tr>
+<td align="center"><code>.crl</code></td>
+<td align="center">证书吊销列表</td>
+<td align="center">PEM&#x2F;DER</td>
+<td align="center">吊销的证书序列号</td>
+<td align="center">安全策略实施</td>
+</tr>
+</tbody></table>
+<h4 id="key-私钥文件"><a href="#key-私钥文件" class="headerlink" title="key 私钥文件"></a>key 私钥文件</h4><p>格式通常为: <code>key</code>&#x2F;<code>pem</code>&#x2F;<code>der</code>, <code>key</code>和<code>pem</code>的区别较小,但是仍然存在区别</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>特性</strong></th>
+<th align="center"><strong><code>.key</code> 文件</strong></th>
+<th align="center"><strong><code>.pem</code> 文件</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>主要用途</strong></td>
+<td align="center">通常专门存储<strong>私钥</strong></td>
+<td align="center">通用容器，可存储证书&#x2F;私钥&#x2F;公钥等</td>
+</tr>
+<tr>
+<td align="center"><strong>内容范围</strong></td>
+<td align="center">仅私钥（多数情况）</td>
+<td align="center">可能包含证书、私钥、公钥或组合</td>
+</tr>
+<tr>
+<td align="center"><strong>文件结构</strong></td>
+<td align="center">无强制要求，但通常为 PEM 格式</td>
+<td align="center">必须有 <code>BEGIN/END</code> 标签</td>
+</tr>
+<tr>
+<td align="center"><strong>典型内容</strong></td>
+<td align="center"><code>-----BEGIN PRIVATE KEY-----</code></td>
+<td align="center">可能是私钥、证书或两者</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">特性</th>
+<th align="center">PEM 格式</th>
+<th align="center">DER 格式</th>
+<th align="center">PKCS#12 (<code>.pfx</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>编码方式</strong></td>
+<td align="center">Base64 文本(同key) + ASCII 标签</td>
+<td align="center">二进制 ASN.1</td>
+<td align="center">二进制 <code>PKCS#12</code> 结构</td>
+</tr>
+<tr>
+<td align="center"><strong>可读性</strong></td>
+<td align="center">可用文本编辑器查看</td>
+<td align="center">二进制乱码</td>
+<td align="center">二进制乱码</td>
+</tr>
+<tr>
+<td align="center"><strong>文件大小</strong></td>
+<td align="center">较大（Base64 膨胀约 33%）</td>
+<td align="center">较小</td>
+<td align="center">中等（含多个对象）</td>
+</tr>
+<tr>
+<td align="center"><strong>密码保护</strong></td>
+<td align="center">可加密（单独私钥）</td>
+<td align="center">不支持</td>
+<td align="center">必须设置密码</td>
+</tr>
+<tr>
+<td align="center"><strong>系统兼容性</strong></td>
+<td align="center">Unix&#x2F;Linux&#x2F;Web 服务器</td>
+<td align="center">Windows&#x2F;Java</td>
+<td align="center">Windows IIS&#x2F;Java Keystore</td>
+</tr>
+<tr>
+<td align="center"><strong>典型扩展名</strong></td>
+<td align="center"><code>.pem</code>, <code>.crt</code>, <code>.key</code></td>
+<td align="center"><code>.der</code>, <code>.cer</code></td>
+<td align="center"><code>.pfx</code>, <code>.p12</code></td>
+</tr>
+<tr>
+<td align="center"><strong>多对象支持</strong></td>
+<td align="center">可拼接多个证书&#x2F;密钥</td>
+<td align="center">单对象文件</td>
+<td align="center">支持多证书+私钥打包</td>
+</tr>
+</tbody></table>
+<h3 id="证书签发"><a href="#证书签发" class="headerlink" title="证书签发"></a>证书签发</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">生成 CA 私钥和根证书</span><br><span class="line">openssl genrsa -out ca.key 2048</span><br><span class="line">openssl req -new -x509 -days 365 -key ca.key -out ca.crt -subj &quot;/CN=MyCA&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">生成服务器证书</span><br><span class="line">openssl genrsa -out server.key 2048</span><br><span class="line">openssl req -new -key server.key -out server.csr -subj &quot;/CN=localhost&quot;</span><br><span class="line">openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">生成客户端证书</span><br><span class="line">openssl genrsa -out client.key 2048</span><br><span class="line">openssl req -new -key client.key -out client.csr -subj &quot;/CN=client&quot;</span><br><span class="line">openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 365</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="生成-CA-私钥和根证书"><a href="#生成-CA-私钥和根证书" class="headerlink" title="生成 CA 私钥和根证书"></a>生成 CA 私钥和根证书</h4><p>生成 CA 私钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out ca.key 2048</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>genrsa</code></td>
+<td align="center">生成 RSA 私钥的命令</td>
+</tr>
+<tr>
+<td align="center"><code>-out</code></td>
+<td align="center">指定输出文件名（此处为 <code>ca.key</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>2048</code></td>
+<td align="center">密钥长度（位），2048 是当前安全标准的最小推荐值</td>
+</tr>
+</tbody></table>
+<h4 id="生成自签名根证书"><a href="#生成自签名根证书" class="headerlink" title="生成自签名根证书"></a>生成自签名根证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -x509 -days 365 -key ca.key -out ca.crt -subj <span class="string">&quot;/CN=MyCA&quot;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>req</code></td>
+<td align="center">证书请求命令</td>
+</tr>
+<tr>
+<td align="center"><code>-new</code></td>
+<td align="center">创建新请求</td>
+</tr>
+<tr>
+<td align="center"><code>-x509</code></td>
+<td align="center">直接输出 X.509 证书（用于创建自签名证书）</td>
+</tr>
+<tr>
+<td align="center"><code>-days 365</code></td>
+<td align="center">证书有效期（天）</td>
+</tr>
+<tr>
+<td align="center"><code>-key</code></td>
+<td align="center">指定私钥文件（用于签名证书）</td>
+</tr>
+<tr>
+<td align="center"><code>-out</code></td>
+<td align="center">输出证书文件</td>
+</tr>
+<tr>
+<td align="center"><code>-subj</code></td>
+<td align="center">指定证书主题（Subject），<code>/CN=MyCA</code> 设置通用名（CA 的标识名）</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="生成服务器证书"><a href="#生成服务器证书" class="headerlink" title="生成服务器证书"></a><strong>生成服务器证书</strong></h4><p>生成服务器私钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out server.key 2048</span><br></pre></td></tr></table></figure>
+
+<p>（参数同 CA 私钥生成）</p>
+<p>创建证书签名请求 (CSR)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -key server.key -out server.csr -subj <span class="string">&quot;/CN=localhost&quot;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-key</code></td>
+<td align="center">指定服务器私钥文件</td>
+</tr>
+<tr>
+<td align="center"><code>-out</code></td>
+<td align="center">输出 CSR 文件</td>
+</tr>
+<tr>
+<td align="center"><code>-subj</code></td>
+<td align="center">设置服务器标识，<code>/CN=localhost</code> 表示该证书用于 <code>localhost</code> 域名</td>
+</tr>
+</tbody></table>
+<p>用 CA 签发服务器证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -<span class="keyword">in</span> server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>x509</code></td>
+<td align="center">证书操作命令</td>
+</tr>
+<tr>
+<td align="center"><code>-req</code></td>
+<td align="center">输入是 CSR 文件</td>
+</tr>
+<tr>
+<td align="center"><code>-in</code></td>
+<td align="center">指定输入的 CSR 文件</td>
+</tr>
+<tr>
+<td align="center"><code>-CA</code></td>
+<td align="center">指定 CA 的证书文件</td>
+</tr>
+<tr>
+<td align="center"><code>-CAkey</code></td>
+<td align="center">指定 CA 的私钥文件</td>
+</tr>
+<tr>
+<td align="center"><code>-CAcreateserial</code></td>
+<td align="center">自动创建&#x2F;更新序列号文件（<code>ca.srl</code>，用于避免证书序列号重复）</td>
+</tr>
+<tr>
+<td align="center"><code>-out</code></td>
+<td align="center">输出签发的证书文件</td>
+</tr>
+<tr>
+<td align="center"><code>-days 365</code></td>
+<td align="center">证书有效期</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="生成客户端证书"><a href="#生成客户端证书" class="headerlink" title="生成客户端证书"></a><strong>生成客户端证书</strong></h4><p>生成客户端私钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -out client.key 2048</span><br></pre></td></tr></table></figure>
+
+
+
+<p>创建客户端 CSR</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -key client.key -out client.csr -subj <span class="string">&quot;/CN=client&quot;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">关键区别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-subj</code></td>
+<td align="center">此处 <code>/CN=client</code> 表示这是客户端证书，标识客户端身份（不同于服务器证书）</td>
+</tr>
+</tbody></table>
+<p>用 CA 签发客户端证书</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -<span class="keyword">in</span> client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 365</span><br></pre></td></tr></table></figure>
+
+<p>（参数与服务器证书签发完全相同）</p>
+<hr>
+<h4 id="关键参数深度解析"><a href="#关键参数深度解析" class="headerlink" title="关键参数深度解析"></a><strong>关键参数深度解析</strong></h4><h5 id="关于-subj-字段"><a href="#关于-subj-字段" class="headerlink" title="关于 -subj 字段"></a>关于 <code>-subj</code> 字段</h5><p>完整的 Subject 可包含更多信息（用 <code>/</code> 分隔）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-subj <span class="string">&quot;/C=CN/ST=Beijing/L=Haidian/O=My Company/OU=Dev/CN=example.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">字段</th>
+<th align="center">含义</th>
+<th align="center">示例值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>C</code></td>
+<td align="center">国家（Country）</td>
+<td align="center">CN</td>
+</tr>
+<tr>
+<td align="center"><code>ST</code></td>
+<td align="center">州&#x2F;省（State）</td>
+<td align="center">Beijing</td>
+</tr>
+<tr>
+<td align="center"><code>L</code></td>
+<td align="center">城市（Locality）</td>
+<td align="center">Haidian</td>
+</tr>
+<tr>
+<td align="center"><code>O</code></td>
+<td align="center">组织（Organization）</td>
+<td align="center">My Company</td>
+</tr>
+<tr>
+<td align="center"><code>OU</code></td>
+<td align="center">部门（Organizational Unit）</td>
+<td align="center">Dev</td>
+</tr>
+<tr>
+<td align="center"><code>CN</code></td>
+<td align="center">通用名（Common Name）</td>
+<td align="center">example.com</td>
+</tr>
+</tbody></table>
+<hr>
+<h5 id="关于-CAcreateserial"><a href="#关于-CAcreateserial" class="headerlink" title="关于 -CAcreateserial"></a>关于 <code>-CAcreateserial</code></h5><ul>
+<li><p>首次运行时会创建 <code>ca.srl</code> 文件（包含十六进制序列号，如 <code>01</code>）</p>
+</li>
+<li><p>后续签发证书时序列号会自动递增，OpenSSL 会读取并更新其中的值。</p>
+</li>
+<li><p><code>.srl</code> 文件是 <strong>证书序列号文件</strong>（Serial Number File），主要用于 <strong>OpenSSL</strong> 在签发证书时跟踪已使用的序列号，避免重复。以下是详细解析：</p>
+</li>
+<li><p><code>.srl</code> 的作用</p>
+<ul>
+<li><strong>记录序列号</strong>：存储一个十六进制数值（如 <code>00</code> 或随机数），作为证书的唯一标识。</li>
+<li><strong>防重复</strong>：每次签发新证书时，OpenSSL 会读取 <code>.srl</code> 中的值并递增，确保每个证书的序列号唯一。</li>
+<li><strong>场景</strong>：在 <strong>CA（证书颁发机构）</strong> 或自签名证书过程中自动生成。</li>
+</ul>
+</li>
+<li><p>也可手动指定序列号文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-CAserial ca.srl</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>注意事项</p>
+<ul>
+<li><p><strong>文件位置</strong>：</p>
+<ul>
+<li><p>通常与 CA 证书（<code>ca.crt</code>）和私钥（<code>ca.key</code>）放在同一目录。</p>
+</li>
+<li><p>可通过 <code>-CAserial</code> 指定自定义路径。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>手动修改风险</strong>：</p>
+<ul>
+<li>直接编辑 <code>.srl</code> 可能导致序列号冲突（如重复或跳跃），建议由 OpenSSL 自动管理。</li>
+</ul>
+</li>
+<li><p><strong>非必要文件</strong>：</p>
+<ul>
+<li>如果仅签发少量证书，可用 <code>-CAcreateserial</code> 替代，无需长期维护 <code>.srl</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h5 id="关于密钥长度（2048）"><a href="#关于密钥长度（2048）" class="headerlink" title="关于密钥长度（2048）"></a>关于密钥长度（2048）</h5><ul>
+<li><strong>2048-bit RSA</strong>：当前最低安全标准（有效期建议 ≤ 3 年）</li>
+<li><strong>3072&#x2F;4096-bit</strong>：更高安全性（但性能略有下降）</li>
+<li>过时的 <strong>1024-bit</strong>：已不安全，应避免使用</li>
+</ul>
+<h4 id="常见问题解答"><a href="#常见问题解答" class="headerlink" title="常见问题解答"></a><strong>常见问题解答</strong></h4><p><strong>Q1: 为什么需要 <code>-x509</code> 参数生成 CA 证书？</strong><br>A1: <code>-x509</code> 表示直接生成自签名证书（CA 证书不需要被其他机构签名）。</p>
+<p><strong>Q2: <code>-CAcreateserial</code> 不写会怎样？</strong><br>A2: 必须手动通过 <code>-set_serial</code> 指定序列号，否则报错（自动管理更安全方便）。</p>
+<p><strong>Q3: 证书有效期可以超过 1 年吗？</strong><br>A3: 可以（如 <code>-days 3650</code> 表示 10 年），但超过 825 天的证书会被 Chrome&#x2F;Firefox 标记为不安全。</p>
+<p><strong>Q4: 如何查看生成的证书内容？</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -<span class="keyword">in</span> server.crt -text -noout</span><br></pre></td></tr></table></figure>
+
+<p>掌握这些参数后，您可以根据实际需求灵活调整证书生成流程！</p>
+<h2 id="证书链签发模拟"><a href="#证书链签发模拟" class="headerlink" title="证书链签发模拟"></a>证书链签发模拟</h2><p>在 HTTPS 中签发<strong>证书链（Certificate Chain）</strong>，类似于学校层级（校长 → 学院 → 导员 → 学生），本质是构建一个**层级化的 PKI（公钥基础设施）**体系。以下是具体步骤和实现方法：</p>
+<hr>
+<h3 id="1-证书链的核心逻辑"><a href="#1-证书链的核心逻辑" class="headerlink" title="1. 证书链的核心逻辑"></a><strong>1. 证书链的核心逻辑</strong></h3><ul>
+<li><p><strong>层级关系</strong>：上级证书（CA）签发下级证书，形成信任链。</p>
+</li>
+<li></li>
+</ul>
+<p>  示例结构</p>
+<p>  ：</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根CA（自签名，校长） → 中间CA（学院） → 中间CA（导员） → 终端证书（学生）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>验证流程</strong>：浏览器会从终端证书逐级回溯验证，直到信任的根CA。</li>
+</ul>
+<hr>
+<h3 id="2-具体操作步骤（以-OpenSSL-为例）"><a href="#2-具体操作步骤（以-OpenSSL-为例）" class="headerlink" title="2. 具体操作步骤（以 OpenSSL 为例）"></a><strong>2. 具体操作步骤（以 OpenSSL 为例）</strong></h3><h4 id="步骤-1：创建根CA（校长）"><a href="#步骤-1：创建根CA（校长）" class="headerlink" title="步骤 1：创建根CA（校长）"></a><strong>步骤 1：创建根CA（校长）</strong></h4><p>bash</p>
+<p>复制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成根CA私钥</span></span><br><span class="line">openssl genrsa -out rootCA.key 4096</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自签名根CA证书（有效期10年）</span></span><br><span class="line">openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 3650 -out rootCA.crt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>关键参数</strong>：<code>-x509</code> 表示自签名，根CA无需被其他证书签发。</li>
+</ul>
+<h4 id="步骤-2：创建中间CA（学院）"><a href="#步骤-2：创建中间CA（学院）" class="headerlink" title="步骤 2：创建中间CA（学院）"></a><strong>步骤 2：创建中间CA（学院）</strong></h4><p>bash</p>
+<p>复制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成中间CA私钥</span></span><br><span class="line">openssl genrsa -out collegeCA.key 2048</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成中间CA的CSR（证书签名请求）</span></span><br><span class="line">openssl req -new -key collegeCA.key -out collegeCA.csr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用根CA签发中间CA证书</span></span><br><span class="line">openssl x509 -req -<span class="keyword">in</span> collegeCA.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out collegeCA.crt -days 1825 -sha256</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-3：创建二级中间CA（导员）"><a href="#步骤-3：创建二级中间CA（导员）" class="headerlink" title="步骤 3：创建二级中间CA（导员）"></a><strong>步骤 3：创建二级中间CA（导员）</strong></h4><p>bash</p>
+<p>复制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成导员CA私钥</span></span><br><span class="line">openssl genrsa -out teacherCA.key 2048</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成导员CA的CSR</span></span><br><span class="line">openssl req -new -key teacherCA.key -out teacherCA.csr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用学院导员CA证书</span></span><br><span class="line">openssl x509 -req -<span class="keyword">in</span> teacherCA.csr -CA collegeCA.crt -CAkey collegeCA.key -CAcreateserial -out teacherCA.crt -days 1825 -sha256</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-4：签发终端证书（学生）"><a href="#步骤-4：签发终端证书（学生）" class="headerlink" title="步骤 4：签发终端证书（学生）"></a><strong>步骤 4：签发终端证书（学生）</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成学生私钥</span></span><br><span class="line">openssl genrsa -out student.key 2048</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成学生的CSR</span></span><br><span class="line">openssl req -new -key student.key -out student.csr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用导员CA签发学生证书</span></span><br><span class="line">openssl x509 -req -<span class="keyword">in</span> student.csr -CA teacherCA.crt -CAkey teacherCA.key -CAcreateserial -out student.crt -days 365 -sha256</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-证书链的合并与部署"><a href="#3-证书链的合并与部署" class="headerlink" title="3. 证书链的合并与部署"></a><strong>3. 证书链的合并与部署</strong></h3><h4 id="合并证书链（PEM-格式）"><a href="#合并证书链（PEM-格式）" class="headerlink" title="合并证书链（PEM 格式）"></a><strong>合并证书链（PEM 格式）</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> student.crt teacherCA.crt collegeCA.crt &gt; chain.crt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>作用</strong>：将终端证书和所有中间CA证书按顺序合并，供服务器（如Nginx）使用。</li>
+</ul>
+<h4 id="Nginx-配置示例"><a href="#Nginx-配置示例" class="headerlink" title="Nginx 配置示例"></a><strong>Nginx 配置示例</strong></h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">ssl_certificate</span>     /path/to/chain.crt;  <span class="comment"># 包含完整证书链</span></span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /path/to/student.key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="验证证书链有效性"><a href="#验证证书链有效性" class="headerlink" title="验证证书链有效性"></a><strong>验证证书链有效性</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl verify -CAfile rootCA.crt -untrusted chain.crt student.crt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>输出 <code>OK</code> 表示链完整且可被信任。</li>
+</ul>
+<hr>
+<h3 id="4-关键注意事项"><a href="#4-关键注意事项" class="headerlink" title="4. 关键注意事项"></a><strong>4. 关键注意事项</strong></h3><ol>
+<li><p><strong>根CA的保密性</strong></p>
+<ul>
+<li>根CA私钥（<code>rootCA.key</code>）必须离线存储，仅用于签发中间CA。</li>
+</ul>
+</li>
+<li><p><strong>中间CA的生命周期</strong></p>
+<ul>
+<li>中间CA证书的有效期应短于根CA（如根CA10年，中间CA5年）。</li>
+</ul>
+</li>
+<li><p><strong>证书吊销列表（CRL&#x2F;OCSP）</strong></p>
+<ul>
+<li><p>层级化CA需配置吊销机制，防止下级证书被滥用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成CRL（证书吊销列表）</span></span><br><span class="line">openssl ca -gencrl -keyfile rootCA.key -cert rootCA.crt -out rootCA.crl</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>浏览器信任问题</strong></p>
+<ul>
+<li>自签名的根CA需手动导入到操作系统&#x2F;浏览器的<strong>信任存储</strong>中，否则会显示警告。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="5-实际应用场景"><a href="#5-实际应用场景" class="headerlink" title="5. 实际应用场景"></a><strong>5. 实际应用场景</strong></h3><h4 id="学校内网HTTPS"><a href="#学校内网HTTPS" class="headerlink" title="学校内网HTTPS"></a><strong>学校内网HTTPS</strong></h4><ol>
+<li><strong>校长（根CA）</strong>：签发学院CA证书。</li>
+<li><strong>学院（中间CA）</strong>：签发各系&#x2F;导员的子CA证书。</li>
+<li><strong>导员（终端CA）</strong>：为学生或设备签发终端证书。</li>
+<li><strong>学生</strong>：使用证书登录内网系统或加密通信。</li>
+</ol>
+<h4 id="企业级PKI"><a href="#企业级PKI" class="headerlink" title="企业级PKI"></a><strong>企业级PKI</strong></h4><ul>
+<li>类似逻辑可扩展至企业部门、云服务多租户等场景。</li>
+</ul>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ul>
+<li><strong>层级化签发</strong>：通过根CA → 中间CA → 终端证书构建信任链。</li>
+<li><strong>核心工具</strong>：OpenSSL 的 <code>req</code>、<code>x509</code> 和 <code>ca</code> 命令。</li>
+<li><strong>安全要点</strong>：保护根CA私钥、控制中间CA权限、合并完整证书链。</li>
+</ul>
+<p>通过这种结构，可以模拟学校层级的证书签发体系，同时满足HTTPS对证书链的验证需求。</p>
+<h2 id="通过命令生成的证书导入不同平台"><a href="#通过命令生成的证书导入不同平台" class="headerlink" title="通过命令生成的证书导入不同平台"></a>通过命令生成的证书导入不同平台</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">生成客户端证书</span><br><span class="line">openssl genrsa -out client.key 2048</span><br><span class="line">openssl req -new -key client.key -out client.csr -subj &quot;/CN=client&quot;</span><br><span class="line">openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 365</span><br></pre></td></tr></table></figure>
+
+
+
+<p>明白了！你只有通过以下命令生成的 <strong><code>client.key</code>（私钥）</strong> 和 <strong><code>client.crt</code>（证书）</strong>，没有 <code>.p12</code> 或 <code>.pfx</code> 文件。以下是直接使用 <strong><code>.crt</code> + <code>.key</code></strong> 在不同平台导入的方法：</p>
+<hr>
+<h3 id="1-通用准备"><a href="#1-通用准备" class="headerlink" title="1. 通用准备"></a><strong>1. 通用准备</strong></h3><p>将证书和私钥合并为 <strong>PEM 格式</strong>（部分平台需要）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> client.crt client.key &gt; client.pem</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-各平台导入方法"><a href="#2-各平台导入方法" class="headerlink" title="2. 各平台导入方法"></a><strong>2. 各平台导入方法</strong></h3><h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a><strong>Windows</strong></h4><h5 id="方法1：手动导入-crt-和-key"><a href="#方法1：手动导入-crt-和-key" class="headerlink" title="方法1：手动导入 .crt 和 .key"></a><strong>方法1：手动导入 <code>.crt</code> 和 <code>.key</code></strong></h5><ol>
+<li>导入证书（<code>.crt</code>）<ul>
+<li>双击 <code>client.crt</code> → 选择 <strong>本地计算机</strong> 或 <strong>当前用户</strong> → 存储位置选 <strong>个人</strong>。</li>
+</ul>
+</li>
+<li>关联私钥（<code>.key</code>）<ul>
+<li>需要将 <code>.key</code> 转换为 <code>.pfx</code>（见下文），或通过代码（如C#）直接加载文件。</li>
+</ul>
+</li>
+</ol>
+<h5 id="方法2：转换为-pfx-再导入（推荐）"><a href="#方法2：转换为-pfx-再导入（推荐）" class="headerlink" title="方法2：转换为 .pfx 再导入（推荐）"></a><strong>方法2：转换为 <code>.pfx</code> 再导入（推荐）</strong></h5><p>bash</p>
+<p>复制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -<span class="keyword">in</span> client.crt -inkey client.key -out client.pfx -password pass:123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>双击生成的 <code>client.pfx</code>，按向导导入即可。</li>
+</ul>
+<hr>
+<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a><strong>Linux</strong></h4><h5 id="方法1：直接使用文件（适用于命令行工具）"><a href="#方法1：直接使用文件（适用于命令行工具）" class="headerlink" title="方法1：直接使用文件（适用于命令行工具）"></a><strong>方法1：直接使用文件（适用于命令行工具）</strong></h5><ul>
+<li><p>curl&#x2F;wget</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cert client.crt --key client.key https://your-server.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Nginx&#x2F;Apache：在配置中指定路径：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ssl_certificate</span>     /path/to/client.crt;</span><br><span class="line"><span class="attribute">ssl_certificate_key</span> /path/to/client.key;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="方法2：系统级信任（可选）"><a href="#方法2：系统级信任（可选）" class="headerlink" title="方法2：系统级信任（可选）"></a><strong>方法2：系统级信任（可选）</strong></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将CA证书（ca.crt）加入系统信任</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">cp</span> ca.crt /usr/local/share/ca-certificates/</span><br><span class="line"><span class="built_in">sudo</span> update-ca-certificates</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Android"><a href="#Android" class="headerlink" title="Android"></a><strong>Android</strong></h4><h5 id="方法1：通过代码加载（适用于App开发）"><a href="#方法1：通过代码加载（适用于App开发）" class="headerlink" title="方法1：通过代码加载（适用于App开发）"></a><strong>方法1：通过代码加载（适用于App开发）</strong></h5><p>kotlin</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加载 PEM 格式的证书和私钥</span></span><br><span class="line"><span class="keyword">val</span> certificate = File(<span class="string">&quot;client.pem&quot;</span>).readBytes()</span><br><span class="line"><span class="keyword">val</span> key = File(<span class="string">&quot;client.key&quot;</span>).readBytes()</span><br></pre></td></tr></table></figure>
+
+<h5 id="方法2：转换为-p12-后导入"><a href="#方法2：转换为-p12-后导入" class="headerlink" title="方法2：转换为 .p12 后导入"></a><strong>方法2：转换为 <code>.p12</code> 后导入</strong></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -<span class="keyword">in</span> client.crt -inkey client.key -out client.p12 -password pass:123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 <code>client.p12</code> 传输到手机 → 进入 <strong>设置 → 安全 → 从存储设备安装</strong>。</li>
+</ul>
+<hr>
+<h4 id="iOS-macOS"><a href="#iOS-macOS" class="headerlink" title="iOS&#x2F;macOS"></a><strong>iOS&#x2F;macOS</strong></h4><h5 id="方法1：邮件或AirDrop发送-pem"><a href="#方法1：邮件或AirDrop发送-pem" class="headerlink" title="方法1：邮件或AirDrop发送 .pem"></a><strong>方法1：邮件或AirDrop发送 <code>.pem</code></strong></h5><ol>
+<li>将 <code>client.pem</code> 发送到设备 → 点击附件安装。</li>
+<li>输入密码（如果有）→ 信任证书（需在 <strong>设置 → 通用 → 关于 → 证书信任设置</strong> 中启用）。</li>
+</ol>
+<h5 id="方法2：转换为-p12-后导入-1"><a href="#方法2：转换为-p12-后导入-1" class="headerlink" title="方法2：转换为 .p12 后导入"></a><strong>方法2：转换为 <code>.p12</code> 后导入</strong></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -<span class="keyword">in</span> client.crt -inkey client.key -out client.p12 -password pass:123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过邮件发送 <code>.p12</code> → 在iOS上点击安装。</li>
+</ul>
+<hr>
+<h3 id="3-关键注意事项"><a href="#3-关键注意事项" class="headerlink" title="3. 关键注意事项"></a><strong>3. 关键注意事项</strong></h3><ol>
+<li>私钥保护：<ul>
+<li><code>.key</code> 文件必须严格保密，建议转换为密码保护的 <code>.p12</code> 后再分发。</li>
+</ul>
+</li>
+<li>格式兼容性：<ul>
+<li>Windows&#x2F;iOS 更依赖 <code>.pfx</code>&#x2F;<code>.p12</code>，Linux&#x2F;Android 可直接使用 <code>.crt</code> + <code>.key</code>。</li>
+</ul>
+</li>
+<li>CA信任：<ul>
+<li>确保设备的信任存储中已导入你的 <code>ca.crt</code>（根证书），否则会报错。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-验证是否导入成功"><a href="#4-验证是否导入成功" class="headerlink" title="4. 验证是否导入成功"></a><strong>4. 验证是否导入成功</strong></h3><ul>
+<li><p><strong>Windows</strong>：运行 <code>certmgr.msc</code>，查看 <strong>个人</strong> 证书列表。</p>
+</li>
+<li><p>Linux：使用 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl</span><br></pre></td></tr></table></figure>
+
+<p>命令测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect your-server:443 -cert client.crt -key client.key -CAfile ca.crt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>iOS&#x2F;Android</strong>：尝试访问HTTPS服务，检查是否弹出证书选择框。</p>
+</li>
+</ul>
+<hr>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a><strong>总结</strong></h3><ul>
+<li><strong>最佳实践</strong>：优先转换为 <code>.p12</code>&#x2F;<code>.pfx</code> 格式（密码保护），兼容所有平台。</li>
+<li><strong>直接使用场景</strong>：Linux&#x2F;Android 可直接操作 <code>.crt</code> + <code>.key</code> 文件。</li>
+<li><strong>安全提醒</strong>：私钥（<code>.key</code>）绝不能明文传输！</li>
+</ul>
+<h2 id="burp导入的证书"><a href="#burp导入的证书" class="headerlink" title="burp导入的证书"></a>burp导入的证书</h2><h3 id="根证书（CA-Certificate）"><a href="#根证书（CA-Certificate）" class="headerlink" title="** 根证书（CA Certificate）**"></a>** 根证书（CA Certificate）**</h3><ul>
+<li><strong>文件格式</strong>：<code>.cer</code>、<code>.pem</code>、<code>.der</code>（Burp Suite 默认导出 <code>.cer</code> 或 <code>.pem</code>）</li>
+<li>作用：<ul>
+<li>Burp Suite 会生成一个 <strong>自签名的根CA证书</strong>（如 <code>PortSwigger CA</code>）。</li>
+<li>设备信任该证书后，Burp Suite 可以动态签发任意域名的 <strong>伪造证书</strong>（用于解密HTTPS流量）。</li>
+</ul>
+</li>
+<li>如何获取：<ul>
+<li><strong>Burp Suite</strong>：访问 <code>http://burpsuite</code> → 下载 <code>cacert.der</code> 或 <code>cacert.pem</code>。</li>
+<li><strong>Fiddler</strong>：访问 <code>http://127.0.0.1:8888</code> → 下载 <code>FiddlerRoot.cer</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="动态生成的站点证书"><a href="#动态生成的站点证书" class="headerlink" title="**  动态生成的站点证书**"></a>**  动态生成的站点证书**</h3><ul>
+<li><p>生成方式：</p>
+<ul>
+<li>当你访问 <code>https://example.com</code> 时，Burp Suite 会用它的根CA签发一个伪造的 <code>example.com</code> 证书。</li>
+<li>该证书的 <strong>公钥</strong> 由 Burp Suite 控制，因此可以解密流量。</li>
+</ul>
+</li>
+<li><p>证书链：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">伪造的 example.com 证书 ← Burp Suite 根CA证书</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="如何绕过服务器对burp等mitm代理检测"><a href="#如何绕过服务器对burp等mitm代理检测" class="headerlink" title="如何绕过服务器对burp等mitm代理检测"></a>如何绕过服务器对burp等mitm代理检测</h2><h3 id="1-证书固定（Certificate-Pinning）"><a href="#1-证书固定（Certificate-Pinning）" class="headerlink" title="1. 证书固定（Certificate Pinning）"></a><strong>1. 证书固定（Certificate Pinning）</strong></h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li>服务器或客户端（如App）会预先存储合法的证书公钥或CA信息，仅信任特定的证书链。</li>
+<li>当你使用Burp Suite代理时，Burp会动态生成伪造的证书（由 <code>PortSwigger CA</code> 签发），但客户端&#x2F;服务器发现证书不匹配，就会拒绝连接。</li>
+</ul>
+<h4 id="如何检测"><a href="#如何检测" class="headerlink" title="如何检测"></a><strong>如何检测</strong></h4><ul>
+<li><p>HTTP公钥固定（HPKP）（已弃用，但部分系统仍支持）：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Public-Key-Pins</span><span class="punctuation">: </span>pin-sha256=&quot;base64==&quot;; max-age=5184000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Android&#x2F;iOS App 内置证书：</p>
+<ul>
+<li>许多App（如银行、支付类）硬编码了合法证书的指纹，Burp的伪造证书无法通过验证。</li>
+</ul>
+</li>
+</ul>
+<h4 id="绕过方法（仅限授权测试）"><a href="#绕过方法（仅限授权测试）" class="headerlink" title="绕过方法（仅限授权测试）"></a><strong>绕过方法（仅限授权测试）</strong></h4><ul>
+<li><strong>Android</strong>：使用 <code>Frida</code> 或 <code>Objection</code> 钩子（Hook）证书检查逻辑。</li>
+<li><strong>iOS</strong>：越狱后使用 <code>SSL Kill Switch</code> 禁用证书固定。</li>
+<li><strong>浏览器</strong>：手动删除HPKP头或修改HSTS策略（Chrome DevTools）。</li>
+</ul>
+<hr>
+<h3 id="2-TLS指纹检测（JA3-JA3S）"><a href="#2-TLS指纹检测（JA3-JA3S）" class="headerlink" title="2. TLS指纹检测（JA3&#x2F;JA3S）"></a><strong>2. TLS指纹检测（JA3&#x2F;JA3S）</strong></h3><h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li>Burp Suite 的TLS握手行为（如支持的加密套件、扩展）与正常浏览器&#x2F;客户端不同，服务器可以通过 <strong>JA3指纹</strong> 识别异常。</li>
+<li>例如：<ul>
+<li>Burp默认使用 <code>TLS_RSA_WITH_AES_128_CBC_SHA</code>（较弱的套件）。</li>
+<li>现代浏览器使用 <code>TLS_AES_128_GCM_SHA256</code>（TLS 1.3）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="如何检测-1"><a href="#如何检测-1" class="headerlink" title="如何检测"></a><strong>如何检测</strong></h4><ul>
+<li>服务器分析客户端的TLS握手包，匹配已知代理工具的指纹库（如Burp、Fiddler、Charles）。</li>
+</ul>
+<h4 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a><strong>绕过方法</strong></h4><ul>
+<li><p>修改Burp的TLS指纹：</p>
+<ul>
+<li>使用插件（如 <code>Bypass TLS Fingerprinting</code>）模拟浏览器指纹。</li>
+<li>手动配置Burp的TLS套件（需修改Burp源码）。</li>
+</ul>
+</li>
+<li><p>使用真实浏览器代理：</p>
+<ul>
+<li>通过 <code>Chrome + SwitchyOmega</code> 转发流量到Burp，保留浏览器原生TLS行为。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-HTTP头检测"><a href="#3-HTTP头检测" class="headerlink" title="3. HTTP头检测"></a><strong>3. HTTP头检测</strong></h3><h4 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li>Burp Suite 默认会在请求中添加或修改某些HTTP头，例如：<ul>
+<li><code>Via: 1.1 burp</code>（显式暴露代理）。</li>
+<li><code>X-Forwarded-For: 127.0.0.1</code>（可能被服务器标记）。</li>
+</ul>
+</li>
+<li>服务器检查这些头字段，发现异常后拦截请求。</li>
+</ul>
+<h4 id="如何检测-2"><a href="#如何检测-2" class="headerlink" title="如何检测"></a><strong>如何检测</strong></h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>example.com</span><br><span class="line"><span class="attribute">Via</span><span class="punctuation">: </span>1.1 burp  # ← 服务器识别到Burp的标记</span><br></pre></td></tr></table></figure>
+
+<h4 id="绕过方法-1"><a href="#绕过方法-1" class="headerlink" title="绕过方法"></a><strong>绕过方法</strong></h4><ul>
+<li><p>Burp Suite 配置：</p>
+<ul>
+<li>进入 <code>Proxy → Options → Match and Replace</code>，删除或修改敏感头字段。</li>
+</ul>
+</li>
+<li><p>禁用 <code>Support invisible proxying</code> 避免自动添加头。</p>
+</li>
+</ul>
+<hr>
+<h3 id="4-IP-行为异常检测"><a href="#4-IP-行为异常检测" class="headerlink" title="4. IP&#x2F;行为异常检测"></a><strong>4. IP&#x2F;行为异常检测</strong></h3><h4 id="原理-3"><a href="#原理-3" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li><strong>IP信誉库</strong>：服务器发现请求来自已知代理&#x2F;VPN IP（如Burp默认的 <code>127.0.0.1:8080</code>）。</li>
+<li><strong>请求频率异常</strong>：Burp的自动化扫描工具（如Intruder）会发送大量请求，触发风控。</li>
+</ul>
+<h4 id="如何检测-3"><a href="#如何检测-3" class="headerlink" title="如何检测"></a><strong>如何检测</strong></h4><ul>
+<li>云服务商（如Cloudflare）会标记代理IP并返回 <code>403 Forbidden</code>。</li>
+<li>服务器监控请求速率，异常流量触发CAPTCHA或封禁。</li>
+</ul>
+<h4 id="绕过方法-2"><a href="#绕过方法-2" class="headerlink" title="绕过方法"></a><strong>绕过方法</strong></h4><ul>
+<li><strong>使用真实IP</strong>：关闭Burp的全局代理，仅针对特定进程代理（如 <code>Proxifier</code>）。</li>
+<li><strong>降低请求频率</strong>：在Burp的Intruder中设置延迟（<code>Options → Request Throttle</code>）。</li>
+</ul>
+<hr>
+<h3 id="5-HSTS（HTTP严格传输安全）"><a href="#5-HSTS（HTTP严格传输安全）" class="headerlink" title="5. HSTS（HTTP严格传输安全）"></a><strong>5. HSTS（HTTP严格传输安全）</strong></h3><h4 id="原理-4"><a href="#原理-4" class="headerlink" title="原理"></a><strong>原理</strong></h4><ul>
+<li>服务器响应头包含 <code>Strict-Transport-Security</code>，强制浏览器仅通过HTTPS访问。</li>
+<li>如果Burp的证书不受信任，浏览器会直接拒绝连接（无法降级到HTTP）。</li>
+</ul>
+<h4 id="如何检测-4"><a href="#如何检测-4" class="headerlink" title="如何检测"></a><strong>如何检测</strong></h4><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Strict-Transport-Security</span><span class="punctuation">: </span>max-age=31536000; includeSubDomains</span><br></pre></td></tr></table></figure>
+
+<h4 id="绕过方法-3"><a href="#绕过方法-3" class="headerlink" title="绕过方法"></a><strong>绕过方法</strong></h4><ul>
+<li><p>清除浏览器HSTS缓存：</p>
+<ul>
+<li>Chrome访问 <code>chrome://net-internals/#hsts</code>，删除域名记录。</li>
+</ul>
+</li>
+<li><p>使用自定义Hosts文件：</p>
+<ul>
+<li>将目标域名解析到本地，强制HTTP访问（仅限测试环境）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="总结：为什么服务器能发现Burp代理？"><a href="#总结：为什么服务器能发现Burp代理？" class="headerlink" title="总结：为什么服务器能发现Burp代理？"></a><strong>总结：为什么服务器能发现Burp代理？</strong></h3><table>
+<thead>
+<tr>
+<th align="center"><strong>检测手段</strong></th>
+<th align="center"><strong>原理</strong></th>
+<th align="center"><strong>绕过方法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>证书固定</strong></td>
+<td align="center">客户端&#x2F;服务器校验证书指纹</td>
+<td align="center">修改客户端代码（Frida&#x2F;Objection）</td>
+</tr>
+<tr>
+<td align="center"><strong>TLS指纹</strong></td>
+<td align="center">分析TLS握手行为（JA3&#x2F;JA3S）</td>
+<td align="center">模拟浏览器指纹或使用真实浏览器代理</td>
+</tr>
+<tr>
+<td align="center"><strong>HTTP头标记</strong></td>
+<td align="center">检测 <code>Via</code>、<code>X-Forwarded-For</code> 等头</td>
+<td align="center">删除或替换敏感头字段</td>
+</tr>
+<tr>
+<td align="center"><strong>IP&#x2F;行为风控</strong></td>
+<td align="center">代理IP或异常请求频率触发拦截</td>
+<td align="center">降低扫描速率或使用真实IP</td>
+</tr>
+<tr>
+<td align="center"><strong>HSTS</strong></td>
+<td align="center">强制HTTPS，阻止MITM降级攻击</td>
+<td align="center">清除HSTS缓存或本地Hosts劫持</td>
+</tr>
+</tbody></table>
+<h2 id="防御MITM代理"><a href="#防御MITM代理" class="headerlink" title="防御MITM代理"></a>防御MITM代理</h2><h3 id="1-检测方法"><a href="#1-检测方法" class="headerlink" title="1. 检测方法"></a><strong>1. 检测方法</strong></h3><h4 id="1-检查客户端证书链（Certificate-Chain）"><a href="#1-检查客户端证书链（Certificate-Chain）" class="headerlink" title="(1) 检查客户端证书链（Certificate Chain）"></a><strong>(1) 检查客户端证书链（Certificate Chain）</strong></h4><h5 id="原理-5"><a href="#原理-5" class="headerlink" title="原理"></a><strong>原理</strong></h5><ul>
+<li>如果客户端信任了Burp的根证书（如 <code>PortSwigger CA</code>），它在TLS握手时会接受Burp签发的伪造证书。</li>
+<li>钓鱼服务器可以检查客户端提交的证书链，如果发现证书由 <strong>Burp Suite 的CA签发</strong>（而非合法CA如 Let’s Encrypt、DigiCert），则可判定存在代理。</li>
+</ul>
+<h5 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a><strong>实现方式</strong></h5><ul>
+<li><p>服务端代码示例（Node.js）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tls = <span class="built_in">require</span>(<span class="string">&#x27;tls&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> server = tls.<span class="title function_">createServer</span>(&#123;</span><br><span class="line">  <span class="attr">key</span>: serverKey,</span><br><span class="line">  <span class="attr">cert</span>: serverCert,</span><br><span class="line">  <span class="attr">requestCert</span>: <span class="literal">true</span>, <span class="comment">// 要求客户端证书</span></span><br><span class="line">  <span class="attr">rejectUnauthorized</span>: <span class="literal">false</span> <span class="comment">// 不强制验证客户端证书</span></span><br><span class="line">&#125;, <span class="function">(<span class="params">socket</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> clientCert = socket.<span class="title function_">getPeerCertificate</span>();</span><br><span class="line">  <span class="keyword">if</span> (clientCert.<span class="property">issuer</span>.<span class="property">CN</span> === <span class="string">&#x27;PortSwigger CA&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[!] 检测到Burp证书:&#x27;</span>, clientCert.<span class="property">subject</span>.<span class="property">CN</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">443</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="2-检查TLS指纹（JA3-JA3S）"><a href="#2-检查TLS指纹（JA3-JA3S）" class="headerlink" title="(2) 检查TLS指纹（JA3&#x2F;JA3S）"></a><strong>(2) 检查TLS指纹（JA3&#x2F;JA3S）</strong></h4><h5 id="原理-6"><a href="#原理-6" class="headerlink" title="原理"></a><strong>原理</strong></h5><ul>
+<li>Burp Suite 的TLS握手行为（如加密套件、扩展字段）与正常浏览器&#x2F;客户端不同，可通过 <strong>JA3指纹</strong> 识别。</li>
+<li>钓鱼服务器可以比对客户端的TLS指纹是否匹配已知代理工具（如Burp、Fiddler）。</li>
+</ul>
+<h5 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a><strong>实现方式</strong></h5><ul>
+<li><p>使用开源库（如 <code>ja3</code>）计算指纹：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ja3 <span class="keyword">import</span> JA3</span><br><span class="line"><span class="comment"># 捕获客户端TLS握手包，计算JA3指纹</span></span><br><span class="line">ja3_hash = JA3().calculate(packet)</span><br><span class="line"><span class="keyword">if</span> ja3_hash <span class="keyword">in</span> KNOWN_BURP_JA3_HASHES:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[!] 检测到Burp代理&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="3-检查HTTP请求头"><a href="#3-检查HTTP请求头" class="headerlink" title="(3) 检查HTTP请求头"></a><strong>(3) 检查HTTP请求头</strong></h4><h5 id="原理-7"><a href="#原理-7" class="headerlink" title="原理"></a><strong>原理</strong></h5><ul>
+<li>Burp Suite 默认会在HTTP请求中添加某些头字段（如 <code>Via: 1.1 burp</code>），或修改&#x2F;删除正常浏览器的头（如 <code>User-Agent</code>）。</li>
+<li>钓鱼服务器可检查这些异常标记。</li>
+</ul>
+<h5 id="检测逻辑"><a href="#检测逻辑" class="headerlink" title="检测逻辑"></a><strong>检测逻辑</strong></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&quot;Via&quot;</span> <span class="keyword">in</span> request.headers <span class="keyword">and</span> <span class="string">&quot;burp&quot;</span> <span class="keyword">in</span> request.headers[<span class="string">&quot;Via&quot;</span>]:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[!] 检测到Burp代理头&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="4-证书透明度日志（Certificate-Transparency-CT）"><a href="#4-证书透明度日志（Certificate-Transparency-CT）" class="headerlink" title="(4) 证书透明度日志（Certificate Transparency, CT）"></a><strong>(4) 证书透明度日志（Certificate Transparency, CT）</strong></h4><h5 id="原理-8"><a href="#原理-8" class="headerlink" title="原理"></a><strong>原理</strong></h5><ul>
+<li>合法CA签发的证书会公开记录在 <strong>CT日志</strong>（如 crt.sh）。</li>
+<li>Burp Suite 的伪造证书不会出现在CT日志中，服务器可通过查询证书的序列号或域名判断是否为伪造。</li>
+</ul>
+<h5 id="实现方式-2"><a href="#实现方式-2" class="headerlink" title="实现方式"></a><strong>实现方式</strong></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询证书是否在CT日志中（例如使用 crt.sh API）</span></span><br><span class="line">curl <span class="string">&quot;https://crt.sh/?q=example.com&quot;</span> | grep <span class="string">&quot;PortSwigger&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="5-证书公钥指纹比对"><a href="#5-证书公钥指纹比对" class="headerlink" title="(5) 证书公钥指纹比对"></a><strong>(5) 证书公钥指纹比对</strong></h4><h5 id="原理-9"><a href="#原理-9" class="headerlink" title="原理"></a><strong>原理</strong></h5><ul>
+<li>钓鱼服务器可预先存储目标域名的 <strong>合法证书公钥指纹</strong>（如SHA-256）。</li>
+<li>如果客户端提交的证书公钥指纹与合法证书不匹配，则可能被代理篡改。</li>
+</ul>
+<h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a><strong>代码示例</strong></h4><p>python</p>
+<p>复制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_cert_fingerprint</span>(<span class="params">cert_pem</span>):</span><br><span class="line">    pubkey = cert_pem.split(<span class="string">&quot;-----BEGIN CERTIFICATE-----&quot;</span>)[<span class="number">1</span>]</span><br><span class="line">    fingerprint = hashlib.sha256(pubkey.encode()).hexdigest()</span><br><span class="line">    <span class="keyword">if</span> fingerprint != LEGIT_FINGERPRINT:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[!] 证书指纹不匹配，可能被Burp代理&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-防御者的应对措施"><a href="#2-防御者的应对措施" class="headerlink" title="2. 防御者的应对措施"></a><strong>2. 防御者的应对措施</strong></h3><p>如果攻击者（你）的钓鱼服务器检测到Burp证书，可以采取以下策略：</p>
+<ol>
+<li><strong>记录并阻断</strong>：记录IP或会话，后续请求直接返回错误（如 <code>403 Forbidden</code>）。</li>
+<li><strong>返回虚假数据</strong>：向Burp用户返回误导性信息（如伪造的登录页面）。</li>
+<li><strong>触发警报</strong>：通知安全团队有测试人员&#x2F;攻击者在探测系统。</li>
+</ol>
+<hr>
+<h3 id="3-如何绕过检测？（攻击者视角）"><a href="#3-如何绕过检测？（攻击者视角）" class="headerlink" title="3. 如何绕过检测？（攻击者视角）"></a><strong>3. 如何绕过检测？（攻击者视角）</strong></h3><p>如果攻击者希望避免被钓鱼服务器检测到Burp证书，可尝试：</p>
+<ol>
+<li><p>禁用Burp的CA证书：</p>
+<ul>
+<li>在Burp Suite 中关闭 <code>Proxy → Options → TLS Pass Through</code>，避免拦截特定域名。</li>
+</ul>
+</li>
+<li><p>使用真实浏览器代理：</p>
+<ul>
+<li>通过 <code>Chrome + SwitchyOmega</code> 转发流量到Burp，保留原生TLS指纹。</li>
+</ul>
+</li>
+<li><p>修改TLS指纹：</p>
+<ul>
+<li>使用插件（如 <code>Bypass TLS Fingerprinting</code>）模拟浏览器行为。</li>
+</ul>
+</li>
+<li><p>删除敏感HTTP头：</p>
+<ul>
+<li>在Burp的 <code>Match and Replace</code> 规则中删除 <code>Via</code>、<code>X-Forwarded-For</code> 等头。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a><strong>总结</strong></h3><table>
+<thead>
+<tr>
+<th align="center"><strong>检测手段</strong></th>
+<th align="center"><strong>攻击者如何绕过</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">检查证书链（Burp CA签发）</td>
+<td align="center">禁用Burp拦截或使用合法证书</td>
+</tr>
+<tr>
+<td align="center">TLS指纹（JA3&#x2F;JA3S）</td>
+<td align="center">模拟浏览器指纹或使用真实浏览器代理</td>
+</tr>
+<tr>
+<td align="center">HTTP头（如 <code>Via: burp</code>）</td>
+<td align="center">删除或修改敏感头字段</td>
+</tr>
+<tr>
+<td align="center">证书透明度（CT日志）</td>
+<td align="center">无法绕过（需使用合法CA证书）</td>
+</tr>
+<tr>
+<td align="center">公钥指纹比对</td>
+<td align="center">使用目标域名的真实证书（如SSL剥离攻击）</td>
+</tr>
+</tbody></table>
+<h4 id="关键结论"><a href="#关键结论" class="headerlink" title="关键结论"></a><strong>关键结论</strong></h4><ul>
+<li><strong>Burp Suite 的证书容易被检测</strong>：因其CA名称、TLS指纹、HTTP头等特征明显。</li>
+<li><strong>高安全目标系统（如银行）</strong>：通常会启用证书固定+JA3检测，Burp直接拦截会失败。</li>
+<li><strong>隐蔽性建议</strong>：尽量模拟合法流量，或使用更底层的流量劫持工具（如 <code>mitmproxy</code> + 自定义TLS栈）。</li>
+</ul>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/04/18/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/hacktb/%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%86%AC%E5%AD%A3%E8%B5%9B_NetHttP/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">hacktb_春秋杯_NetHttP</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/04/18</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/04/09/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/hacktb/ctf%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">hacktb_ctf流量分析</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/04/09</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="双向tls认证"><a rel="nofollow" class="trm-toc-link" href="#双向tls认证"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">双向tls认证</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">定义</span></a></li><li class="trm-toc-item trm-toc-level-3" title="后端代码"><a rel="nofollow" class="trm-toc-link" href="#后端代码"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">后端代码</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="证书生成"><a rel="nofollow" class="trm-toc-link" href="#证书生成"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">证书生成</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="常规部署"><a rel="nofollow" class="trm-toc-link" href="#常规部署"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">常规部署</span></a></li><li class="trm-toc-item trm-toc-level-3" title="概念分类"><a rel="nofollow" class="trm-toc-link" href="#概念分类"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">概念分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="key 私钥文件"><a rel="nofollow" class="trm-toc-link" href="#key-私钥文件"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">key 私钥文件</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="证书签发"><a rel="nofollow" class="trm-toc-link" href="#证书签发"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">证书签发</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="生成 CA 私钥和根证书"><a rel="nofollow" class="trm-toc-link" href="#生成-CA-私钥和根证书"><span class="trm-toc-number">2.3.1.</span> <span class="trm-toc-text">生成 CA 私钥和根证书</span></a></li><li class="trm-toc-item trm-toc-level-4" title="生成自签名根证书"><a rel="nofollow" class="trm-toc-link" href="#生成自签名根证书"><span class="trm-toc-number">2.3.2.</span> <span class="trm-toc-text">生成自签名根证书</span></a></li><li class="trm-toc-item trm-toc-level-4" title="生成服务器证书"><a rel="nofollow" class="trm-toc-link" href="#生成服务器证书"><span class="trm-toc-number">2.3.3.</span> <span class="trm-toc-text">生成服务器证书</span></a></li><li class="trm-toc-item trm-toc-level-4" title="生成客户端证书"><a rel="nofollow" class="trm-toc-link" href="#生成客户端证书"><span class="trm-toc-number">2.3.4.</span> <span class="trm-toc-text">生成客户端证书</span></a></li><li class="trm-toc-item trm-toc-level-4" title="关键参数深度解析"><a rel="nofollow" class="trm-toc-link" href="#关键参数深度解析"><span class="trm-toc-number">2.3.5.</span> <span class="trm-toc-text">关键参数深度解析</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="关于 -subj 字段"><a rel="nofollow" class="trm-toc-link" href="#关于-subj-字段"><span class="trm-toc-number">2.3.5.1.</span> <span class="trm-toc-text">关于 -subj 字段</span></a></li><li class="trm-toc-item trm-toc-level-5" title="关于 -CAcreateserial"><a rel="nofollow" class="trm-toc-link" href="#关于-CAcreateserial"><span class="trm-toc-number">2.3.5.2.</span> <span class="trm-toc-text">关于 -CAcreateserial</span></a></li><li class="trm-toc-item trm-toc-level-5" title="关于密钥长度（2048）"><a rel="nofollow" class="trm-toc-link" href="#关于密钥长度（2048）"><span class="trm-toc-number">2.3.5.3.</span> <span class="trm-toc-text">关于密钥长度（2048）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="常见问题解答"><a rel="nofollow" class="trm-toc-link" href="#常见问题解答"><span class="trm-toc-number">2.3.6.</span> <span class="trm-toc-text">常见问题解答</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="证书链签发模拟"><a rel="nofollow" class="trm-toc-link" href="#证书链签发模拟"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">证书链签发模拟</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1. 证书链的核心逻辑"><a rel="nofollow" class="trm-toc-link" href="#1-证书链的核心逻辑"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">1. 证书链的核心逻辑</span></a></li><li class="trm-toc-item trm-toc-level-3" title="2. 具体操作步骤（以 OpenSSL 为例）"><a rel="nofollow" class="trm-toc-link" href="#2-具体操作步骤（以-OpenSSL-为例）"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">2. 具体操作步骤（以 OpenSSL 为例）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="步骤 1：创建根CA（校长）"><a rel="nofollow" class="trm-toc-link" href="#步骤-1：创建根CA（校长）"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text">步骤 1：创建根CA（校长）</span></a></li><li class="trm-toc-item trm-toc-level-4" title="步骤 2：创建中间CA（学院）"><a rel="nofollow" class="trm-toc-link" href="#步骤-2：创建中间CA（学院）"><span class="trm-toc-number">3.2.2.</span> <span class="trm-toc-text">步骤 2：创建中间CA（学院）</span></a></li><li class="trm-toc-item trm-toc-level-4" title="步骤 3：创建二级中间CA（导员）"><a rel="nofollow" class="trm-toc-link" href="#步骤-3：创建二级中间CA（导员）"><span class="trm-toc-number">3.2.3.</span> <span class="trm-toc-text">步骤 3：创建二级中间CA（导员）</span></a></li><li class="trm-toc-item trm-toc-level-4" title="步骤 4：签发终端证书（学生）"><a rel="nofollow" class="trm-toc-link" href="#步骤-4：签发终端证书（学生）"><span class="trm-toc-number">3.2.4.</span> <span class="trm-toc-text">步骤 4：签发终端证书（学生）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="3. 证书链的合并与部署"><a rel="nofollow" class="trm-toc-link" href="#3-证书链的合并与部署"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">3. 证书链的合并与部署</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="合并证书链（PEM 格式）"><a rel="nofollow" class="trm-toc-link" href="#合并证书链（PEM-格式）"><span class="trm-toc-number">3.3.1.</span> <span class="trm-toc-text">合并证书链（PEM 格式）</span></a></li><li class="trm-toc-item trm-toc-level-4" title="Nginx 配置示例"><a rel="nofollow" class="trm-toc-link" href="#Nginx-配置示例"><span class="trm-toc-number">3.3.2.</span> <span class="trm-toc-text">Nginx 配置示例</span></a></li><li class="trm-toc-item trm-toc-level-4" title="验证证书链有效性"><a rel="nofollow" class="trm-toc-link" href="#验证证书链有效性"><span class="trm-toc-number">3.3.3.</span> <span class="trm-toc-text">验证证书链有效性</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="4. 关键注意事项"><a rel="nofollow" class="trm-toc-link" href="#4-关键注意事项"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text">4. 关键注意事项</span></a></li><li class="trm-toc-item trm-toc-level-3" title="5. 实际应用场景"><a rel="nofollow" class="trm-toc-link" href="#5-实际应用场景"><span class="trm-toc-number">3.5.</span> <span class="trm-toc-text">5. 实际应用场景</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="学校内网HTTPS"><a rel="nofollow" class="trm-toc-link" href="#学校内网HTTPS"><span class="trm-toc-number">3.5.1.</span> <span class="trm-toc-text">学校内网HTTPS</span></a></li><li class="trm-toc-item trm-toc-level-4" title="企业级PKI"><a rel="nofollow" class="trm-toc-link" href="#企业级PKI"><span class="trm-toc-number">3.5.2.</span> <span class="trm-toc-text">企业级PKI</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="总结"><a rel="nofollow" class="trm-toc-link" href="#总结"><span class="trm-toc-number">3.6.</span> <span class="trm-toc-text">总结</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="通过命令生成的证书导入不同平台"><a rel="nofollow" class="trm-toc-link" href="#通过命令生成的证书导入不同平台"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">通过命令生成的证书导入不同平台</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1. 通用准备"><a rel="nofollow" class="trm-toc-link" href="#1-通用准备"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">1. 通用准备</span></a></li><li class="trm-toc-item trm-toc-level-3" title="2. 各平台导入方法"><a rel="nofollow" class="trm-toc-link" href="#2-各平台导入方法"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">2. 各平台导入方法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="Windows"><a rel="nofollow" class="trm-toc-link" href="#Windows"><span class="trm-toc-number">4.2.1.</span> <span class="trm-toc-text">Windows</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="方法1：手动导入 .crt 和 .key"><a rel="nofollow" class="trm-toc-link" href="#方法1：手动导入-crt-和-key"><span class="trm-toc-number">4.2.1.1.</span> <span class="trm-toc-text">方法1：手动导入 .crt 和 .key</span></a></li><li class="trm-toc-item trm-toc-level-5" title="方法2：转换为 .pfx 再导入（推荐）"><a rel="nofollow" class="trm-toc-link" href="#方法2：转换为-pfx-再导入（推荐）"><span class="trm-toc-number">4.2.1.2.</span> <span class="trm-toc-text">方法2：转换为 .pfx 再导入（推荐）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="Linux"><a rel="nofollow" class="trm-toc-link" href="#Linux"><span class="trm-toc-number">4.2.2.</span> <span class="trm-toc-text">Linux</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="方法1：直接使用文件（适用于命令行工具）"><a rel="nofollow" class="trm-toc-link" href="#方法1：直接使用文件（适用于命令行工具）"><span class="trm-toc-number">4.2.2.1.</span> <span class="trm-toc-text">方法1：直接使用文件（适用于命令行工具）</span></a></li><li class="trm-toc-item trm-toc-level-5" title="方法2：系统级信任（可选）"><a rel="nofollow" class="trm-toc-link" href="#方法2：系统级信任（可选）"><span class="trm-toc-number">4.2.2.2.</span> <span class="trm-toc-text">方法2：系统级信任（可选）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="Android"><a rel="nofollow" class="trm-toc-link" href="#Android"><span class="trm-toc-number">4.2.3.</span> <span class="trm-toc-text">Android</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="方法1：通过代码加载（适用于App开发）"><a rel="nofollow" class="trm-toc-link" href="#方法1：通过代码加载（适用于App开发）"><span class="trm-toc-number">4.2.3.1.</span> <span class="trm-toc-text">方法1：通过代码加载（适用于App开发）</span></a></li><li class="trm-toc-item trm-toc-level-5" title="方法2：转换为 .p12 后导入"><a rel="nofollow" class="trm-toc-link" href="#方法2：转换为-p12-后导入"><span class="trm-toc-number">4.2.3.2.</span> <span class="trm-toc-text">方法2：转换为 .p12 后导入</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="iOS&#x2F;macOS"><a rel="nofollow" class="trm-toc-link" href="#iOS-macOS"><span class="trm-toc-number">4.2.4.</span> <span class="trm-toc-text">iOS&#x2F;macOS</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="方法1：邮件或AirDrop发送 .pem"><a rel="nofollow" class="trm-toc-link" href="#方法1：邮件或AirDrop发送-pem"><span class="trm-toc-number">4.2.4.1.</span> <span class="trm-toc-text">方法1：邮件或AirDrop发送 .pem</span></a></li><li class="trm-toc-item trm-toc-level-5" title="方法2：转换为 .p12 后导入"><a rel="nofollow" class="trm-toc-link" href="#方法2：转换为-p12-后导入-1"><span class="trm-toc-number">4.2.4.2.</span> <span class="trm-toc-text">方法2：转换为 .p12 后导入</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="3. 关键注意事项"><a rel="nofollow" class="trm-toc-link" href="#3-关键注意事项"><span class="trm-toc-number">4.3.</span> <span class="trm-toc-text">3. 关键注意事项</span></a></li><li class="trm-toc-item trm-toc-level-3" title="4. 验证是否导入成功"><a rel="nofollow" class="trm-toc-link" href="#4-验证是否导入成功"><span class="trm-toc-number">4.4.</span> <span class="trm-toc-text">4. 验证是否导入成功</span></a></li><li class="trm-toc-item trm-toc-level-3" title="总结"><a rel="nofollow" class="trm-toc-link" href="#总结-1"><span class="trm-toc-number">4.5.</span> <span class="trm-toc-text">总结</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="burp导入的证书"><a rel="nofollow" class="trm-toc-link" href="#burp导入的证书"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">burp导入的证书</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="** 根证书（CA Certificate）**"><a rel="nofollow" class="trm-toc-link" href="#根证书（CA-Certificate）"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text">** 根证书（CA Certificate）**</span></a></li><li class="trm-toc-item trm-toc-level-3" title="**  动态生成的站点证书**"><a rel="nofollow" class="trm-toc-link" href="#动态生成的站点证书"><span class="trm-toc-number">5.2.</span> <span class="trm-toc-text">**  动态生成的站点证书**</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="如何绕过服务器对burp等mitm代理检测"><a rel="nofollow" class="trm-toc-link" href="#如何绕过服务器对burp等mitm代理检测"><span class="trm-toc-number">6.</span> <span class="trm-toc-text">如何绕过服务器对burp等mitm代理检测</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1. 证书固定（Certificate Pinning）"><a rel="nofollow" class="trm-toc-link" href="#1-证书固定（Certificate-Pinning）"><span class="trm-toc-number">6.1.</span> <span class="trm-toc-text">1. 证书固定（Certificate Pinning）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理"><span class="trm-toc-number">6.1.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何检测"><a rel="nofollow" class="trm-toc-link" href="#如何检测"><span class="trm-toc-number">6.1.2.</span> <span class="trm-toc-text">如何检测</span></a></li><li class="trm-toc-item trm-toc-level-4" title="绕过方法（仅限授权测试）"><a rel="nofollow" class="trm-toc-link" href="#绕过方法（仅限授权测试）"><span class="trm-toc-number">6.1.3.</span> <span class="trm-toc-text">绕过方法（仅限授权测试）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="2. TLS指纹检测（JA3&#x2F;JA3S）"><a rel="nofollow" class="trm-toc-link" href="#2-TLS指纹检测（JA3-JA3S）"><span class="trm-toc-number">6.2.</span> <span class="trm-toc-text">2. TLS指纹检测（JA3&#x2F;JA3S）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-1"><span class="trm-toc-number">6.2.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何检测"><a rel="nofollow" class="trm-toc-link" href="#如何检测-1"><span class="trm-toc-number">6.2.2.</span> <span class="trm-toc-text">如何检测</span></a></li><li class="trm-toc-item trm-toc-level-4" title="绕过方法"><a rel="nofollow" class="trm-toc-link" href="#绕过方法"><span class="trm-toc-number">6.2.3.</span> <span class="trm-toc-text">绕过方法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="3. HTTP头检测"><a rel="nofollow" class="trm-toc-link" href="#3-HTTP头检测"><span class="trm-toc-number">6.3.</span> <span class="trm-toc-text">3. HTTP头检测</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-2"><span class="trm-toc-number">6.3.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何检测"><a rel="nofollow" class="trm-toc-link" href="#如何检测-2"><span class="trm-toc-number">6.3.2.</span> <span class="trm-toc-text">如何检测</span></a></li><li class="trm-toc-item trm-toc-level-4" title="绕过方法"><a rel="nofollow" class="trm-toc-link" href="#绕过方法-1"><span class="trm-toc-number">6.3.3.</span> <span class="trm-toc-text">绕过方法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="4. IP&#x2F;行为异常检测"><a rel="nofollow" class="trm-toc-link" href="#4-IP-行为异常检测"><span class="trm-toc-number">6.4.</span> <span class="trm-toc-text">4. IP&#x2F;行为异常检测</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-3"><span class="trm-toc-number">6.4.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何检测"><a rel="nofollow" class="trm-toc-link" href="#如何检测-3"><span class="trm-toc-number">6.4.2.</span> <span class="trm-toc-text">如何检测</span></a></li><li class="trm-toc-item trm-toc-level-4" title="绕过方法"><a rel="nofollow" class="trm-toc-link" href="#绕过方法-2"><span class="trm-toc-number">6.4.3.</span> <span class="trm-toc-text">绕过方法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="5. HSTS（HTTP严格传输安全）"><a rel="nofollow" class="trm-toc-link" href="#5-HSTS（HTTP严格传输安全）"><span class="trm-toc-number">6.5.</span> <span class="trm-toc-text">5. HSTS（HTTP严格传输安全）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-4"><span class="trm-toc-number">6.5.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何检测"><a rel="nofollow" class="trm-toc-link" href="#如何检测-4"><span class="trm-toc-number">6.5.2.</span> <span class="trm-toc-text">如何检测</span></a></li><li class="trm-toc-item trm-toc-level-4" title="绕过方法"><a rel="nofollow" class="trm-toc-link" href="#绕过方法-3"><span class="trm-toc-number">6.5.3.</span> <span class="trm-toc-text">绕过方法</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="总结：为什么服务器能发现Burp代理？"><a rel="nofollow" class="trm-toc-link" href="#总结：为什么服务器能发现Burp代理？"><span class="trm-toc-number">6.6.</span> <span class="trm-toc-text">总结：为什么服务器能发现Burp代理？</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="防御MITM代理"><a rel="nofollow" class="trm-toc-link" href="#防御MITM代理"><span class="trm-toc-number">7.</span> <span class="trm-toc-text">防御MITM代理</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1. 检测方法"><a rel="nofollow" class="trm-toc-link" href="#1-检测方法"><span class="trm-toc-number">7.1.</span> <span class="trm-toc-text">1. 检测方法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="(1) 检查客户端证书链（Certificate Chain）"><a rel="nofollow" class="trm-toc-link" href="#1-检查客户端证书链（Certificate-Chain）"><span class="trm-toc-number">7.1.1.</span> <span class="trm-toc-text">(1) 检查客户端证书链（Certificate Chain）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-5"><span class="trm-toc-number">7.1.1.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-5" title="实现方式"><a rel="nofollow" class="trm-toc-link" href="#实现方式"><span class="trm-toc-number">7.1.1.2.</span> <span class="trm-toc-text">实现方式</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="(2) 检查TLS指纹（JA3&#x2F;JA3S）"><a rel="nofollow" class="trm-toc-link" href="#2-检查TLS指纹（JA3-JA3S）"><span class="trm-toc-number">7.1.2.</span> <span class="trm-toc-text">(2) 检查TLS指纹（JA3&#x2F;JA3S）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-6"><span class="trm-toc-number">7.1.2.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-5" title="实现方式"><a rel="nofollow" class="trm-toc-link" href="#实现方式-1"><span class="trm-toc-number">7.1.2.2.</span> <span class="trm-toc-text">实现方式</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="(3) 检查HTTP请求头"><a rel="nofollow" class="trm-toc-link" href="#3-检查HTTP请求头"><span class="trm-toc-number">7.1.3.</span> <span class="trm-toc-text">(3) 检查HTTP请求头</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-7"><span class="trm-toc-number">7.1.3.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-5" title="检测逻辑"><a rel="nofollow" class="trm-toc-link" href="#检测逻辑"><span class="trm-toc-number">7.1.3.2.</span> <span class="trm-toc-text">检测逻辑</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="(4) 证书透明度日志（Certificate Transparency, CT）"><a rel="nofollow" class="trm-toc-link" href="#4-证书透明度日志（Certificate-Transparency-CT）"><span class="trm-toc-number">7.1.4.</span> <span class="trm-toc-text">(4) 证书透明度日志（Certificate Transparency, CT）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-8"><span class="trm-toc-number">7.1.4.1.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-5" title="实现方式"><a rel="nofollow" class="trm-toc-link" href="#实现方式-2"><span class="trm-toc-number">7.1.4.2.</span> <span class="trm-toc-text">实现方式</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="(5) 证书公钥指纹比对"><a rel="nofollow" class="trm-toc-link" href="#5-证书公钥指纹比对"><span class="trm-toc-number">7.1.5.</span> <span class="trm-toc-text">(5) 证书公钥指纹比对</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理-9"><span class="trm-toc-number">7.1.5.1.</span> <span class="trm-toc-text">原理</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="代码示例"><a rel="nofollow" class="trm-toc-link" href="#代码示例"><span class="trm-toc-number">7.1.6.</span> <span class="trm-toc-text">代码示例</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="2. 防御者的应对措施"><a rel="nofollow" class="trm-toc-link" href="#2-防御者的应对措施"><span class="trm-toc-number">7.2.</span> <span class="trm-toc-text">2. 防御者的应对措施</span></a></li><li class="trm-toc-item trm-toc-level-3" title="3. 如何绕过检测？（攻击者视角）"><a rel="nofollow" class="trm-toc-link" href="#3-如何绕过检测？（攻击者视角）"><span class="trm-toc-number">7.3.</span> <span class="trm-toc-text">3. 如何绕过检测？（攻击者视角）</span></a></li><li class="trm-toc-item trm-toc-level-3" title="总结"><a rel="nofollow" class="trm-toc-link" href="#总结-2"><span class="trm-toc-number">7.4.</span> <span class="trm-toc-text">总结</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="关键结论"><a rel="nofollow" class="trm-toc-link" href="#关键结论"><span class="trm-toc-number">7.4.1.</span> <span class="trm-toc-text">关键结论</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

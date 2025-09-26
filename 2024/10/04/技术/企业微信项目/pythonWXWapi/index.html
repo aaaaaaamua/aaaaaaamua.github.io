@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="参考文档 corpwechatbot: https:&#x2F;&#x2F;github.com&#x2F;GentleCP&#x2F;corpwechatbot官方文档: https:&#x2F;&#x2F;developer.work.weixin.qq.com&#x2F;document&#x2F;path&#x2F;90930疑似官方源码: https:&#x2F;&#x2F;github.com&#x2F;sbzhu&#x2F;weworkapi_python  说明本文是基于python后端来调用企业微信API向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python中API发送自建应用消息">
+<meta property="og:url" content="https://aaaaaamua.github.io/2024/10/04/%E6%8A%80%E6%9C%AF/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%A1%B9%E7%9B%AE/pythonWXWapi/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="参考文档 corpwechatbot: https:&#x2F;&#x2F;github.com&#x2F;GentleCP&#x2F;corpwechatbot官方文档: https:&#x2F;&#x2F;developer.work.weixin.qq.com&#x2F;document&#x2F;path&#x2F;90930疑似官方源码: https:&#x2F;&#x2F;github.com&#x2F;sbzhu&#x2F;weworkapi_python  说明本文是基于python后端来调用企业微信API向">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-10-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T05:17:57.353Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >python中API发送自建应用消息</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 13:17:57"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            python中API发送自建应用消息
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            10/04
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><blockquote>
+<p>corpwechatbot: <a target="_blank" rel="noopener" href="https://github.com/GentleCP/corpwechatbot">https://github.com/GentleCP/corpwechatbot</a><br>官方文档: <a target="_blank" rel="noopener" href="https://developer.work.weixin.qq.com/document/path/90930">https://developer.work.weixin.qq.com/document/path/90930</a><br>疑似官方源码: <a target="_blank" rel="noopener" href="https://github.com/sbzhu/weworkapi_python">https://github.com/sbzhu/weworkapi_python</a></p>
+</blockquote>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>本文是基于python后端来调用企业微信API向用户微信发送消息的复现过程, 主要解决了以下问题:  </p>
+<ol>
+<li>解决回调配置中出现<code>openapi回调地址请求不通过</code>（自建应用 - 接收消息 - 设置API接收）</li>
+<li>设置代理服务器</li>
+<li>设置可信域名</li>
+<li>发送消息</li>
+<li>本文的食用前提：已有企业微信，已初始化一个自建应用</li>
+</ol>
+<h2 id="开搞"><a href="#开搞" class="headerlink" title="开搞"></a>开搞</h2><h3 id="设置API接收"><a href="#设置API接收" class="headerlink" title="设置API接收"></a>设置API接收</h3><blockquote>
+<p>官方文档提供了基于内网穿透的本地调试工具： <a target="_blank" rel="noopener" href="https://developer.work.weixin.qq.com/tool?hash=%23/tab/invoke/tool#/tab/invoke/tool">链接</a></p>
+</blockquote>
+<ol>
+<li><p>初始化服务器<code>python</code>环境  </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m venv WXWorkAPI</span><br></pre></td></tr></table></figure></li>
+<li><p>拷贝代码: <a target="_blank" rel="noopener" href="https://gist.github.com/GentleCP/5d02f4e84b8c8905bcf67643223cd499">链接</a> &#x2F; <a target="_blank" rel="noopener" href="https://github.com/aaaaaaamua/aaaaaaamua.github.io/blob/master/add_files/web%E5%9B%9E%E8%B0%83%E9%85%8D%E7%BD%AE.zip">下载代码</a></p>
+</li>
+<li><p>在企业微信后台进入应用管理，选择一个应用，找到接收消息<br><img src="/img/picture/pythonWXWapi/image.png" alt="alt text"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>设置API接收消息的三个选项，如下<br><img src="/img/picture/pythonWXWapi/image-1.png" alt="alt text"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>参考corpwechatbot-web (github.com)，在服务器上运行web.py  </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 web.py -p=8000 -t=&quot;token&quot; -a=&quot;aeskey&quot; -c=&quot;corpid&quot;</span><br></pre></td></tr></table></figure>
+<p> 确认你的web服务成功启动，并能通过公网访问  </p>
+</li>
+<li><p>点击保存，如果正常，会提示API设置成功，记住这些配置信息<br><img src="/img/picture/pythonWXWapi/image-2.png" alt="alt text"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>这样就完成了url的配置,但是需要注意的是,以后所有的数据都需要从这个设置的端口中出入, 所以需要设置代理服务器, 让所有的数据都经过这里, 但是web.py会自己去使用端口,就会导致直接发送消息时出现端口占用的现象。</p>
+</li>
+<li><p>大佬的<code>web.py</code>中还配置了自动回复，触发关键词为“我帅吗”</p>
+</li>
+</ol>
+<h3 id="设置代理服务器"><a href="#设置代理服务器" class="headerlink" title="设置代理服务器"></a>设置代理服务器</h3><p>本文使用的代理服务器是<code>squid</code>, 可以支持全局代理, 但是此处并不需要, 只需要能够让指定端口实现转发数据来达成自建应用的所有数据都从特定端口出入的目的</p>
+<ol>
+<li><p>安装squid</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install squid</span><br></pre></td></tr></table></figure></li>
+<li><p>配置squid</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/squid/squid.conf</span><br><span class="line"></span><br><span class="line">#修改监听端口： 默认 Squid 会监听在端口 3128 上，你可以更改这个端口。例如，如果要监听在 123 端口上：</span><br><span class="line">http_port </span><br><span class="line"></span><br><span class="line">#允许所有 IP 地址访问： 默认情况下，Squid 只允许本地机器访问。如果你想允许所有 IP 地址访问 Squid 代理，可以取消注释以下行或添加新的行</span><br><span class="line">acl all src 0.0.0.0/0    # Allow all IP addresses</span><br><span class="line">http_access allow all</span><br><span class="line"></span><br><span class="line">#如果你只想允许特定的 IP 地址访问，可以这样配置：</span><br><span class="line">acl localnet src 192.168.1.0/24     # Allow local network</span><br><span class="line">http_access allow localnet</span><br></pre></td></tr></table></figure></li>
+<li><p>启动并设置自启</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start squid</span><br><span class="line">sudo systemctl enable squid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查状态</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status squid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>端口冲突<br> 如果出现端口冲突的时候，停用squid</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop squid</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="设置可信域名"><a href="#设置可信域名" class="headerlink" title="设置可信域名"></a>设置可信域名</h3><p>找到对应的路径，输入ip注意不需要端口，只需要ip<br><img src="/img/picture/pythonWXWapi/image-3.png" alt="alt text"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><ol>
+<li><p>配置环境</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source /to/path/bin/activate</span><br><span class="line">pip install -U corpwechatbot</span><br></pre></td></tr></table></figure></li>
+<li><p>配置测试消息<br> 该推送会直接传至你的个人微信上，你会像收到好友消息一样收到通知信息，你需要先初始化一个AppMsgSender实例对象，如下：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import cptools</span><br><span class="line">from corpwechatbot.app import AppMsgSender</span><br><span class="line"># from corpwehcatbot import AppMsgSender  # both will work</span><br><span class="line"></span><br><span class="line">app = AppMsgSender(corpid=&#x27;&#x27;,  # 你的企业id</span><br><span class="line">                corpsecret=&#x27;&#x27;,  # 你的应用凭证密钥</span><br><span class="line">                agentid=&#x27;&#x27;, # 你的应用id</span><br><span class="line">                log_level=cptools.INFO, # 设置日志发送等级，INFO, ERROR, WARNING, CRITICAL,可选</span><br><span class="line">                proxies=&#123;&#x27;http&#x27;:&#x27;http:example.com&#x27;, &#x27;https&#x27;:&#x27;https:example.com&#x27;&#125;  # 设置代理，可选</span><br><span class="line">                )   </span><br><span class="line"></span><br><span class="line"># 如果你在本地配置添加了企业微信本地配置文件，也可以直接初始化AppMsgSender，而无需再显式传入密钥参数</span><br><span class="line"># app = AppMsgSender()</span><br></pre></td></tr></table></figure>
+
+<p> 在v0.3.0之后，你可以创建多个AppMsgSender，以实现通过多个不同的应用的消息发送，这让你可以实现在一个项目中跨用户、跨企业的消息通知，下面是一个例子</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app1 = AppMsgSender(corpid=&#x27;1&#x27;,  # 你的企业id</span><br><span class="line">                corpsecret=&#x27;1&#x27;,  # 你的应用凭证密钥</span><br><span class="line">                agentid=&#x27;1&#x27;)   # 你的应用id</span><br><span class="line">app2 = AppMsgSender(corpid=&#x27;2&#x27;,  # 你的企业id</span><br><span class="line">                corpsecret=&#x27;2&#x27;,  # 你的应用凭证密钥</span><br><span class="line">                agentid=&#x27;2&#x27;)   # 你的应用id</span><br><span class="line">app1.send_text(&#x27;App1的消息&#x27;) </span><br><span class="line">app2.send_text(&#x27;App2的消息&#x27;)</span><br></pre></td></tr></table></figure>
+<p> 完成实例创建之后，你可以通过接口实现需要的信息推送，具体包括：</p>
+</li>
+<li><p>文本消息<br> 最普通的消息，文字内容，最长不超过2048个字节</p>
+<p> <code>app.send_text(content=&quot;如果我是DJ，你会爱我吗？&quot;)</code></p>
+</li>
+<li><p>图片消息<br> 发送一张图片，可选jpg,png，大小不超过2MB，目前仅支持通过图片路径发送.</p>
+<p> app.send_&#x2F;img&#x2F;picture&#x2F;pythonWXWapi&#x2F;image(&#x2F;img&#x2F;picture&#x2F;pythonWXWapi&#x2F;image_path&#x3D;’test.png’)  # 图片存储路径<br> img.png</p>
+</li>
+<li><p>语音消息<br> 发送一条语音，大小不超过2MB，时长不超过60s，必须是.amr格式</p>
+<p> app.send_voice(voice_path&#x3D;’test.amr’)<br> img_1.png</p>
+</li>
+<li><p>视频消息<br> 发送一段视频，大小不超过10MB，必须是.mp4格式</p>
+<p> app.send_video(video_path&#x3D;’test.mp4’)<br> img_2.png</p>
+</li>
+<li><p>普通文件<br>其他类型的文件，大小不超过20MB（不小于5字节）</p>
+</li>
+</ol>
+<p><code>app.send_file(file_path=&#39;test.txt&#39;)</code></p>
+<ol start="8">
+<li>markdown消息<br>markdown类型消息，支持markdown语法，目前仅支持企业微信查看，若输入内容以.md结尾，则会尝试读取对应文件内容发送。</li>
+</ol>
+<p>app.send_markdown(content&#x3D;’# 面对困难的秘诀 \n &gt; 加油，奥利给！’)</p>
+<ol start="9">
+<li><p>图文消息<br> 图片+文字描述+跳转链接，目前仅支持企业微信查看</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.send_news(title=&#x27;性感刘公，在线征婚&#x27;,</span><br><span class="line">            desp=&#x27;刘公居然要征婚了？这到底是人性的扭曲，还是道德的沦丧？...&#x27;,</span><br><span class="line">            url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            picurl=&#x27;https://gitee.com/gentlecp/ImgUrl/raw/master/20210313141425.jpg&#x27;)</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>mpnews图文消息<br>该图文消息相比于上一个允许更丰富的表达，接受html语法，更多区别请参考官方文档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.send_mpnews(title=&#x27;你好，我是CP&#x27;,</span><br><span class="line">            /img/picture/pythonWXWapi/image_path=&#x27;data/test.png&#x27;,</span><br><span class="line">            content=&#x27;&lt;a href=&quot;https://blog.gentlecp.com&quot;&gt;Hello World&lt;/a&gt;&#x27;,</span><br><span class="line">            content_source_url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            author=&#x27;GentleCP&#x27;,</span><br><span class="line">            digest=&#x27;这是一段描述&#x27;,</span><br><span class="line">            safe=1)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卡片消息<br>发送一张卡片，带有跳转链接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.send_card(title=&#x27;真骚哥出柜&#x27;,</span><br><span class="line">            desp=&#x27;真骚哥竟然出柜了？对象竟然是他...&#x27;,</span><br><span class="line">            url=&#x27;https://blog.gentlecp.com&#x27;,</span><br><span class="line">            btntxt=&#x27;一睹为快&#x27;)</span><br></pre></td></tr></table></figure>
+
+
+<p>任务卡片消息<br>任务发片消息实现用户对服务端的消息进行相应的反馈，如接收到通知后，执行相应操作（如重启）</p>
+<p>在发送应用卡片消息之前，请确保你已做好相应的回调配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">btn = [&#123;</span><br><span class="line">&quot;key&quot;: &quot;yes&quot;,</span><br><span class="line">&quot;name&quot;: &quot;好的&quot;,</span><br><span class="line">&quot;color&quot;:&quot;red&quot;,</span><br><span class="line">&quot;is_bold&quot;: True,</span><br><span class="line">&#125;,</span><br><span class="line">&#123;</span><br><span class="line">    &quot;key&quot;: &quot;no&quot;,</span><br><span class="line">    &quot;name&quot;: &quot;wdnmd&quot;</span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">app.send_taskcard(title=&quot;老板的消息&quot;,</span><br><span class="line">                desp=&quot;下个月工资减半&quot;,</span><br><span class="line">                url=&quot;http://127.0.0.1&quot;,</span><br><span class="line">                btn=btn,</span><br><span class="line">                task_id=&#x27;12323&#x27;,) # task_id在应用中是唯一的</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更多参数使用<br>上面只是简单地列出了每个消息推送接口的使用，对于一般使用已经足够了，如果你还有更细致的要求，例如发送给指定人，消息安全性等，需要配置以下参数：</p>
+<p>所有应用推送消息有几个共同参数，用于指定发送消息的特性，如下</p>
+<p>touser: 要发送的用户，通过列表划分，输入成员ID，默认发送给全体<br>toparty: 要发送的部门，通过列表划分，输入部门ID，当touser为@all时忽略<br>totag: 发送给包含指定标签的人，通过列表划分，输入标签ID，当touser为@all时忽略<br>safe(该参数并非所有接口都支持，使用时请确认): 是否是保密消息，0表示可对外分享，1表示不能分享且内容显示水印，默认为0</p>
+<h4 id="一个演示程序"><a href="#一个演示程序" class="headerlink" title="一个演示程序"></a>一个演示程序</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from corpwechatbot.app import AppMsgSender</span><br><span class="line"></span><br><span class="line">app = AppMsgSender(corpid=&#x27;&#x27;,  # 你的企业id</span><br><span class="line">                corpsecret=&#x27;&#x27;,  # 你的应用凭证密钥</span><br><span class="line">                agentid=&#x27;&#x27;)   # 你的应用id</span><br><span class="line"></span><br><span class="line">app.send_text(content=&#x27;Hello&#x27;,</span><br><span class="line">            touser=[&#x27;sb&#x27;],</span><br><span class="line">            toparty=[&#x27;1&#x27;],</span><br><span class="line">            totag=[&#x27;1&#x27;],</span><br><span class="line">            safe=1)</span><br></pre></td></tr></table></figure>
+<p>⚠️注意！在指定toparty参数的时候，请确保你应用的可见范围包括该部门，否则会发送失败！很多失败情况都是应用的可见范围没设置正确导致！！ </p>
+<p>获取相关用户数据方法<br>进入企业微信后台-&gt;通讯录</p>
+</li>
+</ol>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/12/12/%E6%8A%80%E6%9C%AF/%E9%AB%98%E6%A0%A1%E7%BD%91%E7%BB%9C%E4%BE%BF%E6%8D%B7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">局域网远程控制一站式解决方案</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/12/12</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/02/02/%E6%8A%80%E6%9C%AF/mac/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">mac 地址利用和修改</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/02/02</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="参考文档"><a rel="nofollow" class="trm-toc-link" href="#参考文档"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">参考文档</span></a></li><li class="trm-toc-item trm-toc-level-2" title="说明"><a rel="nofollow" class="trm-toc-link" href="#说明"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">说明</span></a></li><li class="trm-toc-item trm-toc-level-2" title="开搞"><a rel="nofollow" class="trm-toc-link" href="#开搞"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">开搞</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="设置API接收"><a rel="nofollow" class="trm-toc-link" href="#设置API接收"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">设置API接收</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置代理服务器"><a rel="nofollow" class="trm-toc-link" href="#设置代理服务器"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">设置代理服务器</span></a></li><li class="trm-toc-item trm-toc-level-3" title="设置可信域名"><a rel="nofollow" class="trm-toc-link" href="#设置可信域名"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">设置可信域名</span></a></li><li class="trm-toc-item trm-toc-level-3" title="发送消息"><a rel="nofollow" class="trm-toc-link" href="#发送消息"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text">发送消息</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="一个演示程序"><a rel="nofollow" class="trm-toc-link" href="#一个演示程序"><span class="trm-toc-number">3.4.1.</span> <span class="trm-toc-text">一个演示程序</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

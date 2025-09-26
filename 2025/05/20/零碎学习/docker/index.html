@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="docker 配置代理使用 systemd 配置 Docker 服务 使用v2raya来代理: 安装 - v2rayA  1234567891011121314# 创建 Docker 代理配置文件sudo mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.dsudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;http-p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker学习">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/05/20/%E9%9B%B6%E7%A2%8E%E5%AD%A6%E4%B9%A0/docker/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="docker 配置代理使用 systemd 配置 Docker 服务 使用v2raya来代理: 安装 - v2rayA  1234567891011121314# 创建 Docker 代理配置文件sudo mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.dsudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;http-p">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-05-20T02:08:33.000Z">
+<meta property="article:modified_time" content="2025-05-28T11:28:21.000Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >docker学习</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-28 19:28:21"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            docker学习
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:08
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="docker-配置代理"><a href="#docker-配置代理" class="headerlink" title="docker 配置代理"></a>docker 配置代理</h2><h3 id="使用-systemd-配置-Docker-服务"><a href="#使用-systemd-配置-Docker-服务" class="headerlink" title="使用 systemd 配置 Docker 服务"></a>使用 <code>systemd</code> 配置 Docker 服务</h3><blockquote>
+<p>使用v2raya来代理: <a target="_blank" rel="noopener" href="https://v2raya.org/docs/prologue/installation/">安装 - v2rayA</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 Docker 代理配置文件</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /etc/systemd/system/docker.service.d</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/systemd/system/docker.service.d/http-proxy.conf &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">Environment=&quot;HTTP_PROXY=socks5://127.0.0.1:20170&quot;</span></span><br><span class="line"><span class="string">Environment=&quot;HTTPS_PROXY=socks5://127.0.0.1:20170&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 Docker</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试拉取镜像（不再需要 proxychains）</span></span><br><span class="line">docker pull praqma/network-multitool</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520211246977.png" alt="image-20250520211246977"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="第二种方式：使用-daemon-json-配置文件-更省心"><a href="#第二种方式：使用-daemon-json-配置文件-更省心" class="headerlink" title="第二种方式：使用 daemon.json 配置文件(更省心)"></a>第二种方式：使用 <code>daemon.json</code> 配置文件(更省心)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@ubuntu:~$ <span class="built_in">sudo</span> <span class="built_in">cat</span> /etc/docker/daemon.json</span><br><span class="line">[<span class="built_in">sudo</span>] password <span class="keyword">for</span> ubuntu:</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;proxies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;http-proxy&quot;</span>: <span class="string">&quot;http://192.168.196.1:10808&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https-proxy&quot;</span>: <span class="string">&quot;http://192.168.196.1:10808&quot;</span>,</span><br><span class="line">    <span class="string">&quot;no-proxy&quot;</span>: <span class="string">&quot;*.example.com,127.0.0.0/8&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="两种代理方式的区别"><a href="#两种代理方式的区别" class="headerlink" title="两种代理方式的区别"></a>两种代理方式的区别</h3><table>
+<thead>
+<tr>
+<th align="center">特性</th>
+<th align="center">第一种方式 (<code>systemd</code>)</th>
+<th align="center">第二种方式 (<code>daemon.json</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">配置路径</td>
+<td align="center"><code>/etc/systemd/system/docker.service.d/http-proxy.conf</code></td>
+<td align="center"><code>/etc/docker/daemon.json</code></td>
+</tr>
+<tr>
+<td align="center">代理协议</td>
+<td align="center">支持 HTTP&#x2F;HTTPS&#x2F;SOCKS5 等</td>
+<td align="center">仅支持 HTTP&#x2F;HTTPS</td>
+</tr>
+<tr>
+<td align="center">作用对象</td>
+<td align="center">Docker 守护进程</td>
+<td align="center">Docker 守护进程 <strong>和</strong> 容器</td>
+</tr>
+<tr>
+<td align="center">易用性</td>
+<td align="center">略复杂</td>
+<td align="center">简单，Docker 官方推荐</td>
+</tr>
+<tr>
+<td align="center">主要区别</td>
+<td align="center"><strong>只影响 Docker 守护进程本身</strong>，不影响容器内部。</td>
+<td align="center"><strong>同时影响 Docker 守护进程和容器内部</strong>。</td>
+</tr>
+</tbody></table>
+<p><strong>什么是守护进程?</strong></p>
+<blockquote>
+<p>**守护进程（Daemon）*<em>是计算机系统中的一种特殊后台服务程序。它通常在操作系统启动时就运行，并在后台持续运行，直到系统关闭。它的主要任务是*<em>提供某种特定的服务</em></em>，并且它独立于任何用户的直接交互。</p>
+<p>你可以把守护进程想象成一个在幕后默默工作的“管家”或“工人”。</p>
+<hr>
+<h3 id="守护进程的特点"><a href="#守护进程的特点" class="headerlink" title="守护进程的特点"></a>守护进程的特点</h3><ol>
+<li><strong>后台运行</strong>：它没有图形界面，也不与任何终端或用户会话直接关联。它在后台默默地执行任务。</li>
+<li><strong>独立于用户</strong>：它不依赖于任何特定的用户登录。即使你注销了，守护进程仍然会继续运行。</li>
+<li><strong>提供服务</strong>：它们通常是为其他程序或用户提供服务的，比如：<ul>
+<li><strong>HTTP服务器（如 Nginx 或 Apache）</strong>：它是一个守护进程，持续监听80或443端口，等待并响应来自客户端的网页请求。</li>
+<li><strong>数据库服务（如 MySQL 或 PostgreSQL）</strong>：它作为守护进程在后台运行，处理来自应用程序的数据库查询和操作。</li>
+<li><strong>SSH 服务</strong>：它在后台监听端口，等待用户通过 SSH 协议远程登录。</li>
+</ul>
+</li>
+<li><strong>通常以 <code>d</code> 结尾命名</strong>：很多守护进程的名称都以 <code>d</code> 结尾，这是 “daemon” 的缩写，比如：<ul>
+<li><code>sshd</code> (SSH daemon)</li>
+<li><code>httpd</code> (HTTP daemon)</li>
+<li><code>dockerd</code> (Docker daemon)</li>
+</ul>
+</li>
+</ol>
+<h3 id="守护进程与-Docker-的关系"><a href="#守护进程与-Docker-的关系" class="headerlink" title="守护进程与 Docker 的关系"></a>守护进程与 Docker 的关系</h3><p>在你之前的问题中，我们提到了 <code>dockerd</code>，这就是 <strong>Docker 守护进程</strong>。</p>
+<p><code>dockerd</code> 就是一个典型的守护进程。它在后台持续运行，负责管理你的所有 Docker 容器、镜像、网络和数据卷。当你执行 <code>docker run</code>、<code>docker pull</code> 等命令时，你并不是直接在操作系统中操作，而是通过一个<strong>客户端</strong>向这个在后台运行的 <code>dockerd</code> 守护进程发送指令。</p>
+<p>这就是为什么当 <code>dockerd</code> 没有正确运行或者你没有权限与其通信时，你的 <code>docker</code> 命令就会失败。</p>
+</blockquote>
+<h2 id="docker镜像构建"><a href="#docker镜像构建" class="headerlink" title="docker镜像构建"></a>docker镜像构建</h2><h3 id="创建一个镜像"><a href="#创建一个镜像" class="headerlink" title="创建一个镜像"></a>创建一个镜像</h3><p>首先新建一个<code>node.js</code>项目,这样就会自动生成<code>package.json</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528105612663.png" alt="image-20250528105612663"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>由于构建服务器需要express框架,所以就直接进行安装express框架</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express</span><br></pre></td></tr></table></figure>
+
+
+
+<p>此时<code>package.json</code>中的依赖就会出现express的键值对,并且伴随着node_modules出现,这个文件夹会保存安装的模块</p>
+<p><img src="/2025/05/02/hello-world/image-20250528111041838.png" alt="image-20250528111041838"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>接下来创建<code>app.js</code>文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/&quot;</span>,<span class="function">(<span class="params">req,res</span>) =&gt;</span>&#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&quot;&lt;p&gt;蛋家好啊&lt;/p&gt;&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;端口3000走起!&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>可以成功运行</p>
+<p><img src="/2025/05/02/hello-world/image-20250528112229155.png" alt="image-20250528112229155"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>接下来就是正式开始制作<code>Dockerfile</code></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">18</span>-alpine3.<span class="number">15</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /egg <span class="comment"># 指定工作目录(不是必须)</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json . <span class="comment">#这个&quot;.&quot;是工作路径的相对路径</span></span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install <span class="comment"># 这个就会按照package.json来进行安装</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . . <span class="comment"># 把本地的所有文件都复制到工作路径 docker中使用缓存package.json不会被复制两次,前面复制了就不会再次复制,而json有缓存,就不用重新去安装依赖,提高速度</span></span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span> <span class="comment"># 暴露端口号</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;app.js&quot;</span>] </span></span><br></pre></td></tr></table></figure>
+
+<p>新建一个<code>.dockerignore</code>可以把不想在<code>COPY . .</code>步骤中复制进去的文件填写到里面</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">node_modules</span><br><span class="line">Dockerfile</span><br><span class="line">.dockerignore</span><br><span class="line">.git</span><br><span class="line">.gitignore</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后构建镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build .</span><br></pre></td></tr></table></figure>
+
+<p>使用命令查看镜像列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker images</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528114915895.png" alt="image-20250528114915895"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用<code>sudo docker tag 镜像ID 名字</code>来添加名字和标签(一次性添加),如果没有后边的”:”的内容就是lastest版本号</p>
+<p>&#96;</p>
+<p><img src="/2025/05/02/hello-world/image-20250528115159166.png" alt="image-20250528115159166"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>docker login登录到docker hub账号,然后就可以把新建好的镜像推送到docker hub了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push dansoncut/node.js:v1.0</span><br></pre></td></tr></table></figure>
+
+<p>在构建镜像的时候就自定义名字:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t eggpain-image .</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528132240693.png" alt="image-20250528132240693"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>删除镜像,如果有些镜像再被使用就需要使用<code>-f</code>强行删除(注意还是需要加上版本号,不然默认是lastest可能找不到)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi -f dansoncut/node.js:v1.0</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528132659748.png" alt="image-20250528132659748"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="使用镜像来启动容器"><a href="#使用镜像来启动容器" class="headerlink" title="使用镜像来启动容器"></a>使用镜像来启动容器</h3><h4 id="非交互式启动"><a href="#非交互式启动" class="headerlink" title="非交互式启动"></a>非交互式启动</h4><p>然后使用这个镜像来运行一个容器,如果成功会返回ID号,使用<code>-d</code>来设置后台运行<img src="/2025/05/02/hello-world/image-20250528132850660.png" alt="image-20250528132850660"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>但是发现虽然暴露了3000端口但是这是在容器中的，并没有暴露到宿主机中,宿主机中访问3000端口没有任何服务</p>
+<p><img src="/2025/05/02/hello-world/image-20250528133456736.png" alt="image-20250528133456736"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>这是因为<code>Dockerfile</code>文件中的<code>EXPOSE</code>只是让人知道这个镜像在用容器的某个端口,和宿主机无关,所以需要在启动端口的时候手动进行端口映射(主机端口:容器端口) 还可以在后面自定义名字(–name nishixiaozhu)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -p 3000:3000 --name nishixiaozhu eggpain-image</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528134152450.png" alt="image-20250528134152450"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528134449846.png" alt="image-20250528134449846"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>删除一个容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">rm</span> 部分<span class="built_in">id</span>/容器名称</span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">rm</span> -f 部分<span class="built_in">id</span>/容器名称 <span class="comment"># 强行删除</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>停止容器,会给容器时间来慢慢关闭</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop -t=60 容器ID或容器名</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是发现当在本地修改js文件的时候,镜像及正在运行的容器是不会改变的,这个时候就需要进行一个地址的绑定,让他去指向目标地址(注意这里的-需要绝对路径&#x2F;:&#x2F;工作路径)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -v /home/ubuntu/Desktop/:/nodejstest -p 3000:3000 --name nicaishixiaozhu eggpain-image</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是出现了新的情况,如果直接修改的话原来的<code>node_modules</code>会被覆盖,所以需要指明不需要同步的文件夹,就是再用<code>-v</code>指定一个文件夹(不同步)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -v /home/ubuntu/Desktop/:/nodejstest -v /egg/node_modules -p 3000:3000 --name eggpain-conner eggpain-image</span><br></pre></td></tr></table></figure>
+
+<p>但是这样如果容器中出现了新的文件夹,宿主机上也会同步(可能会被上传恶意代码)所以需要设置本地为只读模式<code>:ro(readonly)</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -v /home/ubuntu/Desktop/:/nodejstest:ro -v /egg/node_modules -p 3000:3000 --name eggpain-conner eggpain-image</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后会发现设置到这里还是没有用,因为镜像已经构建了,还需要自动重启去更新镜像的内容</p>
+<p><code>用于自动重启 Node.js 应用当文件发生变化时（比如修改了 </code>.js<code> 文件）</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i nodemon --save-dev</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528154341842.png" alt="image-20250528154341842"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后修改<code>scripts</code></p>
+<p><img src="/2025/05/02/hello-world/image-20250528154552032.png" alt="image-20250528154552032"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后再修改Dockerfile</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;run&quot;</span>, <span class="string">&quot;dev&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>删除原来的image在重新搭建<code>docker build -t eggpain-image</code></p>
+<p><img src="/2025/05/02/hello-world/image-20250528155442820.png" alt="image-20250528155442820"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<hr>
+<p>搞不定不太想搞了现在（哭 存个档下次再搞）</p>
+<h4 id="使用交互式的方法启动一个拉去的镜像"><a href="#使用交互式的方法启动一个拉去的镜像" class="headerlink" title="使用交互式的方法启动一个拉去的镜像"></a>使用交互式的方法启动一个拉去的镜像</h4><ol>
+<li><p><code>docker images</code>   #查看所有镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/ubuntu# docker images   <span class="comment">#查看所有容器</span></span><br><span class="line">REPOSITORY               TAG       IMAGE ID       CREATED       SIZE</span><br><span class="line">openjdk                  8         b273004037cc   3 years ago   526MB</span><br><span class="line">justrydeng/jdk8          latest    b9a2453ecafd   6 years ago   482MB</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p><code>docker ps</code>  #查看所有正在运行的容器</p>
+<p><code>docker ps -a</code>  #查看所有的容器(包括微运行的)</p>
+<p><img src="/2025/05/02/hello-world/image-20250923173546414.png" alt="image-20250923173546414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li><p>根据已有的镜像建立一个容器表情进入容器内部的交互式shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 3000:3000 --name jdk8 justrydeng/jdk8 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>由于这个镜像只是简单的jdk,没有任何的网络测试环境, 所以还得自己来手动安装,由于目前是用的代理是对全局的代理,所以容器内的网络环境也无需额外考虑</p>
+<p>执行以下命令来安装网络工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install -y iputils-ping curl net-tools</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入一个正在运行的容器的bash，可以实现多开</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it 容器名 /bin/bash</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>删除一个容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a <span class="comment">#查看所有容器</span></span><br><span class="line">docker <span class="built_in">rm</span> <span class="built_in">id</span>/name <span class="comment">#删除一个容器</span></span><br><span class="line">docker <span class="built_in">rm</span> -f <span class="built_in">id</span>/name <span class="comment">#强制删除一个容器(可能是正在运行的也会被删除)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从本地吧文件移动到容器中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">cp</span> [本地文件或目录路径] [容器名或ID]:[容器内目标路径] </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><ol>
+<li><p>创建镜像并启动一个容器</p>
+<p>启动单个容器的命令很长，如果要启动多个容器来执行协调不同的任务(mysql&#x2F;nginx&#x2F;apache)就需要一个统筹启动的应用，docker-compose就可以解决</p>
+<p>需要创建一个<code>docker-compose.yml</code>文件</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.8&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">eggpain-container:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3000:3000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./:/egg:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/egg/node_modules</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d --build</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250528190423507.png" alt="image-20250528190423507"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528190457409.png" alt="image-20250528190457409"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以发现docker-compose创建了新的镜像(<code>nodejstest_eggpain-container_1</code>)和新的容器(<code>nodejstest_eggpain-container</code>)</p>
+</li>
+<li><p>如果根据已有的本地镜像文件创建一个容器(不用创建镜像)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d  <span class="comment">#-d是静默执行</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>清除容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker-compose down -v</span><br><span class="line"><span class="comment"># 使用 -v 选项会删除所有与容器关联的卷，这意味着所有存储在卷中的数据将被永久删除</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="docker网络"><a href="#docker网络" class="headerlink" title="docker网络"></a>docker网络</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Aj411r71b">【入门篇】Docker网络模式Linux - Bridge | Host | None_哔哩哔哩_bilibili</a></p>
+</blockquote>
+<h3 id="如何手动关联两个容器"><a href="#如何手动关联两个容器" class="headerlink" title="如何手动关联两个容器"></a>如何手动关联两个容器</h3><h4 id="Question1：-两个不同网络的docker如何通信"><a href="#Question1：-两个不同网络的docker如何通信" class="headerlink" title="**Question1：**两个不同网络的docker如何通信"></a>**Question1：**两个不同网络的docker如何通信</h4><ol start="0">
+<li><p>问题的起因是两个docker是由不同的方式启动的，一个是使用<code>docker run</code>而另一个使用<code>docker-compose up</code></p>
+</li>
+<li><p>**Answer: **docker中提供了解决方案,直接使用命令串联两个docker</p>
+<ol>
+<li><p>需要找出<code>docker-compose</code>启动的网卡长什么样,一般是叫做<code>**_default</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker Network <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250925134902529.png" alt="image-20250925134902529"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以轻松找到应该是<code>nodejstest_default</code></p>
+</li>
+<li><p>使用命令<code>docker network connect</code></p>
+<p><img src="/2025/05/02/hello-world/image-20250925135119774.png" alt="image-20250925135119774"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect nodejstest_default jdk8</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+<h3 id="Bridge-网络"><a href="#Bridge-网络" class="headerlink" title="Bridge 网络"></a>Bridge 网络</h3><p>在安装docker之前的linux网卡信息是这样的,只有一张以太网网卡(ens33)和一张lo(loopback回环,只能和自己联通)</p>
+<p><img src="/2025/05/02/hello-world/image-20250520105201812.png" alt="image-20250520105201812"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>docker安装命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get insatll docker.io -y | less</span><br></pre></td></tr></table></figure>
+
+
+
+<p>会发现此时多了一个docker的网卡信息:</p>
+<p><img src="/2025/05/02/hello-world/image-20250520110133547.png" alt="image-20250520110133547"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>查看这张网卡的具体信息如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect bridge | less</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520112501883.png" alt="image-20250520112501883"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用jq来提取一些当前有用的信息:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect bridge | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers, Options:.Options&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>得到以下内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@ubuntu:~/Desktop$ <span class="built_in">sudo</span> docker network inspect bridge | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers, Options:.Options&#125;&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;Name&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Id&quot;</span>: <span class="string">&quot;cf904d02cf0101bdf9135a9b7be444ed323fdf5f32a3a98fe7000374d5062347&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">  <span class="string">&quot;IPAM&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;Subnet&quot;</span>: <span class="string">&quot;172.17.0.0/16&quot;</span>,</span><br><span class="line">      <span class="string">&quot;Gateway&quot;</span>: <span class="string">&quot;172.17.0.1&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;Containers&quot;</span>: &#123;&#125;,</span><br><span class="line">  <span class="string">&quot;Options&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;com.docker.network.bridge.default_bridge&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">    <span class="string">&quot;com.docker.network.bridge.enable_icc&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">    <span class="string">&quot;com.docker.network.bridge.enable_ip_masquerade&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">    <span class="string">&quot;com.docker.network.bridge.host_binding_ipv4&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;com.docker.network.bridge.name&quot;</span>: <span class="string">&quot;docker0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;com.docker.network.driver.mtu&quot;</span>: <span class="string">&quot;1500&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2025/05/02/hello-world/image-20250520114033429.png" alt="image-20250520114033429"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>此时可以看到<code>Containers</code>中还没有任何容器,可以添加一个功能性容器然后再来看看实力,如果本地没有这个镜像也会自动拉取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name egg1 --hostname egg1 praqma/network-multitool</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2025/05/02/hello-world/image-20250520211717949.png" alt="image-20250520211717949"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后可以使用以下命令查看容器是否正在运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker ps</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520211902588.png" alt="image-20250520211902588"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>然后再次使用命令查看网卡信息就会发现多了一个容器了</p>
+<p><img src="/2025/05/02/hello-world/image-20250520212210365.png" alt="image-20250520212210365"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>此时查看接口信息会发现多了一个奇怪的接口名称,实际上这就是使用bright的网卡情况,而且对于网卡的排序也出了问题,发现顺序为4的网卡消失了</p>
+<blockquote>
+<p>弹幕: veth虚拟以太网接口生成了一对vethx和vethy,vethx在宿主机中与虚拟网卡docker0虚拟桥接网卡相连,vethy在容器网络命名空间内,这样实现容器进程与容器之外的外部网络通信</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要注意的是,这个地方查看网卡信息必须使用以下命令,使用ifconfig无法查看从属关系</span></span><br><span class="line">ip address</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520212920531.png" alt="image-20250520212920531"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用以下命令按json格式化网卡信息,并且输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -json address show dev vethd6a5d21 | jq .</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520213238874.png" alt="image-20250520213238874"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>进入容器查看容器内的网卡信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it egg1 bash</span><br></pre></td></tr></table></figure>
+
+<p>可以清晰的发现丢失的网卡4就在这里!</p>
+<p><img src="/2025/05/02/hello-world/image-20250520214407274.png" alt="image-20250520214407274"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用命令查询这张网卡的具体信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -json -detail address show dev eth0 | jq <span class="string">&#x27;.[0] | &#123;ifindex:.ifindex, link_index:.link_index, ifname:.ifname, linkinfo:.linkinfo , addr_info:.addr_info&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250520215115314.png" alt="image-20250520215115314"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以发现对于<code>linkinfo</code>这个参数,就可以判断出当前接口正在和哪个接口进行连接</p>
+<p>同样的命令查询以太网网卡是会显示<code>null</code>的</p>
+<p><img src="/2025/05/02/hello-world/image-20250520215356728.png" alt="image-20250520215356728"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>如果重新添加一个容器,也会发现这个容器有一张在宿主机中隐藏的虚拟网卡,而且这张网卡也是连接到<code>veth</code>上的,然后在宿主机的网卡信息中也会发现一张指向虚拟机的虚拟网卡,也就是这个情况</p>
+<p><img src="/2025/05/02/hello-world/image-20250520215829355.png" alt="image-20250520215829355"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520221709111.png" alt="image-20250520221709111"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="Bridge型"><a href="#Bridge型" class="headerlink" title="Bridge型"></a>Bridge型</h3><p>使用命令来查看现在的网络列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527170915929.png" alt="image-20250527170915929"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>创建bridge网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -d使用bridge驱动来创建</span></span><br><span class="line"><span class="comment"># naihe-bridge 自定义网络名称</span></span><br><span class="line"><span class="built_in">sudo</span> docker network create -d bridge naihe-bridge</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527190208629.png" alt="image-20250527190208629"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>通过查询<code>docker network inspect</code>可以发现实际上两个网络的网段是不一样的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect 网络名称 | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527191452009.png" alt="image-20250527191452009"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用命令<code>ip address</code>查看网卡信息发现出现了一张新的网卡并且这个网卡名称和网卡id是一样的<br><img src="/2025/05/02/hello-world/image-20250527191809962.png" alt="image-20250527191809962"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>现在来创建一个新容器指定使用这个网卡如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name naihe1 --hostname naihe1 --network naihe-bridge praqma/network-multitool</span><br></pre></td></tr></table></figure>
+
+<p>然后查看网卡信息<code>ip address</code>可以发现创建了一个新的网卡使用的master网卡就是之前创建的<code>br-9a14e1ce05d3</code></p>
+<p><img src="/2025/05/02/hello-world/image-20250527192335545.png" alt="image-20250527192335545"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以发现网卡下出现了两个容器</p>
+<p><img src="/2025/05/02/hello-world/image-20250527192906422.png" alt="image-20250527192906422"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用命令进去docker中的bash来ping另一个容器的ip发现是可以ping通的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it naihe1 bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527193211984.png" alt="image-20250527193211984"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>而且实际上自定义网卡还自动配置了DNS可以直接ping主机名来实现通信,但是实际上这里指定了hostname所以不明显<br><img src="/2025/05/02/hello-world/image-20250527193311626.png" alt="image-20250527193311626"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>再创建一个容器但是不指定hostname再尝试ping看看能不能ping通</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name naihe3 --network naihe-bridge praqma/network-multitool</span><br></pre></td></tr></table></figure>
+
+<p>虚拟机死机了,重启一个停止的容器命令如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有容器信息</span></span><br><span class="line"><span class="built_in">sudo</span> docker ps -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动一个停止的容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker start naihe1</span><br></pre></td></tr></table></figure>
+
+<p>可以发现在没有指定容器名的前提下使用自定义网卡是可以实现自动配置dns的</p>
+<p><img src="/2025/05/02/hello-world/image-20250527195439098.png" alt="image-20250527195439098"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>删除创建的网络,但是默认的网络是没有办法删除的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network <span class="built_in">rm</span> naihe-bridge</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="host网络型"><a href="#host网络型" class="headerlink" title="host网络型"></a>host网络型</h3><p>bridge型的网络(无论是自定义还是默认)都需要手动暴露端口才能实现,使用host网络就可以避免这个问题</p>
+<hr>
+<p>host网络无法自定义创建,只能有一个,会报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker network create -d host newhost</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527200827615.png" alt="image-20250527200827615"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>查看网络环境发现是没有ip的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect host | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers, Options:.Options&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/05/02/hello-world/image-20250527211749074.png" alt="image-20250527211749074"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>如果是指定端口关联,host模式下会出问题,因为host模式是不需要端口关联的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run --name egg --network host -p 8080:80 -d praqma/network-multitool</span><br></pre></td></tr></table></figure>
+
+<p>发现出现警告但是仍然可以创建新的容器</p>
+<p><img src="/2025/05/02/hello-world/image-20250527214116672.png" alt="image-20250527214116672"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><img src="/2025/05/02/hello-world/image-20250527214201495.png" alt="image-20250527214201495"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>实际上这个host网络下的容器就直接是宿主的一个应用了(只有linux下是这样的),在容器中与宿主设备中查看<code>ip address</code>得到的网络信息是一样的</p>
+<h3 id="None就是不允许进行网络通信"><a href="#None就是不允许进行网络通信" class="headerlink" title="None就是不允许进行网络通信"></a>None就是不允许进行网络通信</h3><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p><img src="/2025/05/02/hello-world/image-20250527214551605.png" alt="image-20250527214551605"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/28/%E9%9B%B6%E7%A2%8E%E5%AD%A6%E4%B9%A0/%E5%AE%89%E8%A3%85windows%E5%88%B0%E7%A7%BB%E5%8A%A8%E7%A1%AC%E7%9B%98/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">安装windwos到移动硬盘</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/28</li>
+                <li>23:19</li>
+                <li>零碎学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/vpn%E5%8D%8F%E8%AE%AE%E4%BA%86%E8%A7%A3/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">vpn协议了解</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/13</li>
+                <li>10:00</li>
+                <li>协议学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="docker 配置代理"><a rel="nofollow" class="trm-toc-link" href="#docker-配置代理"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">docker 配置代理</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="使用 systemd 配置 Docker 服务"><a rel="nofollow" class="trm-toc-link" href="#使用-systemd-配置-Docker-服务"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">使用 systemd 配置 Docker 服务</span></a></li><li class="trm-toc-item trm-toc-level-3" title="第二种方式：使用 daemon.json 配置文件(更省心)"><a rel="nofollow" class="trm-toc-link" href="#第二种方式：使用-daemon-json-配置文件-更省心"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">第二种方式：使用 daemon.json 配置文件(更省心)</span></a></li><li class="trm-toc-item trm-toc-level-3" title="两种代理方式的区别"><a rel="nofollow" class="trm-toc-link" href="#两种代理方式的区别"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">两种代理方式的区别</span></a></li><li class="trm-toc-item trm-toc-level-3" title="守护进程的特点"><a rel="nofollow" class="trm-toc-link" href="#守护进程的特点"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">守护进程的特点</span></a></li><li class="trm-toc-item trm-toc-level-3" title="守护进程与 Docker 的关系"><a rel="nofollow" class="trm-toc-link" href="#守护进程与-Docker-的关系"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text">守护进程与 Docker 的关系</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="docker镜像构建"><a rel="nofollow" class="trm-toc-link" href="#docker镜像构建"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">docker镜像构建</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="创建一个镜像"><a rel="nofollow" class="trm-toc-link" href="#创建一个镜像"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">创建一个镜像</span></a></li><li class="trm-toc-item trm-toc-level-3" title="使用镜像来启动容器"><a rel="nofollow" class="trm-toc-link" href="#使用镜像来启动容器"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">使用镜像来启动容器</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="非交互式启动"><a rel="nofollow" class="trm-toc-link" href="#非交互式启动"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">非交互式启动</span></a></li><li class="trm-toc-item trm-toc-level-4" title="使用交互式的方法启动一个拉去的镜像"><a rel="nofollow" class="trm-toc-link" href="#使用交互式的方法启动一个拉去的镜像"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text">使用交互式的方法启动一个拉去的镜像</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="docker-compose"><a rel="nofollow" class="trm-toc-link" href="#docker-compose"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">docker-compose</span></a></li><li class="trm-toc-item trm-toc-level-2" title="docker网络"><a rel="nofollow" class="trm-toc-link" href="#docker网络"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">docker网络</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="如何手动关联两个容器"><a rel="nofollow" class="trm-toc-link" href="#如何手动关联两个容器"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">如何手动关联两个容器</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="**Question1：**两个不同网络的docker如何通信"><a rel="nofollow" class="trm-toc-link" href="#Question1：-两个不同网络的docker如何通信"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text">**Question1：**两个不同网络的docker如何通信</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="Bridge 网络"><a rel="nofollow" class="trm-toc-link" href="#Bridge-网络"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">Bridge 网络</span></a></li><li class="trm-toc-item trm-toc-level-3" title="Bridge型"><a rel="nofollow" class="trm-toc-link" href="#Bridge型"><span class="trm-toc-number">4.3.</span> <span class="trm-toc-text">Bridge型</span></a></li><li class="trm-toc-item trm-toc-level-3" title="host网络型"><a rel="nofollow" class="trm-toc-link" href="#host网络型"><span class="trm-toc-number">4.4.</span> <span class="trm-toc-text">host网络型</span></a></li><li class="trm-toc-item trm-toc-level-3" title="None就是不允许进行网络通信"><a rel="nofollow" class="trm-toc-link" href="#None就是不允许进行网络通信"><span class="trm-toc-number">4.5.</span> <span class="trm-toc-text">None就是不允许进行网络通信</span></a></li><li class="trm-toc-item trm-toc-level-3" title="区别"><a rel="nofollow" class="trm-toc-link" href="#区别"><span class="trm-toc-number">4.6.</span> <span class="trm-toc-text">区别</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

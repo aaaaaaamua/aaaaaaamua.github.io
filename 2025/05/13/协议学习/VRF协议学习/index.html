@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="VRF: 虚拟路由转发  五分钟理解VRF（Virtual Routing and Forwarding，虚拟路由转发）-CSDN博客  大白话概括: VRF位于OSI第三层(网络层)基于IP地址的路由,就是已经拿到IP地址的包,然后进行重新管理,可以创新虚拟的路由表,相当于进行重新net(可以管理不同的路由器),相当于接入一个宿舍的交换机上每个坏小伙都私接小路由,这所有的小路由都在一台设备上 V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VRF协议学习">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/VRF%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="VRF: 虚拟路由转发  五分钟理解VRF（Virtual Routing and Forwarding，虚拟路由转发）-CSDN博客  大白话概括: VRF位于OSI第三层(网络层)基于IP地址的路由,就是已经拿到IP地址的包,然后进行重新管理,可以创新虚拟的路由表,相当于进行重新net(可以管理不同的路由器),相当于接入一个宿舍的交换机上每个坏小伙都私接小路由,这所有的小路由都在一台设备上 V">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2025-05-13T01:39:30.325Z">
+<meta property="article:modified_time" content="2025-05-16T12:56:15.625Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="VRF">
+<meta property="article:tag" content="vlan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >VRF协议学习</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-16 20:56:15"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            VRF协议学习
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            09:39
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>VRF: 虚拟路由转发</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Kangyucheng/article/details/88051969">五分钟理解VRF（Virtual Routing and Forwarding，虚拟路由转发）-CSDN博客</a></p>
+</blockquote>
+<p>大白话概括: VRF位于OSI第三层(网络层)基于IP地址的路由,就是已经拿到IP地址的包,然后进行重新管理,可以创新虚拟的路由表,相当于进行重新net(可以管理不同的路由器),相当于接入一个宿舍的交换机上每个坏小伙都私接小路由,这所有的小路由都在一台设备上</p>
+<h2 id="VRF核心功能"><a href="#VRF核心功能" class="headerlink" title="VRF核心功能"></a>VRF核心功能</h2><ul>
+<li>作用：VRF用于在同一台物理设备（如路由器或三层交换机）上创建多个隔离的路由表实例，实现网络流量的逻辑分割（类似“虚拟路由器”）。每个VRF实例独立维护：<ul>
+<li><strong>路由表</strong>（决定数据包转发路径）不同路由表中可以有一样的ip</li>
+<li><strong>转发表</strong>（FIB, Forwarding Information Base）</li>
+<li><strong>关联的接口</strong>（属于特定VRF的接口处理该实例的流量）</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：多租户网络、MPLS VPN、业务隔离等。</li>
+</ul>
+<h2 id="和vlan的区别"><a href="#和vlan的区别" class="headerlink" title="和vlan的区别"></a>和vlan的区别</h2><blockquote>
+<p>什么是vlan: <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43618070/article/details/122841234">图文并茂讲VLAN，让你看一遍就理解VLAN-CSDN博客</a></p>
+</blockquote>
+<h3 id="VLAN的本质：二层隔离，统一三层路由"><a href="#VLAN的本质：二层隔离，统一三层路由" class="headerlink" title="VLAN的本质：二层隔离，统一三层路由"></a><strong>VLAN的本质：二层隔离，统一三层路由</strong></h3><p>vlan(虚拟局域网)只是划分网段,但是由来路由统一管理,vlan不参与IP路由</p>
+<ul>
+<li><p><strong>作用层级</strong>：<br>VLAN是​<strong>​二层（数据链路层）​</strong>​技术，用于划分广播域，隔离同一物理网络中的不同LAN段。</p>
+</li>
+<li><p>路由管理：</p>
+<ul>
+<li><strong>默认情况</strong>：所有VLAN共享<strong>同一个全局路由表</strong>（除非使用VRF）。<br><em>例如：VLAN 10（192.168.1.0&#x2F;24）和VLAN 20（192.168.2.0&#x2F;24）的子网通过同一台三层交换机或路由器互联，流量由同一路由表控制。</em></li>
+<li>限制：<ul>
+<li>不同VLAN间的通信需通过三层设备（如路由器或三层交换机）进行路由。</li>
+<li>通过ACL（访问控制列表）或防火墙可以限制VLAN间通信，但路由表本身是统一的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>核心能力</strong>：</p>
+<ul>
+<li><p>交换机处理：普通二层交换机（如Cisco 2960）仅支持VLAN，负责：</p>
+<ul>
+<li>隔离广播域（不同VLAN的设备无法直接通信）。</li>
+<li>基于端口&#x2F;MAC划分VLAN（如Port 1属于VLAN 10，Port 2属于VLAN 20）。</li>
+</ul>
+</li>
+<li><p>无路由功能：二层交换机</p>
+<p>无法处理IP路由，因此：</p>
+<ul>
+<li>不能为不同VLAN分配IP子网。</li>
+<li>不同VLAN间通信必须依赖<strong>三层设备</strong>（如路由器或三层交换机）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="VRF的本质：独立路由实例，完全隔离"><a href="#VRF的本质：独立路由实例，完全隔离" class="headerlink" title="VRF的本质：独立路由实例，完全隔离"></a><strong>VRF的本质：独立路由实例，完全隔离</strong></h3><p>可以设置独立路由,每个路由下面又可以设置不同网段</p>
+<ul>
+<li><p><strong>作用层级</strong>：<br>VRF是​<strong>​三层（网络层）​</strong>​技术，创建多个​<strong>​独立的路由表和转发实例​</strong>​，类似虚拟的“独立网络服务器”。</p>
+</li>
+<li><p>核心特性：</p>
+</li>
+<li><p><strong>独立路由表</strong>：每个VRF有自己的路由条目，互不干扰。<br><em>例如：VRF-A可以有一条默认路由指向ISP-A，VRF-B指向ISP-B。</em></p>
+</li>
+<li><p>完全隔离：</p>
+<ul>
+<li>不同VRF的设备即使IP相同（如两个VRF中都有192.168.1.1），也互不可见。</li>
+<li>需要显式配置**路由泄漏（Route Leaking）**才能跨VRF通信。</li>
+</ul>
+</li>
+<li><p><strong>独立管理</strong>：<br>每个VRF可单独配置路由协议（如OSPF、BGP）、NAT、防火墙策略等。</p>
+</li>
+<li><p>交换功能：VRF本身不直接处理二层交换，但：</p>
+<ul>
+<li><p>可以绑定到物理接口或VLAN接口（SVI），从而间接关联二层域。</p>
+</li>
+<li><p>例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface GigabitEthernet0/0</span><br><span class="line"> vrf forwarding VRF-A  <span class="comment"># 将物理接口绑定到VRF-A</span></span><br><span class="line"> ip address 192.168.1.1 255.255.255.0</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>IP分配与通信</p>
+<ul>
+<li>IP分配：VRF可以管理独立的IP地址池：<br>不同VRF可使用重叠IP（如VRF-A和VRF-B均可使用192.168.1.0&#x2F;24）。<br>需为每个VRF的接口分配IP（类似独立的路由器）。</li>
+<li>总结：<br>VRF是三层技术，-具备路由功能但无原生二层交换能力，需依赖底层设备（如交换机）处理VLAN或物理连接。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>维度</strong></th>
+<th align="center"><strong>VLAN（Layer 2）</strong></th>
+<th align="center"><strong>VRF（Layer 3）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>隔离依据</strong></td>
+<td align="center">MAC地址&#x2F;VLAN标签</td>
+<td align="center">IP地址&#x2F;路由表</td>
+</tr>
+<tr>
+<td align="center"><strong>通信依赖</strong></td>
+<td align="center">需三层设备跨VLAN路由</td>
+<td align="center">默认完全隔离，需显式配置路由泄漏</td>
+</tr>
+<tr>
+<td align="center"><strong>地址重叠</strong></td>
+<td align="center">不允许同一子网内IP重复</td>
+<td align="center">允许不同VRF使用相同IP段</td>
+</tr>
+<tr>
+<td align="center"><strong>设备角色</strong></td>
+<td align="center">二层交换机</td>
+<td align="center">路由器&#x2F;三层交换机</td>
+</tr>
+</tbody></table>
+<h2 id="层级隔离-二层隔离-vs-三层隔离"><a href="#层级隔离-二层隔离-vs-三层隔离" class="headerlink" title="层级隔离: 二层隔离 vs 三层隔离"></a>层级隔离: 二层隔离 vs 三层隔离</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><table>
+<thead>
+<tr>
+<th align="center"><strong>OSI层级</strong></th>
+<th align="center"><strong>名称</strong></th>
+<th align="center"><strong>核心功能</strong></th>
+<th align="center"><strong>典型协议&#x2F;设备</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>Layer 2</strong></td>
+<td align="center">数据链路层</td>
+<td align="center">基于MAC地址的帧转发，划分广播域</td>
+<td align="center">以太网（Ethernet）、VLAN、交换机</td>
+</tr>
+<tr>
+<td align="center"><strong>Layer 3</strong></td>
+<td align="center">网络层</td>
+<td align="center">基于IP地址的路由，跨子网通信</td>
+<td align="center">IP、ICMP、路由器、VRF</td>
+</tr>
+</tbody></table>
+<p>数据链路层: 只有mac没有ip!</p>
+<p><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82&spm=1001.2101.3001.7020">数据链路层</a>是负责在物理网络中传输数据帧的层次，常见的技术包括以太网、VLAN（虚拟局域网）等。二层隔离通过<strong>物理或逻辑的手段</strong>将不同的网络设备或网络区域划分为独立的二层域，使它们之间的通信受限或隔离。这样可以有效地<strong>控制数据帧的流动</strong>，防止不同域之间的数据干扰和冲突。</p>
+<p>网络层: 通过ip来确定设备,不管mac,出现mac就会通过arp降层处理</p>
+<p>网络层是负责在网络中进行数据包路由和转发的层次，常见的协议包括IP（Internet Protocol）和路由协议（如OSPF、BGP等）。三层隔离通过配置路由器、防火墙或其他网络设备，将不同的网络分割为独立的子网或虚拟网络，实现不同子网之间的隔离和通信控制。三层隔离可以根据网络地址、子网掩码、路由策略等进行配置，从而限制不同子网之间的通信流量。</p>
+<h4 id="二层隔离"><a href="#二层隔离" class="headerlink" title="二层隔离"></a>二层隔离</h4><ul>
+<li><p>定义: 在 <strong>数据链路层（OSI Layer 2）</strong> 通过 <strong>MAC地址或VLAN标签</strong> 实现的网络隔离，限制同一广播域内的设备直接通信。</p>
+</li>
+<li><p>vlan(虚拟局域网）： 将同一物理交换机上的端口划分到不同逻辑的广播域</p>
+<ul>
+<li><pre><code class="language-bash"># 交换机配置：端口1属于VLAN 10，端口2属于VLAN 20
+interface GigabitEthernet0/1
+ switchport access vlan 10
+interface GigabitEthernet0/2
+ switchport access vlan 20
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 私有vlan（PVLAN）</span><br><span class="line"></span><br><span class="line">  - 进一步隔离同一VLAN内的设备（如禁止同一VLAN的服务器互相访问）。（类似ap隔离？）</span><br><span class="line"></span><br><span class="line">#### 三层隔离（Layer 3 Isolation）</span><br><span class="line"></span><br><span class="line">- 定义：在 **网络层（OSI Layer 3）** 通过 **IP路由表或VRF** 实现的逻辑隔离，控制不同子网或路由域之间的通信。</span><br><span class="line"></span><br><span class="line">- 子网划分（Subnet）：</span><br><span class="line"></span><br><span class="line">  将网络划分为不同IP子网（如`192.168.1.0/24`和`192.168.2.0/24`），默认需路由器才能互通。</span><br><span class="line"></span><br><span class="line">  - **隔离效果**：不同子网的设备无法直接通信，除非配置路由或ACL。</span><br><span class="line"></span><br><span class="line">- **VRF（虚拟路由和转发）**：</span><br><span class="line">  创建完全独立的路由表实例（如VRF-A和VRF-B），实现IP地址重叠和策略隔离。</span><br><span class="line"></span><br><span class="line">  - 示例</span><br><span class="line"></span><br><span class="line">    ```bash</span><br><span class="line">    # 路由器配置：两个VRF使用相同的IP段但完全隔离</span><br><span class="line">    ip vrf VRF-A</span><br><span class="line">     rd 100:1</span><br><span class="line">    ip vrf VRF-B</span><br><span class="line">     rd 200:1</span><br><span class="line">    interface GigabitEthernet0/0</span><br><span class="line">     vrf forwarding VRF-A</span><br><span class="line">     ip address 192.168.1.1 255.255.255.0</span><br><span class="line">    interface GigabitEthernet0/1</span><br><span class="line">     vrf forwarding VRF-B</span><br><span class="line">     ip address 192.168.1.1 255.255.255.0</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="从OSI模型上来看"><a href="#从OSI模型上来看" class="headerlink" title="从OSI模型上来看"></a>从OSI模型上来看</h3><h4 id="在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。"><a href="#在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。" class="headerlink" title="在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。"></a>在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。</h4><ul>
+<li><p>OSI分层原则：</p>
+<ul>
+<li><strong>第二层（数据链路层）</strong>：仅处理<strong>MAC地址</strong>和<strong>帧</strong>的转发（如以太网帧）。</li>
+<li><strong>第三层（网络层）</strong>：才引入<strong>IP地址</strong>和<strong>路由</strong>逻辑。</li>
+</ul>
+</li>
+<li><p>数据包封装：</p>
+<ul>
+<li><p>设备发送数据时，IP包会被封装在以太网帧中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[以太网帧头][目标MAC][源MAC][类型0x0800][IP包头][数据][FCS]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关键点：</p>
+<ul>
+<li>交换机（二层设备）只解析<strong>以太网帧头</strong>（MAC地址），不关心IP包头内容。</li>
+<li>路由器（三层设备）才会解封装帧，读取IP包头进行路由决策。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="常见误解澄清："><a href="#常见误解澄清：" class="headerlink" title="常见误解澄清："></a><strong>常见误解澄清：</strong></h4><ul>
+<li><strong>“ARP协议属于哪一层？”</strong><br>ARP协议虽然是解决IP→MAC映射的，但它的报文是​<strong>​二层广播帧​</strong>​（无IP头），因此属于​<strong>​二层与三层的过渡机制​</strong>​</li>
+</ul>
+<h4 id="跨网段通信是否需要VLAN参与？"><a href="#跨网段通信是否需要VLAN参与？" class="headerlink" title="跨网段通信是否需要VLAN参与？"></a><strong>跨网段通信是否需要VLAN参与？</strong></h4><h5 id="核心结论："><a href="#核心结论：" class="headerlink" title="核心结论："></a>核心结论：</h5><ul>
+<li><p>VLAN是二层隔离技术，而跨网段通信是三层路由行为，两者独立但可协作</p>
+</li>
+<li><p>VLAN的作用：</p>
+<ul>
+<li><p>划分广播域（如VLAN 10和VLAN 20的广播流量互不干扰）。</p>
+</li>
+<li><p><strong>不直接参与跨网段路由</strong>，但可绑定到三层接口（SVI）作为网关。</p>
+</li>
+<li><p>跨网段通信流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">设备A（192.168.1.1/24） → 设备A的网关（192.168.1.254） → 目标网关（192.168.2.254） → 设备B（192.168.2.1/24）</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>关键步骤：</p>
+<ol>
+<li><p>设备A判断目标IP：</p>
+<ul>
+<li>若目标IP（如192.168.2.1）与自己在同一子网（通过子网掩码计算），直接ARP查询目标MAC。</li>
+<li>若不在同一子网，将数据包发给默认网关（需已知网关MAC）。</li>
+</ul>
+</li>
+<li><p>网关路由器处理：</p>
+<ul>
+<li>解封装帧，查路由表，决定下一跳（如通过OSPF或静态路由）。</li>
+<li>重新封装帧（目标MAC&#x3D;下一跳路由器的MAC，目标IP不变）。</li>
+</ul>
+</li>
+<li><p>最终交付：</p>
+<ul>
+<li>目标网关将数据包转发给设备B。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h5 id="VLAN与跨网段的关系："><a href="#VLAN与跨网段的关系：" class="headerlink" title="VLAN与跨网段的关系："></a><strong>VLAN与跨网段的关系：</strong></h5><ul>
+<li><p>场景举例：</p>
+<ul>
+<li>设备A（VLAN 10，192.168.1.1&#x2F;24） → 设备B（VLAN 20，192.168.2.1&#x2F;24）。</li>
+<li><strong>即使两者在同一物理交换机上，若属于不同VLAN且未配置三层路由，仍无法通信</strong>。</li>
+</ul>
+</li>
+<li><p>协作方式：</p>
+<ul>
+<li>在三层交换机上为VLAN 10和VLAN 20配置SVI接口（如VLAN 10的网关IP为192.168.1.254），才能实现跨VLAN路由。</li>
+</ul>
+</li>
+<li><p>具体变化</p>
+<ul>
+<li><a href="#%E8%B7%A8%E7%BD%91%E6%AE%B5%E7%9A%84%E8%AE%BE%E5%A4%87%E9%80%9A%E4%BF%A1%E5%B8%A7%E5%A4%B4%E5%8F%98%E5%8C%96">跨网段的设备通信帧头变化</a></li>
+</ul>
+</li>
+</ul>
+<h5 id="vlan与网关的关系"><a href="#vlan与网关的关系" class="headerlink" title="vlan与网关的关系"></a>vlan与网关的关系</h5><p><strong>vlan !&#x3D; 网关</strong></p>
+<ul>
+<li><p><strong>VLAN 本身无 MAC 地址</strong>：<br>VLAN 是逻辑标识（如 VLAN ID 10），不直接关联 MAC 地址。</p>
+</li>
+<li><p>但 VLAN 接口（SVI）需要 MAC（用于 ARP 响应）：</p>
+<p>若要在三层交换机或路由器上为 VLAN 配置网关 IP（称为 SVI，Switch Virtual Interface</p>
+<p>），则 SVI 接口会分配一个 MAC 地址。</p>
+<ul>
+<li><p>示例配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface Vlan10</span><br><span class="line"> ip address 192.168.1.254 255.255.255.0  <span class="comment"># 网关IP</span></span><br><span class="line"> mac-address 00:11:22:33:44:55           <span class="comment"># 可选静态MAC，否则自动生成</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>作用</strong>：<br>该 MAC 地址用于 VLAN 10 内设备的 ARP 解析（如设备通过 ARP 查询 <code>192.168.1.254</code> 的 MAC）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="同-非同网段的设备通信帧头变化"><a href="#同-非同网段的设备通信帧头变化" class="headerlink" title="同&#x2F;非同网段的设备通信帧头变化"></a>同&#x2F;非同网段的设备通信帧头变化</h2><h3 id="跨网段的设备通信帧头变化"><a href="#跨网段的设备通信帧头变化" class="headerlink" title="跨网段的设备通信帧头变化"></a>跨网段的设备通信帧头变化</h3><p><img src="/2025/05/02/hello-world/image-20250513011832425.png" alt="image-20250513011832425"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h4 id="初始状态"><a href="#初始状态" class="headerlink" title="初始状态:"></a>初始状态:</h4><ul>
+<li><p>设备的arp表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">设备A: 192.168.1.254 → 00:11:22:33:44:55 (网关a MAC)</span><br><span class="line">设备B: 192.168.2.254 → AA:BB:CC:DD:EE:FF (网关b MAC)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>三层交换机的mac表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">VLAN 10:</span><br><span class="line">  Port 1 | 00:11:22:33:44:55 (网关SVI接口)</span><br><span class="line">  Port 2 | AA:AA:AA:AA:AA:AA (设备A)</span><br><span class="line"></span><br><span class="line">VLAN 20:</span><br><span class="line">  Port 3 | AA:BB:CC:DD:EE:FF (网关SVI接口)</span><br><span class="line">  Port 4 | BB:BB:BB:BB:BB:BB (设备B)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="帧头变化"><a href="#帧头变化" class="headerlink" title="帧头变化"></a>帧头变化</h4><ul>
+<li><p>(1)设备A -&gt; 网关A</p>
+<ul>
+<li><p>设备A操作:</p>
+<ul>
+<li><p>1️⃣判断目标IP（192.168.2.1）不在同一子网，发送给网关192.168.1.254</p>
+</li>
+<li><p>2️⃣封装以太网帧和IP包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[以太网帧头]</span><br><span class="line">  - 目标MAC: 00:11:22:33:44:55 (网关MAC)</span><br><span class="line">  - 源MAC: AA:AA:AA:AA:AA:AA (设备A的MAC)</span><br><span class="line">  - 类型: 0x0800 (IPv4)</span><br><span class="line"></span><br><span class="line">[IP包头]</span><br><span class="line">  - 源IP: 192.168.1.1</span><br><span class="line">  - 目标IP: 192.168.2.1</span><br><span class="line">  - TTL: 64</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>交换机操作:</p>
+<p>根据目标MAC（00:11:22:33:44:55）将帧转发给网关SVI接口（VLAN 10）。</p>
+</li>
+</ul>
+</li>
+<li><p>(2)网关（192.168.1.254）→ 目标网关（192.168.2.254）</p>
+<ul>
+<li><p>三层交换机的操作：</p>
+<ul>
+<li><p>(1)解封装以太网帧，读取IP包头，发现目标IP是192.168.2.1。</p>
+</li>
+<li><p>(2)查路由表，匹配192.168.2.0&#x2F;24的子网，下一跳是VLAN 20的SVI接口（192.168.2.254）。</p>
+</li>
+<li><p>(3)重新封装以太网帧：</p>
+<ul>
+<li><p>目标MAC: BB:BB:BB:BB:BB:BB (设备B的MAC，需通过ARP查询获取)</p>
+</li>
+<li><p>源MAC: AA:BB:CC:DD:EE:FF (VLAN 20的SVI接口MAC)</p>
+</li>
+<li><p><strong>IP包头不变</strong>（源IP仍是192.168.1.1，目标IP仍是192.168.2.1，TTL减1&#x3D;63）。</p>
+</li>
+<li><pre><code>[新以太网帧头]
+  - 目标MAC: BB:BB:BB:BB:BB:BB
+  - 源MAC: AA:BB:CC:DD:EE:FF
+  - 类型: 0x0800
+
+[IP包头] (不变)
+  - 源IP: 192.168.1.1
+  - 目标IP: 192.168.2.1
+  - TTL: 63
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ARP查询（若MAC未知）</strong>：</p>
+</li>
+<li><p>交换机在VLAN 20内广播ARP请求：“谁是192.168.2.1？” → 设备B回复MAC地址。</p>
+</li>
+</ul>
+</li>
+<li><p>（3）目标网关 → 设备B</p>
+<ul>
+<li>交换机将帧从VLAN 20的端口（Port 4）转发给设备B。</li>
+<li>设备B接收后，检查目标MAC和IP，确认是发给自己的数据包。</li>
+</ul>
+</li>
+</ul>
+<h4 id="关键变化对比"><a href="#关键变化对比" class="headerlink" title="关键变化对比"></a><strong>关键变化对比</strong></h4><table>
+<thead>
+<tr>
+<th align="center"><strong>跳数</strong></th>
+<th align="center"><strong>源MAC</strong></th>
+<th align="center"><strong>目标MAC</strong></th>
+<th align="center"><strong>源IP</strong></th>
+<th align="center"><strong>目标IP</strong></th>
+<th align="center"><strong>TTL</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">设备A → 网关</td>
+<td align="center">AA:AA:AA:AA:AA:AA</td>
+<td align="center">00:11:22:33:44:55</td>
+<td align="center">192.168.1.1</td>
+<td align="center">192.168.2.1</td>
+<td align="center">64</td>
+</tr>
+<tr>
+<td align="center">网关 → 设备B</td>
+<td align="center">AA:BB:CC:DD:EE:FF</td>
+<td align="center">BB:BB:BB:BB:BB:BB</td>
+<td align="center">192.168.1.1</td>
+<td align="center">192.168.2.1</td>
+<td align="center">63</td>
+</tr>
+</tbody></table>
+<h4 id="核心规则："><a href="#核心规则：" class="headerlink" title="核心规则："></a>核心规则：</h4><ul>
+<li>MAC地址逐跳变化：<br>每经过一个三层设备（如网关），源和目标MAC会被重写（对应当前链路的接口MAC）</li>
+<li>IP地址始终不变：<br>源IP和目标IP从设备A到设备B始终保持不变（端到端通信）。</li>
+<li>TTL减1：<br>每经过一个路由器，TTL值减1，防止数据包无限循环。</li>
+</ul>
+<h4 id="为什么需要修改MAC地址？"><a href="#为什么需要修改MAC地址？" class="headerlink" title="为什么需要修改MAC地址？"></a>为什么需要修改MAC地址？</h4><ul>
+<li>二层与三层的分工：<ul>
+<li>MAC地址用于当前链路的直接交付（如设备A→网关、网关→设备B）。</li>
+<li>IP地址用于端到端的逻辑寻址（设备A到设备B的全局标识）。</li>
+</ul>
+</li>
+<li>类比快递：<ul>
+<li>IP地址是“收件人地址”（始终不变），MAC地址是“当前运输车辆的牌照”（每段路程不同）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="同网段的设备通信帧头变化"><a href="#同网段的设备通信帧头变化" class="headerlink" title="同网段的设备通信帧头变化"></a>同网段的设备通信帧头变化</h3><p>具体的内容不再赘述</p>
+<p><img src="/2025/05/02/hello-world/image-20250513011748883.png" alt="image-20250513011748883"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/vpn%E5%8D%8F%E8%AE%AE%E4%BA%86%E8%A7%A3/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">vpn协议了解</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/13</li>
+                <li>10:00</li>
+                <li>协议学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/11/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/ISCC2025/%E9%82%A6%E5%B8%83%E5%87%BA%E5%87%BB/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">iscc2025_邦布出击</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/11</li>
+                <li>10:16</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="VRF核心功能"><a rel="nofollow" class="trm-toc-link" href="#VRF核心功能"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">VRF核心功能</span></a></li><li class="trm-toc-item trm-toc-level-2" title="和vlan的区别"><a rel="nofollow" class="trm-toc-link" href="#和vlan的区别"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">和vlan的区别</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="VLAN的本质：二层隔离，统一三层路由"><a rel="nofollow" class="trm-toc-link" href="#VLAN的本质：二层隔离，统一三层路由"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">VLAN的本质：二层隔离，统一三层路由</span></a></li><li class="trm-toc-item trm-toc-level-3" title="VRF的本质：独立路由实例，完全隔离"><a rel="nofollow" class="trm-toc-link" href="#VRF的本质：独立路由实例，完全隔离"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">VRF的本质：独立路由实例，完全隔离</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="层级隔离: 二层隔离 vs 三层隔离"><a rel="nofollow" class="trm-toc-link" href="#层级隔离-二层隔离-vs-三层隔离"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">层级隔离: 二层隔离 vs 三层隔离</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="定义"><a rel="nofollow" class="trm-toc-link" href="#定义"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">定义</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="二层隔离"><a rel="nofollow" class="trm-toc-link" href="#二层隔离"><span class="trm-toc-number">3.1.1.</span> <span class="trm-toc-text">二层隔离</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="从OSI模型上来看"><a rel="nofollow" class="trm-toc-link" href="#从OSI模型上来看"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">从OSI模型上来看</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。"><a rel="nofollow" class="trm-toc-link" href="#在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text">在纯二层（数据链路层）的通信中，确实不存在IP地址的概念。</span></a></li><li class="trm-toc-item trm-toc-level-4" title="常见误解澄清："><a rel="nofollow" class="trm-toc-link" href="#常见误解澄清："><span class="trm-toc-number">3.2.2.</span> <span class="trm-toc-text">常见误解澄清：</span></a></li><li class="trm-toc-item trm-toc-level-4" title="跨网段通信是否需要VLAN参与？"><a rel="nofollow" class="trm-toc-link" href="#跨网段通信是否需要VLAN参与？"><span class="trm-toc-number">3.2.3.</span> <span class="trm-toc-text">跨网段通信是否需要VLAN参与？</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="核心结论："><a rel="nofollow" class="trm-toc-link" href="#核心结论："><span class="trm-toc-number">3.2.3.1.</span> <span class="trm-toc-text">核心结论：</span></a></li><li class="trm-toc-item trm-toc-level-5" title="VLAN与跨网段的关系："><a rel="nofollow" class="trm-toc-link" href="#VLAN与跨网段的关系："><span class="trm-toc-number">3.2.3.2.</span> <span class="trm-toc-text">VLAN与跨网段的关系：</span></a></li><li class="trm-toc-item trm-toc-level-5" title="vlan与网关的关系"><a rel="nofollow" class="trm-toc-link" href="#vlan与网关的关系"><span class="trm-toc-number">3.2.3.3.</span> <span class="trm-toc-text">vlan与网关的关系</span></a></li></ol></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="同&#x2F;非同网段的设备通信帧头变化"><a rel="nofollow" class="trm-toc-link" href="#同-非同网段的设备通信帧头变化"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">同&#x2F;非同网段的设备通信帧头变化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="跨网段的设备通信帧头变化"><a rel="nofollow" class="trm-toc-link" href="#跨网段的设备通信帧头变化"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">跨网段的设备通信帧头变化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="初始状态:"><a rel="nofollow" class="trm-toc-link" href="#初始状态"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text">初始状态:</span></a></li><li class="trm-toc-item trm-toc-level-4" title="帧头变化"><a rel="nofollow" class="trm-toc-link" href="#帧头变化"><span class="trm-toc-number">4.1.2.</span> <span class="trm-toc-text">帧头变化</span></a></li><li class="trm-toc-item trm-toc-level-4" title="关键变化对比"><a rel="nofollow" class="trm-toc-link" href="#关键变化对比"><span class="trm-toc-number">4.1.3.</span> <span class="trm-toc-text">关键变化对比</span></a></li><li class="trm-toc-item trm-toc-level-4" title="核心规则："><a rel="nofollow" class="trm-toc-link" href="#核心规则："><span class="trm-toc-number">4.1.4.</span> <span class="trm-toc-text">核心规则：</span></a></li><li class="trm-toc-item trm-toc-level-4" title="为什么需要修改MAC地址？"><a rel="nofollow" class="trm-toc-link" href="#为什么需要修改MAC地址？"><span class="trm-toc-number">4.1.5.</span> <span class="trm-toc-text">为什么需要修改MAC地址？</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="同网段的设备通信帧头变化"><a rel="nofollow" class="trm-toc-link" href="#同网段的设备通信帧头变化"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">同网段的设备通信帧头变化</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="ssrf SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。 翻译翻译就是通过服务端打内网就是ssrf  伪协议思路 在不同的服务中支持的伪协议类型是不一样的 在PHP中支持的伪协议 1&gt;file dict sftp ldap tftp gopher  在JAVA中支持的伪协议 1&gt;file ftp mailto http https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pikachu_ssrf">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/03/13/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/ssrf/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="ssrf SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。 翻译翻译就是通过服务端打内网就是ssrf  伪协议思路 在不同的服务中支持的伪协议类型是不一样的 在PHP中支持的伪协议 1&gt;file dict sftp ldap tftp gopher  在JAVA中支持的伪协议 1&gt;file ftp mailto http https">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-03T02:48:09.140Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="ssrf">
+<meta name="twitter:card" content="summary">
+
+
+<title >pikachu_ssrf</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-03 10:48:09"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            pikachu_ssrf
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="ssrf"><a href="#ssrf" class="headerlink" title="ssrf"></a>ssrf</h1><blockquote>
+<p>SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。</p>
+<p>翻译翻译就是通过服务端打内网就是<code>ssrf</code></p>
+</blockquote>
+<h2 id="伪协议思路"><a href="#伪协议思路" class="headerlink" title="伪协议思路"></a>伪协议思路</h2><blockquote>
+<p>在不同的服务中支持的伪协议类型是不一样的</p>
+<p>在PHP中支持的伪协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;file dict sftp ldap tftp gopher</span><br></pre></td></tr></table></figure>
+
+<p>在JAVA中支持的伪协议</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;file ftp mailto http https jar netdoc</span><br></pre></td></tr></table></figure></blockquote>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a><code>file</code></h3><p>如果是<code>linux</code>服务器,并且可能存在<code>ssrf</code>漏洞,就可以尝试开始内网横向</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file:///etc/passwd  尝试读取文件passwd</span><br><span class="line">file:///etc/hosts   显示当前操作系统网卡IP</span><br><span class="line">file:///proc/net/arp   显示arp缓存表,寻找内网其他主机</span><br><span class="line">file:///proc/net/fib_trie  显示当前网段路由信息</span><br></pre></td></tr></table></figure>
+
+<p>可以使用burp去使用http协议去访问内网的其他主机,基于部分的arp表,建立80通信以前一定会先尝试使用arp去获取内网地址,从而达成记录arp信息的操作</p>
+<blockquote>
+<p>需要注意的是,可能内网设置了防火墙限制,可能限制了<code>arp</code>协议,会导致记录的所有mac地址都是网关的mac地址</p>
+</blockquote>
+<h3 id="dict"><a href="#dict" class="headerlink" title="dict"></a><code>dict</code></h3><p><code>dict</code>协议是用来提供字典查询服务的,默认端口 <strong>2628</strong></p>
+<p><code>dict</code>协议比较灵活允许自定义IP和端口和<strong>CRLF</strong>注入(换行符之类)</p>
+<p><code>dict</code>协议比较小众,容易在设置黑名单的过滤中绕过</p>
+<blockquote>
+<ol>
+<li><strong>服务器配置</strong>：<ul>
+<li><strong>应用层过滤</strong>：若服务端未对目标IP进行内网限制，或过滤逻辑不严谨（如仅检查<code>http</code>协议），<code>dict</code>协议可能绕过限制。</li>
+<li><strong>网络层限制</strong>：即使应用允许请求，服务器的防火墙或出站规则可能阻止对外部特定端口（如非标准端口）的连接。</li>
+</ul>
+</li>
+<li><strong>协议兼容性</strong>：<ul>
+<li><code>dict</code>协议基于TCP，若目标服务（如HTTP、Redis）运行在TCP端口且未验证协议格式，可能返回banner信息或执行命令（需构造有效载荷）。</li>
+<li>例如，连接到Redis的6379端口并发送命令可能触发漏洞，但需通过CRLF注入等方式适配目标协议。</li>
+</ul>
+</li>
+<li><strong>响应处理</strong>：<ul>
+<li>即使连接成功，服务端对<code>dict</code>响应的处理方式可能影响信息泄露效果（如解析HTTP响应为字典数据）。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="sftp"><a href="#sftp" class="headerlink" title="sftp"></a><code>sftp</code></h3><p><code>SFTP</code>要求客户端用户必须由服务器进行身份验证，</p>
+<p>并且数据传输必须通过安全通道（<code>SSH</code>）进行，即不传输明文密码或文件数据。</p>
+<p>是<code>SSH</code>协议的一部分,是一种远程登录信息</p>
+<h2 id="gopher协议-很重要的伪协议"><a href="#gopher协议-很重要的伪协议" class="headerlink" title="gopher协议 很重要的伪协议"></a><code>gopher</code>协议 很重要的伪协议</h2><blockquote>
+<p>重要与可以提交<code>POST</code>请求,可以用来替代<code>http</code>伪协议无法处理的事情</p>
+<p><code>gopher</code>默认端口为70, 进行<code>ssrf</code>渗透测试的时候注意修改端口为80或者对应端口</p>
+</blockquote>
+<p><code>gopher</code>转发默认不发送一个字符(会被吃掉)</p>
+<h3 id="GET"><a href="#GET" class="headerlink" title="GET"></a><code>GET</code></h3><blockquote>
+<p>注意端口号和填充值</p>
+</blockquote>
+<ol>
+<li><p>直接发送数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl gopher://127.0.0.1/nihoaxiaozhu</span><br></pre></td></tr></table></figure>
+
+<p>监听端会在70端口收到<code>ihaoxiaozhu</code>,第一个会被吞掉,需要对方收到完整的东西需要发送</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl gopher://127.0.0.1/_nihoaxiaozhu</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用<code>ssrf</code></p>
+<p> 具有<code>ssrf</code>漏洞的页面发送</p>
+<p>复制这个头, 保留<code>GET</code>和<code>Host</code>的信息,注意一定要留着一个换行,然后对以下进行url编码, <strong>注意必须连同换行一块编码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: tryoneclick.art:35565</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET%20/%20HTTP/1.1%0D%0AHost:%20tryoneclick.art:35565%0D%0A</span><br></pre></td></tr></table></figure>
+
+
+
+<p>但是拼接上去的时候需要在前面加个<code>_</code>,用来被吞掉</p>
+<pre><code>gopher://targetip:80/_GET%20/%20HTTP/1.1%0D%0AHost:%20tryoneclick.art:35565%0D%0A
+</code></pre>
+</li>
+</ol>
+<p>​	</p>
+<p>   如果是存在<code>ssrf</code>漏洞的页面是通过<code>POST</code>来进行渗透的,也可以在<code>burp</code>中编辑<code>gopher</code>信息</p>
+<p>   需要注意的是,这个是在浏览器中填写的,如果是在<code>burpsuite</code>中抓包得到的, 需要对这个<code>url</code>信息进行再次的<code>url</code>编码(总共对这个头信息编码两次)</p>
+<p>   也就是发送的对上述的<code>gopher://targetip:80/_</code>后面的内容进行再一次<code>url</code>编码</p>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher%3A%2F%2Ftargetip%3A80%2F%5FGET%2520%2F%2520HTTP%2F1%2E1%250D%250AHost%3A%2520tryoneclick%2Eart%3A35565%250D%250A</span><br></pre></td></tr></table></figure>
+
+<p>​	两次url编码这是由于发送到<code>ssrf</code>服务器的时候会做一次解码,<code>ssrf</code>发送到目标内网服务器的时候会在做一次解码</p>
+<h3 id="POST"><a href="#POST" class="headerlink" title="POST"></a><code>POST</code></h3>
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/13/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/burpsuite_lab/ssrf/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">burplab_ssrf</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/13</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/03/11/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/pikachu/include/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">pikachu_文件包含</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/03/11</li>
+                <li>00:00</li>
+                <li>打靶日记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="ssrf"><a rel="nofollow" class="trm-toc-link" href="#ssrf"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">ssrf</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="伪协议思路"><a rel="nofollow" class="trm-toc-link" href="#伪协议思路"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">伪协议思路</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="file"><a rel="nofollow" class="trm-toc-link" href="#file"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">file</span></a></li><li class="trm-toc-item trm-toc-level-3" title="dict"><a rel="nofollow" class="trm-toc-link" href="#dict"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">dict</span></a></li><li class="trm-toc-item trm-toc-level-3" title="sftp"><a rel="nofollow" class="trm-toc-link" href="#sftp"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">sftp</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="gopher协议 很重要的伪协议"><a rel="nofollow" class="trm-toc-link" href="#gopher协议-很重要的伪协议"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">gopher协议 很重要的伪协议</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="GET"><a rel="nofollow" class="trm-toc-link" href="#GET"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">GET</span></a></li><li class="trm-toc-item trm-toc-level-3" title="POST"><a rel="nofollow" class="trm-toc-link" href="#POST"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">POST</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

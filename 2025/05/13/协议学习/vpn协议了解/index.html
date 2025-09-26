@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="vpn分类(按照是否使用使用虚拟网卡通信来分类)传统vpn,使用虚拟网卡通信特点使用vpn协议: OpenVPN、IPSec、L2TP&#x2F;IPSec、WireGuard, 这些vpn通常会在本地生产一张独立的虚拟网卡,通过虚拟网卡来进行通信,如果需要抓包监听该vpn,可以直接使用wireshark监听该网卡实现抓包  这些VPN通常会在本地生成一张虚拟网卡（如TAP&#x2F;TUN设备）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vpn协议了解">
+<meta property="og:url" content="https://aaaaaamua.github.io/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/vpn%E5%8D%8F%E8%AE%AE%E4%BA%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="vpn分类(按照是否使用使用虚拟网卡通信来分类)传统vpn,使用虚拟网卡通信特点使用vpn协议: OpenVPN、IPSec、L2TP&#x2F;IPSec、WireGuard, 这些vpn通常会在本地生产一张独立的虚拟网卡,通过虚拟网卡来进行通信,如果需要抓包监听该vpn,可以直接使用wireshark监听该网卡实现抓包  这些VPN通常会在本地生成一张虚拟网卡（如TAP&#x2F;TUN设备）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-13T02:00:32.738Z">
+<meta property="article:modified_time" content="2025-05-13T01:57:15.867Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="vpn">
+<meta name="twitter:card" content="summary">
+
+
+<title >vpn协议了解</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-13 09:57:15"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            vpn协议了解
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2025
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/touxiang.webp">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        aaaaaaaaamua
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/aaaaaaaamua" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                site:
+            </div>
+            <div class="trm-label trm-label-light">
+                Mars
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                age:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="vpn分类-按照是否使用使用虚拟网卡通信来分类"><a href="#vpn分类-按照是否使用使用虚拟网卡通信来分类" class="headerlink" title="vpn分类(按照是否使用使用虚拟网卡通信来分类)"></a>vpn分类(按照是否使用使用虚拟网卡通信来分类)</h2><h3 id="传统vpn-使用虚拟网卡通信"><a href="#传统vpn-使用虚拟网卡通信" class="headerlink" title="传统vpn,使用虚拟网卡通信"></a>传统vpn,使用虚拟网卡通信</h3><h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>使用vpn协议: OpenVPN、IPSec、L2TP&#x2F;IPSec、WireGuard, 这些vpn通常会在本地生产一张独立的虚拟网卡,通过虚拟网卡来进行通信,如果需要抓包监听该vpn,可以直接使用wireshark监听该网卡实现抓包</p>
+<ul>
+<li>这些VPN通常会在本地生成一张虚拟网卡（如TAP&#x2F;TUN设备），用于处理加密流量。例如：<ul>
+<li><strong>TUN设备</strong>：处理<strong>IP层流量</strong>（路由模式，仅加密IP数据包）。</li>
+<li><strong>TAP设备</strong>：处理<strong>以太网层流量</strong>（桥接模式，加密完整的以太网帧）。</li>
+<li><strong>Windows示例</strong>：连接后可能在“网络连接”中看到名为“OpenVPN TAP-Windows Adapter”或类似名称的虚拟网卡。</li>
+<li><strong>Linux&#x2F;macOS示例</strong>：通过<code>ifconfig</code>或<code>ip addr</code>命令可看到<code>tun0</code>或<code>wg0</code>等接口。</li>
+</ul>
+</li>
+<li><strong>作用</strong>：<br>虚拟网卡将流量重定向到VPN客户端进行加密，再通过物理网卡发送到VPN服务器，实现隧道传输</li>
+</ul>
+<h4 id="OSI工作层级"><a href="#OSI工作层级" class="headerlink" title="OSI工作层级"></a>OSI工作层级</h4><ul>
+<li><strong>工作层级</strong>：此类vpn的工作层级通常是<strong>网络层或数据链路层</strong>（OSI第3&#x2F;2层，TCP&#x2F;IP模型的“网络层”或“链路层”）。<ul>
+<li><strong>典型协议</strong>：OpenVPN（TUN&#x2F;TAP）、IPSec、L2TP、WireGuard。</li>
+<li>特点：<ul>
+<li><strong>全局流量接管</strong>：通过虚拟网卡（如<code>tun0</code>）捕获所有系统流量（或按路由规则分流）。</li>
+<li><strong>修改系统路由表</strong>：强制将默认网关指向VPN接口，所有流量（除非例外）都经过加密隧道。</li>
+<li><strong>透明性</strong>：无需应用单独配置，所有应用自动走VPN。</li>
+<li><strong>更底层控制</strong>：可处理IP包或以太网帧（如TUN模式处理IP层，TAP模式处理链路层）。</li>
+</ul>
+</li>
+<li><strong>例子</strong>：商业VPN服务（NordVPN、ExpressVPN）、企业级VPN（Cisco AnyConnect）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="如何验证"><a href="#如何验证" class="headerlink" title="如何验证"></a>如何验证</h4><ul>
+<li><strong>Windows</strong>：<br>打开“网络连接”面板，查看是否有新增的适配器（如“TAP-Windows Adapter”）。</li>
+<li><strong>Linux&#x2F;macOS</strong>：<br>运行 <code>ifconfig</code> 或 <code>ip link</code>，寻找 <code>tun</code>、<code>tap</code>、<code>wg</code> 等前缀的接口。</li>
+<li><strong>通用方法</strong>：<br>使用VPN前后对比 <code>netstat -r</code> 或 <code>route print</code>，观察默认网关是否指向VPN接口。</li>
+</ul>
+<h4 id="例外"><a href="#例外" class="headerlink" title="例外"></a>例外</h4><p>部分代理软件v2ray&#x2F;clash存在一个tun模式,会创建虚拟网卡（如 <code>Clash TUN</code>），接管所有流量（类似 VPN）。</p>
+<p>开启全局代理后会强制所有流量走代理(包括dns)</p>
+<p>确实是处理网络层的数据,但是是依赖应用层的代理协议来进行加密(例如socks5)</p>
+<p>但是需要注意的是Tun模式对比传统vpn任然存在局限性:</p>
+<ul>
+<li><strong>不处理链路层数据（如 TAP）</strong>：<ul>
+<li>无法直接代理以太网帧（如企业 VPN 的局域网桥接需求）。</li>
+<li>传统 VPN 的 TAP 模式可以做到这一点。</li>
+</ul>
+</li>
+<li><strong>依赖用户态代理协议</strong>：<ul>
+<li>TUN 本身不加密数据，依赖上层工具（如 Clash）通过 SOCKS5&#x2F;Shadowsocks 加密，性能不如内核态 VPN（如 WireGuard）。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>特性</strong></th>
+<th align="center"><strong>TUN 模式（Clash&#x2F;V2Ray）</strong></th>
+<th align="center"><strong>传统 VPN（如 WireGuard）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>工作层级</strong></td>
+<td align="center">网络层（IP 包）</td>
+<td align="center">网络层（IP 包）或链路层（TAP 模式）</td>
+</tr>
+<tr>
+<td align="center"><strong>是否加密</strong></td>
+<td align="center">❌ 依赖上层代理协议（如 SOCKS5）</td>
+<td align="center">✅ 原生加密（如 WireGuard 的 ChaCha20）</td>
+</tr>
+<tr>
+<td align="center"><strong>流量覆盖范围</strong></td>
+<td align="center">所有 IP 层流量（需配置路由规则）</td>
+<td align="center">所有 IP 层流量（默认全局路由）</td>
+</tr>
+<tr>
+<td align="center"><strong>性能开销</strong></td>
+<td align="center">较高（代理协议+加密多层处理）</td>
+<td align="center">较低（原生加密，内核态处理）</td>
+</tr>
+<tr>
+<td align="center"><strong>典型用途</strong></td>
+<td align="center">翻墙、分流代理</td>
+<td align="center">隐私保护、企业内网访问</td>
+</tr>
+</tbody></table>
+<h3 id="代理型vpn-不使用独立的虚拟网卡"><a href="#代理型vpn-不使用独立的虚拟网卡" class="headerlink" title="代理型vpn,不使用独立的虚拟网卡"></a>代理型vpn,不使用独立的虚拟网卡</h3><h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ol>
+<li><strong>用户态VPN（如部分移动端应用）</strong>：<br>某些轻量级VPN可能直接在应用层处理流量（如Android的VpnService API），无需内核级虚拟网卡，但仍会模拟一个虚拟网络接口</li>
+<li><strong>代理型VPN（如SOCKS5&#x2F;HTTP代理）</strong>：<br>这类工具（如Shadowsocks）通常​<strong>​不创建虚拟网卡​</strong>​，而是通过本地代理端口（如<code>127.0.0.1:1080</code>）转发流量，仅影响配置了代理的应用程序。</li>
+<li><strong>从这里开始着重讨论的是代理型vpn</strong></li>
+</ol>
+<p>此类vpn不创建虚拟网卡,而是通过本地端口代理,而是完完全全的软件型,和传统vpn通过软件行为模拟硬件(创建虚拟网卡)不同的是,此类vpn并不尝试处理网卡需要处理的数据,而是直接处理应用层的数据(socks5&#x2F;http)</p>
+<h4 id="工作层级"><a href="#工作层级" class="headerlink" title="工作层级"></a>工作层级</h4><p>工作于应用层上,只对某个端口的流量进行转发,对更底层的数据不进行处理</p>
+<p>需要注意的是,虽然socks5可以通过转发传输层（如TCP&#x2F;UDP）的流量实现似乎可以处理任何通过tcp&#x2F;udp传输的应用层数据(实际上是所用通过tcp&#x2F;udp传输的数据),但是从具体的层级划分来说,socks5就是工作在应用层上的</p>
+<h4 id="socks5的工作范围"><a href="#socks5的工作范围" class="headerlink" title="socks5的工作范围"></a>socks5的工作范围</h4><ul>
+<li><p>所有基于 TCP 的应用层协议：</p>
+<ul>
+<li>HTTP&#x2F;HTTPS（网页浏览）</li>
+<li>FTP（文件传输）</li>
+<li>SMTP&#x2F;POP3&#x2F;IMAP（邮件协议）</li>
+<li>SSH（加密远程登录）</li>
+<li>RDP（远程桌面）</li>
+<li>游戏（如 Minecraft、Steam）</li>
+<li>各种 P2P 协议（BitTorrent）</li>
+</ul>
+</li>
+<li><p>所有基于 UDP 的应用层协议：</p>
+<ul>
+<li><p>DNS（域名解析）</p>
+</li>
+<li><p>VoIP（如 Skype、Zoom）</p>
+</li>
+<li><p>QUIC（HTTP&#x2F;3）</p>
+</li>
+<li><p>部分游戏（如 UDP 模式的在线射击游戏）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h4><ul>
+<li><strong>代理的“伪下层”能力</strong>：<br>SOCKS5虽然属于应用层工具，但可以转发传输层（TCP&#x2F;UDP）的流量，因此能代理游戏、P2P等非HTTP应用。而HTTP代理只能处理HTTP&#x2F;HTTPS流量。</li>
+<li><strong>VPN的灵活性</strong>：<br>现代VPN工具（如WireGuard）可以通过路由规则实现“分应用代理”（类似代理的灵活性），但底层仍需虚拟网卡支持。</li>
+<li><strong>性能差异</strong>：<br>代理型VPN通常开销更小（仅处理部分流量），而常规VPN因加密全流量可能对延迟更敏感。</li>
+</ul>
+<h3 id="socks5的局限性"><a href="#socks5的局限性" class="headerlink" title="socks5的局限性"></a>socks5的局限性</h3><p>尽管 SOCKS5 可以代理大多数应用层协议，但它仍然有 <strong>关键限制</strong>，使其无法完全替代 VPN：</p>
+<h4 id="无法代理非-TCP-UDP-流量"><a href="#无法代理非-TCP-UDP-流量" class="headerlink" title="无法代理非 TCP&#x2F;UDP 流量"></a>无法代理非 TCP&#x2F;UDP 流量</h4><ul>
+<li><p><strong>ICMP（Ping&#x2F;Traceroute）</strong>：SOCKS5 无法代理 ICMP 协议，而 VPN 可以。</p>
+</li>
+<li><p><strong>原始 IP 层流量</strong>（如 RAW Socket 通信）：某些低级网络工具（如 <code>nmap</code> 的某些扫描模式）无法通过 SOCKS5 代理</p>
+</li>
+</ul>
+<h4 id="依赖应用程序主动支持-SOCKS5"><a href="#依赖应用程序主动支持-SOCKS5" class="headerlink" title="依赖应用程序主动支持 SOCKS5"></a><strong>依赖应用程序主动支持 SOCKS5</strong></h4><ul>
+<li><p>部分应用不支持 SOCKS5：</p>
+<ul>
+<li>某些老旧软件（如 Windows 远程桌面 RDP 默认不走 SOCKS5）。</li>
+<li>系统级服务（如 Windows Update、杀毒软件更新）通常不会走 SOCKS5。</li>
+</ul>
+</li>
+<li><p><strong>需要手动配置</strong>：每个应用必须单独设置代理，而 VPN 是全局的。</p>
+</li>
+</ul>
+<h4 id="无法修改-IP-层路由"><a href="#无法修改-IP-层路由" class="headerlink" title="无法修改 IP 层路由"></a><strong>无法修改 IP 层路由</strong></h4><ul>
+<li><strong>DNS 泄漏风险</strong>：即使 SOCKS5 代理了 TCP&#x2F;UDP 流量，某些应用仍可能直接发送 DNS 请求（不走代理），导致隐私泄露。</li>
+<li><strong>无法强制所有流量走代理</strong>：VPN 可以修改路由表，强制所有流量走隧道，而 SOCKS5 只能代理配置过的应用。</li>
+</ul>
+<h4 id="无法处理链路层（L2）流量"><a href="#无法处理链路层（L2）流量" class="headerlink" title="无法处理链路层（L2）流量"></a><strong>无法处理链路层（L2）流量</strong></h4><ul>
+<li><strong>VPN（如 TAP 模式）可以代理完整的以太网帧</strong>（如某些企业 VPN 需要桥接局域网），而 SOCKS5 只能处理 TCP&#x2F;UDP。</li>
+</ul>
+<h4 id="SOCKS5-vs-常规-VPN-的核心区别"><a href="#SOCKS5-vs-常规-VPN-的核心区别" class="headerlink" title="SOCKS5 vs. 常规 VPN 的核心区别"></a><strong>SOCKS5 vs. 常规 VPN 的核心区别</strong></h4><table>
+<thead>
+<tr>
+<th align="center"><strong>特性</strong></th>
+<th align="center"><strong>SOCKS5 代理</strong></th>
+<th align="center"><strong>常规 VPN（如 OpenVPN&#x2F;WireGuard）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>工作层级</strong></td>
+<td align="center">会话层（代理 TCP&#x2F;UDP）</td>
+<td align="center">网络层（TUN）或链路层（TAP）</td>
+</tr>
+<tr>
+<td align="center"><strong>代理范围</strong></td>
+<td align="center">仅支持 SOCKS5 的应用</td>
+<td align="center">全系统流量（自动接管）</td>
+</tr>
+<tr>
+<td align="center"><strong>是否依赖虚拟网卡</strong></td>
+<td align="center">❌ 否</td>
+<td align="center">✅ 是</td>
+</tr>
+<tr>
+<td align="center"><strong>是否修改路由表</strong></td>
+<td align="center">❌ 否</td>
+<td align="center">✅ 是</td>
+</tr>
+<tr>
+<td align="center"><strong>是否支持 ICMP&#x2F;RAW</strong></td>
+<td align="center">❌ 否</td>
+<td align="center">✅ 是</td>
+</tr>
+<tr>
+<td align="center"><strong>DNS 泄漏风险</strong></td>
+<td align="center">⚠️ 可能泄漏（依赖应用配置）</td>
+<td align="center">✅ 通常无泄漏（DNS 走隧道）</td>
+</tr>
+<tr>
+<td align="center"><strong>适用场景</strong></td>
+<td align="center">灵活代理（如仅浏览器&#x2F;游戏）</td>
+<td align="center">全局匿名&#x2F;企业远程访问</td>
+</tr>
+</tbody></table>
+<h3 id="对比dns泄露的问题"><a href="#对比dns泄露的问题" class="headerlink" title="对比dns泄露的问题"></a>对比dns泄露的问题</h3><p>定义: 通过查询dns获取ip,但是由于可能对应的dns服务没有通过代理进行,从而导致监管者发现通信链(访问了哪个网站)从而导致的泄露</p>
+<ul>
+<li><p>通过虚拟网卡通信的vpn对于所有的数据都会走虚拟网卡,包括dns请求也会走虚拟网卡,不会导致泄露</p>
+</li>
+<li><p>代理型vpn,有可能没有设置全局代理导致部分dns流量通过正常网络进行,而没有通过代理</p>
+<ul>
+<li>windows上的v2ray&#x2F;clash等软件的全局代理(没有开启tun模式)的情况是通过修改 <code>Internet 选项</code> → <code>连接</code> → <code>局域网设置</code>来实现的,而这个只有http代理,所以一定会造成dns泄露</li>
+<li>但是如果使用tun模式记忆库避免,但就变成了特殊的代理vpn,依赖代理协议进行加密,但是处理的数据实在传输层,不会造成dns泄露</li>
+</ul>
+</li>
+</ul>
+<h2 id="vpn协议"><a href="#vpn协议" class="headerlink" title="vpn协议"></a>vpn协议</h2><h3 id="向大佬学习"><a href="#向大佬学习" class="headerlink" title="向大佬学习"></a>向大佬学习</h3><ol>
+<li><p>大佬个人重新实现vpn: <a target="_blank" rel="noopener" href="https://blog.lyc8503.net/post/nju-ssl-vpn-protocol/">南京大学 SSL VPN 协议分析与实现</a></p>
+<p>在这篇文章中为了解密tls流量通过火绒剑找socket最多的的进程来发现实现vpn的进程,然后通过frida hook该进程(<a target="_blank" rel="noopener" href="https://github.com/he0xwhale/ssl_logger">he0xwhale&#x2F;ssl_logger: Decrypts and logs a process’s SSL traffic.</a>)解密TLS流量<br>然后就可以查看vpn会话过程</p>
+</li>
+<li><p>vpn情报信息搜集: <a target="_blank" rel="noopener" href="https://blog.51cto.com/yingnanxuezi/11695218">VPN情报收集的常见方法与技术解析_YNXZ的技术博客_51CTO博客</a></p>
+</li>
+<li><p>不同vpn比较(有点ai味): <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/593282351">VPN概述+VRF - 知乎</a></p>
+</li>
+</ol>
+<h3 id="不同vpn的流量特征"><a href="#不同vpn的流量特征" class="headerlink" title="不同vpn的流量特征"></a>不同vpn的流量特征</h3><table>
+<thead>
+<tr>
+<th align="center"><strong>VPN 类型</strong></th>
+<th align="center"><strong>默认端口</strong></th>
+<th align="center"><strong>协议特征</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">OpenVPN</td>
+<td align="center">UDP 1194</td>
+<td align="center">TLS 握手 + <code>Application Data</code></td>
+</tr>
+<tr>
+<td align="center">IPSec (IKEv1)</td>
+<td align="center">UDP 500&#x2F;4500</td>
+<td align="center"><code>ISAKMP</code> + <code>ESP</code></td>
+</tr>
+<tr>
+<td align="center">WireGuard</td>
+<td align="center">UDP 51820</td>
+<td align="center">纯加密 UDP，无握手</td>
+</tr>
+<tr>
+<td align="center">L2TP&#x2F;IPSec</td>
+<td align="center">UDP 1701 + ESP</td>
+<td align="center"><code>L2TP</code> 控制消息 + <code>ESP</code> 加密</td>
+</tr>
+</tbody></table>
+<p>流量模式</p>
+<ul>
+<li><strong>OpenVPN&#x2F;IPSec</strong>：有明显的握手过程（Client Hello、IKE SA 协商）。</li>
+<li><strong>WireGuard</strong>：无握手，仅小尺寸 UDP 包（加密数据 + Keepalive）。</li>
+<li><strong>L2TP&#x2F;IPSec</strong>：先有 L2TP 控制消息，后接 ESP 加密数据。</li>
+</ul>
+<p>解密模式</p>
+<ul>
+<li><strong>OpenVPN</strong>：若获取 TLS 密钥，可解密 <code>Application Data</code>。</li>
+<li><strong>IPSec</strong>：需导入预共享密钥或证书解密 ESP 流量。</li>
+<li><strong>WireGuard</strong>：几乎无法解密（无握手，静态密钥加密）。</li>
+</ul>
+<h4 id="VPN-流量的一般特征"><a href="#VPN-流量的一般特征" class="headerlink" title="VPN 流量的一般特征"></a>VPN 流量的一般特征</h4><p>无论哪种 VPN，在 Wireshark 中通常具有以下共同特点：</p>
+<ul>
+<li><strong>加密的载荷</strong>：原始数据（如 HTTP、DNS）被加密，无法直接解析内容。</li>
+<li><strong>固定的目标 IP&#x2F;端口</strong>：VPN 流量通常指向固定的服务器 IP 和端口（如 OpenVPN 默认 <code>1194/UDP</code>）。</li>
+<li><strong>协议特征</strong>：不同 VPN 协议有独特的握手、保活机制，可在 Wireshark 中识别。</li>
+</ul>
+<h4 id="OpenVPN"><a href="#OpenVPN" class="headerlink" title="OpenVPN"></a>OpenVPN</h4><ul>
+<li>使用默认端口udp 1194</li>
+<li>使用TLS加密(类似HTTPS),流量显示为<code>TLSv1.2 / 1.3</code></li>
+<li>握手阶段可见<code>Client Hello / Server Hello</code>(未加密部分)</li>
+<li>数据传输阶段全部加密,显示为<code>Application Data</code></li>
+</ul>
+<h4 id="IPSec-VPN"><a href="#IPSec-VPN" class="headerlink" title="IPSec VPN"></a>IPSec VPN</h4><ul>
+<li>版本: IKEv1&#x2F;IKEv2</li>
+<li>阶段 1（IKE 协商）：<ul>
+<li>使用 <code>UDP 500</code> 或 <code>UDP 4500</code>（NAT-T）。</li>
+<li>可看到 <code>ISAKMP</code> 协议（IKE 协商包），包含 <strong>SA（安全关联）提议</strong>。</li>
+</ul>
+</li>
+<li>阶段 2（ESP 加密）：<ul>
+<li>流量封装在 <code>ESP(proto == 50)</code> 协议中，Wireshark 显示为 <code>Encrypted Payload</code>。</li>
+<li>除非导入预共享密钥&#x2F;证书，否则无法解密。</li>
+</ul>
+</li>
+</ul>
+<h4 id="WireGuard"><a href="#WireGuard" class="headerlink" title="WireGuard"></a>WireGuard</h4><ul>
+<li>端口: UDP 51820</li>
+<li>使用 <strong>ChaCha20&#x2F;Poly1305 加密</strong>，所有流量均加密。</li>
+<li>无显式握手过程，仅定期发送 <code>Keepalive</code> 包（短小的 UDP 包）。</li>
+<li>在 Wireshark 中仅显示为 <code>UDP</code> 流量，无协议标识。</li>
+</ul>
+<h4 id="L2TP-IPSec"><a href="#L2TP-IPSec" class="headerlink" title="L2TP&#x2F;IPSec"></a><strong>L2TP&#x2F;IPSec</strong></h4><ul>
+<li>UDP 1701 + ESP</li>
+<li>L2TP 控制消息（未加密）：<ul>
+<li>使用 <code>UDP 1701</code>，可见 <code>L2TP</code> 协议头（如 <code>SCCRQ</code>、<code>SCCRP</code> 等控制消息）。</li>
+</ul>
+</li>
+<li>数据部分：<ul>
+<li>实际数据通过 <code>ESP</code> 加密，与 IPSec 相同。</li>
+</ul>
+</li>
+</ul>
+<h4 id="代理型vpn"><a href="#代理型vpn" class="headerlink" title="代理型vpn"></a>代理型vpn</h4><table>
+<thead>
+<tr>
+<th align="center"><strong>特征</strong></th>
+<th align="center"><strong>OpenVPN (TLS Mode)</strong></th>
+<th align="center"><strong>V2Ray (TLS + WebSocket&#x2F;HTTP&#x2F;VMess)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>协议基础</strong></td>
+<td align="center">纯 TLS，类似 HTTPS</td>
+<td align="center">TLS 作为传输层，上层协议自定义（如 VMess、WebSocket）</td>
+</tr>
+<tr>
+<td align="center"><strong>默认端口</strong></td>
+<td align="center"><code>TCP/UDP 1194</code>（常见）</td>
+<td align="center">通常 <code>TCP 443</code>（伪装 HTTPS）</td>
+</tr>
+<tr>
+<td align="center"><strong>握手特征</strong></td>
+<td align="center">标准 TLS 握手（Client&#x2F;Server Hello）</td>
+<td align="center">TLS 握手后，上层协议有独特特征（如 VMess 头部）</td>
+</tr>
+<tr>
+<td align="center"><strong>数据包模式</strong></td>
+<td align="center">持续加密流量，无额外协议头</td>
+<td align="center">TLS 解密后可见 VMess&#x2F;WebSocket 协议头</td>
+</tr>
+</tbody></table>
+<p><strong>(1) JA3 指纹检测</strong></p>
+<ul>
+<li><strong>OpenVPN</strong>：JA3 指纹与普通 TLS 客户端不同（如自定义 OpenVPN 实现）。</li>
+<li><strong>V2Ray</strong>：可能模仿浏览器 JA3 指纹（如 Chrome&#x2F;Firefox）。</li>
+</ul>
+<p><strong>(2) 流量时序分析</strong></p>
+<ul>
+<li><strong>OpenVPN</strong>：流量较平稳（VPN 隧道保持活跃）。</li>
+<li><strong>V2Ray</strong>：可能呈现 <strong>突发性</strong>（如 WebSocket 按需传输）。</li>
+</ul>
+<p><strong>(3) 解密 TLS（若可能）</strong></p>
+<ul>
+<li>使用 服务器私钥解密 TLS，直接观察上层协议：<ul>
+<li>OpenVPN → 仍为加密 IP 包。</li>
+<li>V2Ray → 可见 VMess&#x2F;WebSocket 协议头。</li>
+</ul>
+</li>
+</ul>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/20/%E9%9B%B6%E7%A2%8E%E5%AD%A6%E4%B9%A0/docker/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">docker学习</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/20</li>
+                <li>10:08</li>
+                <li>常用配置</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/05/13/%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/VRF%E5%8D%8F%E8%AE%AE%E5%AD%A6%E4%B9%A0/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">VRF协议学习</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/05/13</li>
+                <li>09:39</li>
+                <li>协议学习</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="vpn分类(按照是否使用使用虚拟网卡通信来分类)"><a rel="nofollow" class="trm-toc-link" href="#vpn分类-按照是否使用使用虚拟网卡通信来分类"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">vpn分类(按照是否使用使用虚拟网卡通信来分类)</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="传统vpn,使用虚拟网卡通信"><a rel="nofollow" class="trm-toc-link" href="#传统vpn-使用虚拟网卡通信"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">传统vpn,使用虚拟网卡通信</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="特点"><a rel="nofollow" class="trm-toc-link" href="#特点"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">特点</span></a></li><li class="trm-toc-item trm-toc-level-4" title="OSI工作层级"><a rel="nofollow" class="trm-toc-link" href="#OSI工作层级"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">OSI工作层级</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何验证"><a rel="nofollow" class="trm-toc-link" href="#如何验证"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">如何验证</span></a></li><li class="trm-toc-item trm-toc-level-4" title="例外"><a rel="nofollow" class="trm-toc-link" href="#例外"><span class="trm-toc-number">1.1.4.</span> <span class="trm-toc-text">例外</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="代理型vpn,不使用独立的虚拟网卡"><a rel="nofollow" class="trm-toc-link" href="#代理型vpn-不使用独立的虚拟网卡"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text">代理型vpn,不使用独立的虚拟网卡</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="特点"><a rel="nofollow" class="trm-toc-link" href="#特点-1"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text">特点</span></a></li><li class="trm-toc-item trm-toc-level-4" title="工作层级"><a rel="nofollow" class="trm-toc-link" href="#工作层级"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text">工作层级</span></a></li><li class="trm-toc-item trm-toc-level-4" title="socks5的工作范围"><a rel="nofollow" class="trm-toc-link" href="#socks5的工作范围"><span class="trm-toc-number">1.2.3.</span> <span class="trm-toc-text">socks5的工作范围</span></a></li><li class="trm-toc-item trm-toc-level-4" title="补充说明"><a rel="nofollow" class="trm-toc-link" href="#补充说明"><span class="trm-toc-number">1.2.4.</span> <span class="trm-toc-text">补充说明</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="socks5的局限性"><a rel="nofollow" class="trm-toc-link" href="#socks5的局限性"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text">socks5的局限性</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="无法代理非 TCP&#x2F;UDP 流量"><a rel="nofollow" class="trm-toc-link" href="#无法代理非-TCP-UDP-流量"><span class="trm-toc-number">1.3.1.</span> <span class="trm-toc-text">无法代理非 TCP&#x2F;UDP 流量</span></a></li><li class="trm-toc-item trm-toc-level-4" title="依赖应用程序主动支持 SOCKS5"><a rel="nofollow" class="trm-toc-link" href="#依赖应用程序主动支持-SOCKS5"><span class="trm-toc-number">1.3.2.</span> <span class="trm-toc-text">依赖应用程序主动支持 SOCKS5</span></a></li><li class="trm-toc-item trm-toc-level-4" title="无法修改 IP 层路由"><a rel="nofollow" class="trm-toc-link" href="#无法修改-IP-层路由"><span class="trm-toc-number">1.3.3.</span> <span class="trm-toc-text">无法修改 IP 层路由</span></a></li><li class="trm-toc-item trm-toc-level-4" title="无法处理链路层（L2）流量"><a rel="nofollow" class="trm-toc-link" href="#无法处理链路层（L2）流量"><span class="trm-toc-number">1.3.4.</span> <span class="trm-toc-text">无法处理链路层（L2）流量</span></a></li><li class="trm-toc-item trm-toc-level-4" title="SOCKS5 vs. 常规 VPN 的核心区别"><a rel="nofollow" class="trm-toc-link" href="#SOCKS5-vs-常规-VPN-的核心区别"><span class="trm-toc-number">1.3.5.</span> <span class="trm-toc-text">SOCKS5 vs. 常规 VPN 的核心区别</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="对比dns泄露的问题"><a rel="nofollow" class="trm-toc-link" href="#对比dns泄露的问题"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text">对比dns泄露的问题</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="vpn协议"><a rel="nofollow" class="trm-toc-link" href="#vpn协议"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">vpn协议</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="向大佬学习"><a rel="nofollow" class="trm-toc-link" href="#向大佬学习"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">向大佬学习</span></a></li><li class="trm-toc-item trm-toc-level-3" title="不同vpn的流量特征"><a rel="nofollow" class="trm-toc-link" href="#不同vpn的流量特征"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">不同vpn的流量特征</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="VPN 流量的一般特征"><a rel="nofollow" class="trm-toc-link" href="#VPN-流量的一般特征"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">VPN 流量的一般特征</span></a></li><li class="trm-toc-item trm-toc-level-4" title="OpenVPN"><a rel="nofollow" class="trm-toc-link" href="#OpenVPN"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text">OpenVPN</span></a></li><li class="trm-toc-item trm-toc-level-4" title="IPSec VPN"><a rel="nofollow" class="trm-toc-link" href="#IPSec-VPN"><span class="trm-toc-number">2.2.3.</span> <span class="trm-toc-text">IPSec VPN</span></a></li><li class="trm-toc-item trm-toc-level-4" title="WireGuard"><a rel="nofollow" class="trm-toc-link" href="#WireGuard"><span class="trm-toc-number">2.2.4.</span> <span class="trm-toc-text">WireGuard</span></a></li><li class="trm-toc-item trm-toc-level-4" title="L2TP&#x2F;IPSec"><a rel="nofollow" class="trm-toc-link" href="#L2TP-IPSec"><span class="trm-toc-number">2.2.5.</span> <span class="trm-toc-text">L2TP&#x2F;IPSec</span></a></li><li class="trm-toc-item trm-toc-level-4" title="代理型vpn"><a rel="nofollow" class="trm-toc-link" href="#代理型vpn"><span class="trm-toc-number">2.2.6.</span> <span class="trm-toc-text">代理型vpn</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

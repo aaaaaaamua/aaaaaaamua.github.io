@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="前提许多的网络环境都会进行设备验证，从而二次免验证或者是防止 ARP 攻击来保证内网环境的安全。然而，在这套机制使用的同时也会造成问题。本文将从 mac 地址的使用逻辑和对于不同平台 mac 地址的修改进行探讨。 mac查询方法 windows平台 win+r输入cmd在终端中输入 1ipconfig &#x2F;all 安卓平台（以荣耀为例） 随意连上任何一个WiFi后在设置-WLAN中打开已经连接的WL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac 地址利用和修改">
+<meta property="og:url" content="https://aaaaaamua.github.io/2024/02/02/%E6%8A%80%E6%9C%AF/mac/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="前提许多的网络环境都会进行设备验证，从而二次免验证或者是防止 ARP 攻击来保证内网环境的安全。然而，在这套机制使用的同时也会造成问题。本文将从 mac 地址的使用逻辑和对于不同平台 mac 地址的修改进行探讨。 mac查询方法 windows平台 win+r输入cmd在终端中输入 1ipconfig &#x2F;all 安卓平台（以荣耀为例） 随意连上任何一个WiFi后在设置-WLAN中打开已经连接的WL">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-02-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-08T10:39:52.000Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta property="article:tag" content="技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >mac 地址利用和修改</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-02-08 18:39:52"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            mac 地址利用和修改
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            02/02
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            00:00
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>许多的网络环境都会进行设备验证，从而二次免验证或者是防止 ARP 攻击来保证内网环境的安全。然而，在这套机制使用的同时也会造成问题。本文将从 mac 地址的使用逻辑和对于不同平台 mac 地址的修改进行探讨。</p>
+<h2 id="mac查询方法"><a href="#mac查询方法" class="headerlink" title="mac查询方法"></a>mac查询方法</h2><ul>
+<li>windows平台<br> win+r输入cmd在终端中输入 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ipconfig</span> /all</span><br></pre></td></tr></table></figure></li>
+<li>安卓平台（以荣耀为例）<br> 随意连上任何一个WiFi后在设置-WLAN中打开已经连接的WLAN就可以看到本机的mac。</li>
+</ul>
+<h2 id="走近mac"><a href="#走近mac" class="headerlink" title="走近mac"></a>走近mac</h2><ol>
+<li>在一些需要验证的网络环境中，正常用户登录验证以后会有 DHCP 进行分配 ip 地址，同时将 mac 地址和对应账户进行绑定。当我们访问无密码保护但需要登录验证的网络时，如果抓到了 ARP 包，通过修改本机 mac 地址而不用修改 ip 地址的方法就可以成功免登录连接网络进入内网环境；在实际操作中可以观察到，如果更改 mac 的设备是使用有线连接而被获取 mac 的设备是通过无线连接，那么无线设备并不能够接入网络。相当于 IP 冲突了。</li>
+<li>在进行网络搭建的时候，对于固定资产，有一种解决方案是使用静态并且对 IP+mac 进行绑定，那么只要是接入设备改成了与之一致的 IP 和 mac 的话，那么无论是什么平台，都可以获得与源主机一致的内网权限来访问内网资源。</li>
+<li>如果是由于不恰当操作导致设备 mac 遭到服务器的封禁而无法连接网络，一般来说通过修改 mac 的方式也可以重新连接进入网络。</li>
+</ol>
+<h2 id="mac获取方法1"><a href="#mac获取方法1" class="headerlink" title="mac获取方法1"></a>mac获取方法1</h2><blockquote>
+<p>此操作无需连接到目标热点<br>此操作需要具有 monitor 的网卡，一般是外置网卡（淘宝可以搜到一大堆），并且是全程在 kali（有root权限） 中进行的操作。<br><code>操作大概是：扫描附近WiFi-选择想要获取mac-监听WiFi信号</code></p>
+</blockquote>
+<h3 id="扫描附件的Wifi"><a href="#扫描附件的Wifi" class="headerlink" title="扫描附件的Wifi"></a>扫描附件的Wifi</h3><p>打开终端查看网卡是否支持监听</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airmon-ng</span><br></pre></td></tr></table></figure>
+<p>(ps:对于终端字体太小可以 shift和ctrl和+ 进行放大，CTRL和-进行缩小)</p>
+<p><img src="/img/picture/mac/4.png" alt="4"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以看到我这里有两个支持 moniter 的网卡</p>
+<p>选择一个网卡开启监听功能，这里选择 wlan0</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airmon-ng <span class="built_in">start</span> wlan0</span><br></pre></td></tr></table></figure>
+
+<p>要注意开启监听以后网卡的名字可能更改为wlanxmon，具体需要查看</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这里的网卡名称改变了，但是有些设备并不会更改名称，要依据实际</p>
+<p><img src="/img/picture/mac/5.png" alt="5"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>扫描附近的热点</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airodump-ng wlan0mon</span><br></pre></td></tr></table></figure>
+
+<p>当目标 WiFi 的名称出现的时候，“CTRL+c”暂停扫描，否则无法保存和复制对于的热点信息</p>
+<p><img src="/img/picture/mac/6.png" alt="6"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>需要记录的是目标热点的 BBSSID(mac) 和 CH(信道) </p>
+<h3 id="监听目标热点"><a href="#监听目标热点" class="headerlink" title="监听目标热点"></a>监听目标热点</h3><p>输入嗅探握手包命令</p>
+<blockquote>
+<p>此操作不仅可以查找到目标热点下所连接的设备 mac ，还主要是可以获得握手包，可能存在着加密的WiFi密码，在此不与探讨</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airodump-ng -c &lt;目标WiFi的信道&gt; --bssid &lt;目标BSSID&gt; -w &lt;储存握手包的文件名不需要文件格式&gt; &lt;网卡名称&gt;</span><br></pre></td></tr></table></figure>
+<p>(ps:命令中不需要“&lt;”,“&gt;”,linux中复制粘贴是“shift+ctrl+c”和”shift+ctrl+v”)<br>稍等片刻便可以看到连接着热点的设备的 mac</p>
+<p><img src="/img/picture/mac/7.png" alt="7"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="mac获取方法2"><a href="#mac获取方法2" class="headerlink" title="mac获取方法2"></a>mac获取方法2</h2><blockquote>
+<p>此操作需要连接到目标热点</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn <span class="number">192</span>.<span class="number">168</span>.<span class="number">3</span>.<span class="number">1</span>/<span class="number">24</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="已知IP时的-mac-获取方法"><a href="#已知IP时的-mac-获取方法" class="headerlink" title="已知IP时的 mac 获取方法"></a>已知IP时的 mac 获取方法</h2><blockquote>
+<p>此操作需要连接到目标热点</p>
+</blockquote>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arp 目标IP</span><br><span class="line">arping 目标IP</span><br></pre></td></tr></table></figure>
+<p>arp 命令与 arping 命令存在<strong>本质区别</strong>。</p>
+<ul>
+<li>arp 命令是通过查询 arp 映射表，如果表中没有，就会直接返回<code>no entry</code>；如果表中有，即使网络中并不存在该设备，也能够返回表中的东西。arp 表的增删改替是通过 ping 这个操作来进行的。ping 成功了，表中就添加，ping 失败了，表中就删除</li>
+<li>arping 命令则是直接发送 arp 包，只要网络中存在该设备，就一定会返回设备的 mac，无论表中有没有。</li>
+</ul>
+<h2 id="mac修改方法"><a href="#mac修改方法" class="headerlink" title="mac修改方法"></a>mac修改方法</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><h4 id="1-硬改"><a href="#1-硬改" class="headerlink" title="1. 硬改"></a>1. 硬改</h4><p>该方法不需要获得软件上的很高的权限，只需要直接修改硬件网卡的 mac 参数，对于安卓手机来说体现为不需要获得 root 权限，但是需要对系统重新修改来适应新的 mac 地址。此操作就相当于是更换了一个全新的网卡，对于安卓设备来说，硬改 mac 以后通常会格式化系统。</p>
+<h4 id="2-软改"><a href="#2-软改" class="headerlink" title="2. 软改"></a>2. 软改</h4><p>系统要调用硬件需要经过内核或者是驱动，那么在驱动层面会对网卡 mac 有一个记录，如果修改这个记录，那么就可以在驱动层面对网卡的mac进行修改达成目的。此项操作一般需要比较高的权限，在安卓手机表现为需要拿到root权限，windows平台表现为需要有管理员权限。需要注意的是：对于realtek品牌的网卡来说，网卡的缓存区是只可以写入而不可以擦除的，这也就意味着<strong>realtek的网卡 mac 修改有次数限制</strong>，而具体的修改次数则需要看对应具体的网卡。</p>
+<h3 id="修改方法（只限于软改）"><a href="#修改方法（只限于软改）" class="headerlink" title="修改方法（只限于软改）"></a>修改方法（只限于软改）</h3><h4 id="1-对于近三年来的绝大多数设备（包括-windows-）"><a href="#1-对于近三年来的绝大多数设备（包括-windows-）" class="headerlink" title="1. 对于近三年来的绝大多数设备（包括 windows ）"></a>1. 对于近三年来的绝大多数设备（包括 windows ）</h4><p>直接在 WLAN 设置中找到随机 mac 的选项，打开后便可以修改随机 mac，但局限于不能指定修改 mac ；</p>
+<h4 id="2-对于取得-root-权限的安卓设备"><a href="#2-对于取得-root-权限的安卓设备" class="headerlink" title="2. 对于取得 root 权限的安卓设备"></a>2. 对于取得 root 权限的安卓设备</h4><h5 id="2-1-软件辅助"><a href="#2-1-软件辅助" class="headerlink" title="2.1 软件辅助"></a>2.1 软件辅助</h5><p>最简单的便是安装有 nethunter 的设备，需要在配套的F-Droid中安装Nexmon，在 nethunter 主页中直接就有修改 mac 的选项，可以选择是随机产生 mac，也可以指定修改 mac ；注意如果没有安装Nexmon则会被限制修mac，即必须符合国际mac修改标准；  </p>
+<h5 id="2-2-修改系统文件"><a href="#2-2-修改系统文件" class="headerlink" title="2.2 修改系统文件"></a>2.2 修改系统文件</h5><p>先打开飞行模式，使用MT管理器或ES文件浏览器等可以申请并且以及获得超级管理员权限（root 权限）的应用打开一下文件</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\data\nvram\APCFG\APRDEB</span><br></pre></td></tr></table></figure>
+<p>并修改其中的WIFI文件，按照里面的数据格式改成想要的 mac 地址，之后关闭飞行模式或者重启手机即可。</p>
+<h4 id="3-对于-windows-平台"><a href="#3-对于-windows-平台" class="headerlink" title="3. 对于 windows 平台"></a>3. 对于 windows 平台</h4><h5 id="3-1-设备管理器修改法"><a href="#3-1-设备管理器修改法" class="headerlink" title="3.1 设备管理器修改法"></a>3.1 设备管理器修改法</h5><p><strong>此方法使用的前提是网卡的自带驱动上带了相关的修改接口</strong><br>打开<em>控制面板→设备管理器→网络适配器→对应网卡→属性</em></p>
+<p><img src="https://exp-picture.cdn.bcebos.com/3201a8f39187031c25b3c34a6a86242fa972ecc9.jpg?x-bce-process=image/format,f_auto/quality,q_80" alt="设备管理器"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>在<em>高级选项</em>中找到 <em>Network Address&#x2F;MAC Address&#x2F;网络地址</em> 在设备管理器对网卡mac进行修改</p>
+<h5 id="3-2-注册表修改法"><a href="#3-2-注册表修改法" class="headerlink" title="3.2 注册表修改法"></a>3.2 注册表修改法</h5><p><strong>此方法为万能方法，但是需要注意前文提及的realtek网卡的限制</strong><br>win+r 并输入 <strong>regedit</strong> 打开注册表，并定位到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\&#123;4D36E972-E325-11CE-BFC1-08002bE10318&#125;</span><br></pre></td></tr></table></figure>
+<p>每一个00xx都代表着一个网卡，但是需要注意的是，一般来说只有一个是真实网卡，其他都是虚拟网卡，具体就需要进入各个项目看看是否有标明对应的网卡型号。</p>
+<p><img src="/img/picture/mac/2.png" alt="如此设备中0002为真实网卡，型号为 Realtek RTL8852BE"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>找到物理网卡以后，需要在这个网卡的项目中新建一个字符串，命名为 <strong>NetworkAdress</strong> ，值就是新的 mac </p>
+<p><img src="/img/picture/mac/11.png" alt="12"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>点击确定后重启网卡或者直接重启电脑再看看 mac 是否修改成功。<br>介绍通过 cmd 命令来查看和重启网卡：</p>
+<ul>
+<li>首先进入cmd终端 win+r 键入 cmd ，命令行输入</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh interface show interface</span><br></pre></td></tr></table></figure>
+<p>此时就可以看到所有的网卡<br><img src="/img/picture/mac/3.png" alt="3.png"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>接着关闭网卡</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh interface <span class="built_in">set</span> interface &quot;要操作的网卡名称&quot; disable</span><br></pre></td></tr></table></figure>
+<p>启动网卡</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh interface <span class="built_in">set</span> interface &quot;要操作的网卡名称&quot; enable</span><br></pre></td></tr></table></figure>
+<p>通过一开一关即可对网卡实现重启<br><strong>如果有问题就需要用管理员权限打开cmd</strong></p>
+<h5 id="3-2-对于部分系统版本"><a href="#3-2-对于部分系统版本" class="headerlink" title="3.2 对于部分系统版本"></a>3.2 对于部分系统版本</h5><p>可以安装软媒魔方，通过软件来对mac进行修改，但是我没能成功复现</p>
+<h4 id="逆天改法：修改路由器-mac"><a href="#逆天改法：修改路由器-mac" class="headerlink" title="逆天改法：修改路由器 mac"></a>逆天改法：修改路由器 mac</h4><p>连接路由器的 windows 平台上打开 cmd 输入</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ipconfig</span></span><br></pre></td></tr></table></figure>
+<p>查看本机的 IPv4 地址。一般来说路由器的管理 ipv4 地址都是与本机地址在同网段的 1 号</p>
+<p><img src="/img/picture/mac/8.png" alt="8"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以看到本机 ipv4 地址为 192.168.3.17 那么可以推测路由器管理地址为 192.168.3.1</p>
+<p>在浏览器输入 192.168.3.1 输入管理密码进入路由器后台</p>
+<p><img src="/img/picture/mac/9.png" alt="9"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>在“我要上网”中找到上网方式，选择MAC克隆-手动输入 MAC 地址来达成修改 MAC 地址的目的。</p>
+<h2 id="IP获取方式"><a href="#IP获取方式" class="headerlink" title="IP获取方式"></a>IP获取方式</h2><blockquote>
+<p>前提必须是能够连接目标热点</p>
+</blockquote>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>一般来说已知 mac 是无法获取对应IP的，但是在居于网中通过 arp 可以通过映射关系用 mac 查询到对应设备的IP地址。先 ping 一下获得更多数据后查找 arp 包。先同样是打开cmd，批量ping局域网内ip</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#批量<span class="built_in">ping</span>局域网内网段</span><br><span class="line"><span class="keyword">for</span> /L %i <span class="keyword">IN</span> (<span class="number">1</span>,<span class="number">1</span>,<span class="number">254</span>) <span class="keyword">DO</span> <span class="built_in">ping</span> -w <span class="number">2</span> -n <span class="number">1</span> <span class="number">10</span>.<span class="number">8</span>.<span class="number">1</span>.%i</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>批量ping网段命令语法</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /L %variable <span class="keyword">in</span> (<span class="built_in">start</span>,step,end) <span class="keyword">do</span> command [command-parameters]</span><br></pre></td></tr></table></figure>
+<p>variable变量名 | start开始 | step步长 | end结束 | command命令 | command-parameters命令参数</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /L %d <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">1</span>,<span class="number">255</span>) <span class="keyword">do</span> <span class="built_in">ping</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.%d &gt;&gt; C:\Users\XXX\Desktop\a.txt</span><br></pre></td></tr></table></figure>
+<p><code>&gt;&gt;</code>为重定向符号，将代码执行结果保存到文件路径为 C:\Users\XXX\Desktop 的a.txt文件</p>
+</blockquote>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查 arp 表</span><br><span class="line">arp -a</span><br></pre></td></tr></table></figure>
+<p>就可以看到对应的 mac 和 IP 的对应关系。</p>
+<p><img src="https://zh-hans.ipshu.com/img/find_ip_address_based_on_mac_address/5.png" alt="10"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br><strong>可以轻易发现：ping之后的arp表会比ping之前的arp表所含有的数据更多</strong></p>
+<h3 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux"></a>Linux</h3><p>扫描 10.8.1.0网段</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn <span class="number">10</span>.<span class="number">8</span>.<span class="number">1</span>.<span class="number">0</span>/<span class="number">24</span> ##发现mac</span><br></pre></td></tr></table></figure>
+<p>通过 arp 映射表查看</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/<span class="built_in">net</span>/arp</span><br></pre></td></tr></table></figure>
+<h3 id="wireshark过滤定向查找IP"><a href="#wireshark过滤定向查找IP" class="headerlink" title="wireshark过滤定向查找IP"></a>wireshark过滤定向查找IP</h3><p>在过滤中输入</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eth.arrd == MAC地址</span><br></pre></td></tr></table></figure>
+<p>可以在数据包中找到对应的IP</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/10/04/%E6%8A%80%E6%9C%AF/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%A1%B9%E7%9B%AE/pythonWXWapi/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">python中API发送自建应用消息</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/10/04</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/01/17/%E6%8A%80%E6%9C%AF/%E7%81%AB%E7%BB%92%E5%89%91/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://cdn-www.huorong.cn/assets/v5/images/learnUs_04.png">
+                </span>
+                <h6 class="trm-op-title">火绒剑抓微信包</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/01/17</li>
+                <li>00:00</li>
+                <li>技术</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="前提"><a rel="nofollow" class="trm-toc-link" href="#前提"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">前提</span></a></li><li class="trm-toc-item trm-toc-level-2" title="mac查询方法"><a rel="nofollow" class="trm-toc-link" href="#mac查询方法"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">mac查询方法</span></a></li><li class="trm-toc-item trm-toc-level-2" title="走近mac"><a rel="nofollow" class="trm-toc-link" href="#走近mac"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">走近mac</span></a></li><li class="trm-toc-item trm-toc-level-2" title="mac获取方法1"><a rel="nofollow" class="trm-toc-link" href="#mac获取方法1"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">mac获取方法1</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="扫描附件的Wifi"><a rel="nofollow" class="trm-toc-link" href="#扫描附件的Wifi"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">扫描附件的Wifi</span></a></li><li class="trm-toc-item trm-toc-level-3" title="监听目标热点"><a rel="nofollow" class="trm-toc-link" href="#监听目标热点"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">监听目标热点</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="mac获取方法2"><a rel="nofollow" class="trm-toc-link" href="#mac获取方法2"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">mac获取方法2</span></a></li><li class="trm-toc-item trm-toc-level-2" title="已知IP时的 mac 获取方法"><a rel="nofollow" class="trm-toc-link" href="#已知IP时的-mac-获取方法"><span class="trm-toc-number">6.</span> <span class="trm-toc-text">已知IP时的 mac 获取方法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="Linux"><a rel="nofollow" class="trm-toc-link" href="#Linux"><span class="trm-toc-number">6.1.</span> <span class="trm-toc-text">Linux</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="mac修改方法"><a rel="nofollow" class="trm-toc-link" href="#mac修改方法"><span class="trm-toc-number">7.</span> <span class="trm-toc-text">mac修改方法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="分类"><a rel="nofollow" class="trm-toc-link" href="#分类"><span class="trm-toc-number">7.1.</span> <span class="trm-toc-text">分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="1. 硬改"><a rel="nofollow" class="trm-toc-link" href="#1-硬改"><span class="trm-toc-number">7.1.1.</span> <span class="trm-toc-text">1. 硬改</span></a></li><li class="trm-toc-item trm-toc-level-4" title="2. 软改"><a rel="nofollow" class="trm-toc-link" href="#2-软改"><span class="trm-toc-number">7.1.2.</span> <span class="trm-toc-text">2. 软改</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="修改方法（只限于软改）"><a rel="nofollow" class="trm-toc-link" href="#修改方法（只限于软改）"><span class="trm-toc-number">7.2.</span> <span class="trm-toc-text">修改方法（只限于软改）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="1. 对于近三年来的绝大多数设备（包括 windows ）"><a rel="nofollow" class="trm-toc-link" href="#1-对于近三年来的绝大多数设备（包括-windows-）"><span class="trm-toc-number">7.2.1.</span> <span class="trm-toc-text">1. 对于近三年来的绝大多数设备（包括 windows ）</span></a></li><li class="trm-toc-item trm-toc-level-4" title="2. 对于取得 root 权限的安卓设备"><a rel="nofollow" class="trm-toc-link" href="#2-对于取得-root-权限的安卓设备"><span class="trm-toc-number">7.2.2.</span> <span class="trm-toc-text">2. 对于取得 root 权限的安卓设备</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="2.1 软件辅助"><a rel="nofollow" class="trm-toc-link" href="#2-1-软件辅助"><span class="trm-toc-number">7.2.2.1.</span> <span class="trm-toc-text">2.1 软件辅助</span></a></li><li class="trm-toc-item trm-toc-level-5" title="2.2 修改系统文件"><a rel="nofollow" class="trm-toc-link" href="#2-2-修改系统文件"><span class="trm-toc-number">7.2.2.2.</span> <span class="trm-toc-text">2.2 修改系统文件</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="3. 对于 windows 平台"><a rel="nofollow" class="trm-toc-link" href="#3-对于-windows-平台"><span class="trm-toc-number">7.2.3.</span> <span class="trm-toc-text">3. 对于 windows 平台</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-5" title="3.1 设备管理器修改法"><a rel="nofollow" class="trm-toc-link" href="#3-1-设备管理器修改法"><span class="trm-toc-number">7.2.3.1.</span> <span class="trm-toc-text">3.1 设备管理器修改法</span></a></li><li class="trm-toc-item trm-toc-level-5" title="3.2 注册表修改法"><a rel="nofollow" class="trm-toc-link" href="#3-2-注册表修改法"><span class="trm-toc-number">7.2.3.2.</span> <span class="trm-toc-text">3.2 注册表修改法</span></a></li><li class="trm-toc-item trm-toc-level-5" title="3.2 对于部分系统版本"><a rel="nofollow" class="trm-toc-link" href="#3-2-对于部分系统版本"><span class="trm-toc-number">7.2.3.3.</span> <span class="trm-toc-text">3.2 对于部分系统版本</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-4" title="逆天改法：修改路由器 mac"><a rel="nofollow" class="trm-toc-link" href="#逆天改法：修改路由器-mac"><span class="trm-toc-number">7.2.4.</span> <span class="trm-toc-text">逆天改法：修改路由器 mac</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="IP获取方式"><a rel="nofollow" class="trm-toc-link" href="#IP获取方式"><span class="trm-toc-number">8.</span> <span class="trm-toc-text">IP获取方式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="Windows"><a rel="nofollow" class="trm-toc-link" href="#Windows"><span class="trm-toc-number">8.1.</span> <span class="trm-toc-text">Windows</span></a></li><li class="trm-toc-item trm-toc-level-3" title="Linux"><a rel="nofollow" class="trm-toc-link" href="#Linux-1"><span class="trm-toc-number">8.2.</span> <span class="trm-toc-text">Linux</span></a></li><li class="trm-toc-item trm-toc-level-3" title="wireshark过滤定向查找IP"><a rel="nofollow" class="trm-toc-link" href="#wireshark过滤定向查找IP"><span class="trm-toc-number">8.3.</span> <span class="trm-toc-text">wireshark过滤定向查找IP</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
