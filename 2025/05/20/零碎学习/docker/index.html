@@ -442,7 +442,7 @@
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 Docker 代理配置文件</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /etc/systemd/system/docker.service.d</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/systemd/system/docker.service.d/http-proxy.conf &lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">Environment=&quot;HTTP_PROXY=socks5://127.0.0.1:20170&quot;</span></span><br><span class="line"><span class="string">Environment=&quot;HTTPS_PROXY=socks5://127.0.0.1:20170&quot;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 Docker</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl restart docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试拉取镜像（不再需要 proxychains）</span></span><br><span class="line">docker pull praqma/network-multitool</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520211246977.png" alt="image-20250520211246977"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520211246977.png" alt="image-20250520211246977"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <h3 id="第二种方式：使用-daemon-json-配置文件-更省心"><a href="#第二种方式：使用-daemon-json-配置文件-更省心" class="headerlink" title="第二种方式：使用 daemon.json 配置文件(更省心)"></a>第二种方式：使用 <code>daemon.json</code> 配置文件(更省心)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@ubuntu:~$ <span class="built_in">sudo</span> <span class="built_in">cat</span> /etc/docker/daemon.json</span><br><span class="line">[<span class="built_in">sudo</span>] password <span class="keyword">for</span> ubuntu:</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;proxies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;http-proxy&quot;</span>: <span class="string">&quot;http://192.168.196.1:10808&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https-proxy&quot;</span>: <span class="string">&quot;http://192.168.196.1:10808&quot;</span>,</span><br><span class="line">    <span class="string">&quot;no-proxy&quot;</span>: <span class="string">&quot;*.example.com,127.0.0.0/8&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -509,19 +509,19 @@
 <h2 id="docker镜像构建"><a href="#docker镜像构建" class="headerlink" title="docker镜像构建"></a>docker镜像构建</h2><h3 id="创建一个镜像"><a href="#创建一个镜像" class="headerlink" title="创建一个镜像"></a>创建一个镜像</h3><p>首先新建一个<code>node.js</code>项目,这样就会自动生成<code>package.json</code>文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528105612663.png" alt="image-20250528105612663"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528105612663.png" alt="image-20250528105612663"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>由于构建服务器需要express框架,所以就直接进行安装express框架</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express</span><br></pre></td></tr></table></figure>
 
 
 
 <p>此时<code>package.json</code>中的依赖就会出现express的键值对,并且伴随着node_modules出现,这个文件夹会保存安装的模块</p>
-<p><img src="/./docker/image-20250528111041838.png" alt="image-20250528111041838"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528111041838.png" alt="image-20250528111041838"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>接下来创建<code>app.js</code>文件</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/&quot;</span>,<span class="function">(<span class="params">req,res</span>) =&gt;</span>&#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&quot;&lt;p&gt;蛋家好啊&lt;/p&gt;&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;端口3000走起!&quot;</span>));</span><br></pre></td></tr></table></figure>
 
 <p>可以成功运行</p>
-<p><img src="/./docker/image-20250528112229155.png" alt="image-20250528112229155"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528112229155.png" alt="image-20250528112229155"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>接下来就是正式开始制作<code>Dockerfile</code></p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">18</span>-alpine3.<span class="number">15</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /egg <span class="comment"># 指定工作目录(不是必须)</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json . <span class="comment">#这个&quot;.&quot;是工作路径的相对路径</span></span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install <span class="comment"># 这个就会按照package.json来进行安装</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . . <span class="comment"># 把本地的所有文件都复制到工作路径 docker中使用缓存package.json不会被复制两次,前面复制了就不会再次复制,而json有缓存,就不用重新去安装依赖,提高速度</span></span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span> <span class="comment"># 暴露端口号</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;app.js&quot;</span>] </span></span><br></pre></td></tr></table></figure>
 
@@ -536,34 +536,34 @@
 <p>使用命令查看镜像列表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker images</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528114915895.png" alt="image-20250528114915895"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528114915895.png" alt="image-20250528114915895"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>使用<code>sudo docker tag 镜像ID 名字</code>来添加名字和标签(一次性添加),如果没有后边的”:”的内容就是lastest版本号</p>
 <p>&#96;</p>
-<p><img src="/./docker/image-20250528115159166.png" alt="image-20250528115159166"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528115159166.png" alt="image-20250528115159166"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>docker login登录到docker hub账号,然后就可以把新建好的镜像推送到docker hub了</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push dansoncut/node.js:v1.0</span><br></pre></td></tr></table></figure>
 
 <p>在构建镜像的时候就自定义名字:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t eggpain-image .</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528132240693.png" alt="image-20250528132240693"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528132240693.png" alt="image-20250528132240693"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>删除镜像,如果有些镜像再被使用就需要使用<code>-f</code>强行删除(注意还是需要加上版本号,不然默认是lastest可能找不到)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi -f dansoncut/node.js:v1.0</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528132659748.png" alt="image-20250528132659748"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528132659748.png" alt="image-20250528132659748"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <h3 id="查看拉取的镜像操作"><a href="#查看拉取的镜像操作" class="headerlink" title="查看拉取的镜像操作"></a>查看拉取的镜像操作</h3><p>可以查看镜像做出了什么操作</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker image <span class="built_in">history</span> --no-trunc(不截断) 镜像ID </span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="使用镜像来启动容器"><a href="#使用镜像来启动容器" class="headerlink" title="使用镜像来启动容器"></a>使用镜像来启动容器</h3><h4 id="非交互式启动"><a href="#非交互式启动" class="headerlink" title="非交互式启动"></a>非交互式启动</h4><p>然后使用这个镜像来运行一个容器,如果成功会返回ID号,使用<code>-d</code>来设置后台运行<img src="/./docker/image-20250528132850660.png" alt="image-20250528132850660"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="使用镜像来启动容器"><a href="#使用镜像来启动容器" class="headerlink" title="使用镜像来启动容器"></a>使用镜像来启动容器</h3><h4 id="非交互式启动"><a href="#非交互式启动" class="headerlink" title="非交互式启动"></a>非交互式启动</h4><p>然后使用这个镜像来运行一个容器,如果成功会返回ID号,使用<code>-d</code>来设置后台运行<img src="/2025/05/02/hello-world/image-20250528132850660.png" alt="image-20250528132850660"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>但是发现虽然暴露了3000端口但是这是在容器中的，并没有暴露到宿主机中,宿主机中访问3000端口没有任何服务</p>
-<p><img src="/./docker/image-20250528133456736.png" alt="image-20250528133456736"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528133456736.png" alt="image-20250528133456736"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>这是因为<code>Dockerfile</code>文件中的<code>EXPOSE</code>只是让人知道这个镜像在用容器的某个端口,和宿主机无关,所以需要在启动端口的时候手动进行端口映射(主机端口:容器端口) 还可以在后面自定义名字(–name nishixiaozhu)</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d -p 3000:3000 --name nishixiaozhu eggpain-image</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528134152450.png" alt="image-20250528134152450"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/./docker/image-20250528134449846.png" alt="image-20250528134449846"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528134152450.png" alt="image-20250528134152450"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528134449846.png" alt="image-20250528134449846"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>删除一个容器</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">rm</span> 部分<span class="built_in">id</span>/容器名称</span><br><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">rm</span> -f 部分<span class="built_in">id</span>/容器名称 <span class="comment"># 强行删除</span></span><br></pre></td></tr></table></figure>
 
@@ -591,14 +591,14 @@
 <p><code>用于自动重启 Node.js 应用当文件发生变化时（比如修改了 </code>.js<code> 文件）</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i nodemon --save-dev</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528154341842.png" alt="image-20250528154341842"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528154341842.png" alt="image-20250528154341842"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>然后修改<code>scripts</code></p>
-<p><img src="/./docker/image-20250528154552032.png" alt="image-20250528154552032"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528154552032.png" alt="image-20250528154552032"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>然后再修改Dockerfile</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;run&quot;</span>, <span class="string">&quot;dev&quot;</span>]</span></span><br></pre></td></tr></table></figure>
 
 <p>删除原来的image在重新搭建<code>docker build -t eggpain-image</code></p>
-<p><img src="/./docker/image-20250528155442820.png" alt="image-20250528155442820"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528155442820.png" alt="image-20250528155442820"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <hr>
 <p>搞不定不太想搞了现在（哭 存个档下次再搞）</p>
 <h4 id="使用交互式的方法启动一个拉去的镜像"><a href="#使用交互式的方法启动一个拉去的镜像" class="headerlink" title="使用交互式的方法启动一个拉去的镜像"></a>使用交互式的方法启动一个拉去的镜像</h4><ol>
@@ -609,7 +609,7 @@
 </li>
 <li><p><code>docker ps</code>  #查看所有正在运行的容器</p>
 <p><code>docker ps -a</code>  #查看所有的容器(包括微运行的)</p>
-<p><img src="/docker%5Cimage-20250923173546414.png" alt="image-20250923173546414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250923173546414.png" alt="image-20250923173546414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 </li>
 <li><p>根据已有的镜像建立一个容器表情进入容器内部的交互式shell</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 3000:3000 --name jdk8 justrydeng/jdk8 /bin/bash</span><br></pre></td></tr></table></figure>
@@ -638,8 +638,8 @@
 <p>然后执行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d --build</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250528190423507.png" alt="image-20250528190423507"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/./docker/image-20250528190457409.png" alt="image-20250528190457409"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528190423507.png" alt="image-20250528190423507"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250528190457409.png" alt="image-20250528190457409"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>可以发现docker-compose创建了新的镜像(<code>nodejstest_eggpain-container_1</code>)和新的容器(<code>nodejstest_eggpain-container</code>)</p>
 </li>
 <li><p>如果根据已有的本地镜像文件创建一个容器(不用创建镜像)</p>
@@ -661,28 +661,28 @@
 <li><p>需要找出<code>docker-compose</code>启动的网卡长什么样,一般是叫做<code>**_default</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker Network <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/docker%5Cimage-20250925134902529.png" alt="image-20250925134902529"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250925134902529.png" alt="image-20250925134902529"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>可以轻松找到应该是<code>nodejstest_default</code></p>
 </li>
 <li><p>使用命令<code>docker network connect</code></p>
-<p><img src="/docker%5Cimage-20250925135119774.png" alt="image-20250925135119774"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250925135119774.png" alt="image-20250925135119774"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect nodejstest_default jdk8</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
 </ol>
 <h3 id="Bridge-网络"><a href="#Bridge-网络" class="headerlink" title="Bridge 网络"></a>Bridge 网络</h3><p>在安装docker之前的linux网卡信息是这样的,只有一张以太网网卡(ens33)和一张lo(loopback回环,只能和自己联通)</p>
-<p><img src="/./docker/image-20250520105201812.png" alt="image-20250520105201812"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520105201812.png" alt="image-20250520105201812"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>docker安装命令:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get insatll docker.io -y | less</span><br></pre></td></tr></table></figure>
 
 
 
 <p>会发现此时多了一个docker的网卡信息:</p>
-<p><img src="/./docker/image-20250520110133547.png" alt="image-20250520110133547"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520110133547.png" alt="image-20250520110133547"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>查看这张网卡的具体信息如下:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect bridge | less</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520112501883.png" alt="image-20250520112501883"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520112501883.png" alt="image-20250520112501883"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>使用jq来提取一些当前有用的信息:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect bridge | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers, Options:.Options&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
@@ -693,70 +693,70 @@
 
 
 
-<p><img src="/./docker/image-20250520114033429.png" alt="image-20250520114033429"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520114033429.png" alt="image-20250520114033429"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>此时可以看到<code>Containers</code>中还没有任何容器,可以添加一个功能性容器然后再来看看实力,如果本地没有这个镜像也会自动拉取</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name egg1 --hostname egg1 praqma/network-multitool</span><br></pre></td></tr></table></figure>
 
 
 
-<p><img src="/./docker/image-20250520211717949.png" alt="image-20250520211717949"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520211717949.png" alt="image-20250520211717949"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>然后可以使用以下命令查看容器是否正在运行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker ps</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520211902588.png" alt="image-20250520211902588"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520211902588.png" alt="image-20250520211902588"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>然后再次使用命令查看网卡信息就会发现多了一个容器了</p>
-<p><img src="/./docker/image-20250520212210365.png" alt="image-20250520212210365"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520212210365.png" alt="image-20250520212210365"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>此时查看接口信息会发现多了一个奇怪的接口名称,实际上这就是使用bright的网卡情况,而且对于网卡的排序也出了问题,发现顺序为4的网卡消失了</p>
 <blockquote>
 <p>弹幕: veth虚拟以太网接口生成了一对vethx和vethy,vethx在宿主机中与虚拟网卡docker0虚拟桥接网卡相连,vethy在容器网络命名空间内,这样实现容器进程与容器之外的外部网络通信</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要注意的是,这个地方查看网卡信息必须使用以下命令,使用ifconfig无法查看从属关系</span></span><br><span class="line">ip address</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520212920531.png" alt="image-20250520212920531"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520212920531.png" alt="image-20250520212920531"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>使用以下命令按json格式化网卡信息,并且输出</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -json address show dev vethd6a5d21 | jq .</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520213238874.png" alt="image-20250520213238874"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520213238874.png" alt="image-20250520213238874"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>进入容器查看容器内的网卡信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it egg1 bash</span><br></pre></td></tr></table></figure>
 
 <p>可以清晰的发现丢失的网卡4就在这里!</p>
-<p><img src="/./docker/image-20250520214407274.png" alt="image-20250520214407274"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520214407274.png" alt="image-20250520214407274"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>使用命令查询这张网卡的具体信息</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip -json -detail address show dev eth0 | jq <span class="string">&#x27;.[0] | &#123;ifindex:.ifindex, link_index:.link_index, ifname:.ifname, linkinfo:.linkinfo , addr_info:.addr_info&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250520215115314.png" alt="image-20250520215115314"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520215115314.png" alt="image-20250520215115314"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>可以发现对于<code>linkinfo</code>这个参数,就可以判断出当前接口正在和哪个接口进行连接</p>
 <p>同样的命令查询以太网网卡是会显示<code>null</code>的</p>
-<p><img src="/./docker/image-20250520215356728.png" alt="image-20250520215356728"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520215356728.png" alt="image-20250520215356728"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>如果重新添加一个容器,也会发现这个容器有一张在宿主机中隐藏的虚拟网卡,而且这张网卡也是连接到<code>veth</code>上的,然后在宿主机的网卡信息中也会发现一张指向虚拟机的虚拟网卡,也就是这个情况</p>
-<p><img src="/./docker/image-20250520215829355.png" alt="image-20250520215829355"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/./docker/image-20250520221709111.png" alt="image-20250520221709111"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520215829355.png" alt="image-20250520215829355"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250520221709111.png" alt="image-20250520221709111"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <h3 id="Bridge型"><a href="#Bridge型" class="headerlink" title="Bridge型"></a>Bridge型</h3><p>使用命令来查看现在的网络列表</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527170915929.png" alt="image-20250527170915929"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527170915929.png" alt="image-20250527170915929"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>创建bridge网络</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -d使用bridge驱动来创建</span></span><br><span class="line"><span class="comment"># naihe-bridge 自定义网络名称</span></span><br><span class="line"><span class="built_in">sudo</span> docker network create -d bridge naihe-bridge</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527190208629.png" alt="image-20250527190208629"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527190208629.png" alt="image-20250527190208629"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>通过查询<code>docker network inspect</code>可以发现实际上两个网络的网段是不一样的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker network inspect 网络名称 | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527191452009.png" alt="image-20250527191452009"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>使用命令<code>ip address</code>查看网卡信息发现出现了一张新的网卡并且这个网卡名称和网卡id是一样的<br><img src="/./docker/image-20250527191809962.png" alt="image-20250527191809962"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527191452009.png" alt="image-20250527191452009"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用命令<code>ip address</code>查看网卡信息发现出现了一张新的网卡并且这个网卡名称和网卡id是一样的<br><img src="/2025/05/02/hello-world/image-20250527191809962.png" alt="image-20250527191809962"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>现在来创建一个新容器指定使用这个网卡如下</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name naihe1 --hostname naihe1 --network naihe-bridge praqma/network-multitool</span><br></pre></td></tr></table></figure>
 
 <p>然后查看网卡信息<code>ip address</code>可以发现创建了一个新的网卡使用的master网卡就是之前创建的<code>br-9a14e1ce05d3</code></p>
-<p><img src="/./docker/image-20250527192335545.png" alt="image-20250527192335545"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527192335545.png" alt="image-20250527192335545"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>可以发现网卡下出现了两个容器</p>
-<p><img src="/./docker/image-20250527192906422.png" alt="image-20250527192906422"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527192906422.png" alt="image-20250527192906422"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>使用命令进去docker中的bash来ping另一个容器的ip发现是可以ping通的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker <span class="built_in">exec</span> -it naihe1 bash</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527193211984.png" alt="image-20250527193211984"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>而且实际上自定义网卡还自动配置了DNS可以直接ping主机名来实现通信,但是实际上这里指定了hostname所以不明显<br><img src="/./docker/image-20250527193311626.png" alt="image-20250527193311626"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527193211984.png" alt="image-20250527193211984"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>而且实际上自定义网卡还自动配置了DNS可以直接ping主机名来实现通信,但是实际上这里指定了hostname所以不明显<br><img src="/2025/05/02/hello-world/image-20250527193311626.png" alt="image-20250527193311626"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>再创建一个容器但是不指定hostname再尝试ping看看能不能ping通</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run -d --name naihe3 --network naihe-bridge praqma/network-multitool</span><br></pre></td></tr></table></figure>
 
@@ -764,7 +764,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有容器信息</span></span><br><span class="line"><span class="built_in">sudo</span> docker ps -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动一个停止的容器</span></span><br><span class="line"><span class="built_in">sudo</span> docker start naihe1</span><br></pre></td></tr></table></figure>
 
 <p>可以发现在没有指定容器名的前提下使用自定义网卡是可以实现自动配置dns的</p>
-<p><img src="/./docker/image-20250527195439098.png" alt="image-20250527195439098"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527195439098.png" alt="image-20250527195439098"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>删除创建的网络,但是默认的网络是没有办法删除的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network <span class="built_in">rm</span> naihe-bridge</span><br></pre></td></tr></table></figure>
 
@@ -775,18 +775,18 @@
 <p>host网络无法自定义创建,只能有一个,会报错</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker network create -d host newhost</span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527200827615.png" alt="image-20250527200827615"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527200827615.png" alt="image-20250527200827615"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>查看网络环境发现是没有ip的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect host | jq <span class="string">&#x27;.[0] | &#123;Name:.Name, Id:.Id, Driver:.Driver, IPAM:.IPAM.Config, Containers:.Containers, Options:.Options&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/./docker/image-20250527211749074.png" alt="image-20250527211749074"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527211749074.png" alt="image-20250527211749074"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>如果是指定端口关联,host模式下会出问题,因为host模式是不需要端口关联的</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> docker run --name egg --network host -p 8080:80 -d praqma/network-multitool</span><br></pre></td></tr></table></figure>
 
 <p>发现出现警告但是仍然可以创建新的容器</p>
-<p><img src="/./docker/image-20250527214116672.png" alt="image-20250527214116672"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><img src="/./docker/image-20250527214201495.png" alt="image-20250527214201495"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250527214116672.png" alt="image-20250527214116672"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><img src="/2025/05/02/hello-world/image-20250527214201495.png" alt="image-20250527214201495"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>实际上这个host网络下的容器就直接是宿主的一个应用了(只有linux下是这样的),在容器中与宿主设备中查看<code>ip address</code>得到的网络信息是一样的</p>
-<h3 id="None就是不允许进行网络通信"><a href="#None就是不允许进行网络通信" class="headerlink" title="None就是不允许进行网络通信"></a>None就是不允许进行网络通信</h3><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p><img src="/./docker/image-20250527214551605.png" alt="image-20250527214551605"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="None就是不允许进行网络通信"><a href="#None就是不允许进行网络通信" class="headerlink" title="None就是不允许进行网络通信"></a>None就是不允许进行网络通信</h3><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p><img src="/2025/05/02/hello-world/image-20250527214551605.png" alt="image-20250527214551605"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 
 </article>
     
