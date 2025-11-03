@@ -15,7 +15,7 @@
 <meta property="og:description" content="密码的原来自己解压缩包的python应用想要使用python -m http.server需要手动配置防火墙策略  构造图片码的方法(&#x2F;b是指使用二进制解析) 1copy &#x2F;b normal.jpg + shell.php malicious.jpg  powershell查询hash 1Get-FileHash filepath  powershell检查数字签名 有效值 1Get-">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2999-12-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-31T02:39:32.586Z">
+<meta property="article:modified_time" content="2025-11-03T04:59:24.112Z">
 <meta property="article:author" content="aaaaaaamua">
 <meta name="twitter:card" content="summary">
 
@@ -61,7 +61,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-10-31 10:39:32"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-11-03 12:59:24"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
@@ -402,6 +402,29 @@
 <li><p>git clone代理</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git -c http.proxy=socks5://127.0.0.1:20170 <span class="built_in">clone</span></span><br></pre></td></tr></table></figure></li>
 </ol>
+<h2 id="ssh-key"><a href="#ssh-key" class="headerlink" title="ssh key"></a>ssh key</h2><h3 id="生成过程"><a href="#生成过程" class="headerlink" title="生成过程"></a>生成过程</h3><p>生成密钥对</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C &quot;注释&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后判断要不要输入密码,直接回车就是无密码</p>
+<p>需要注意的是这个命令生成的公私钥都是在本地的</p>
+<p>上传公钥的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i ~/.ssh/123.pub root@ip</span><br></pre></td></tr></table></figure>
+
+<p>或者直接传入公钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ./id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+
+
+<p>成功以后就能添加密钥</p>
+<p>公钥登陆</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i ~/.ssh/123.pub root@ip</span><br></pre></td></tr></table></figure>
+
+<p>或者使用config文件来配置快速登录,找到目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<p>添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host</span><br><span class="line">  HostName ip</span><br><span class="line">  IdentityFile ~/.ssh/123</span><br><span class="line">  User root</span><br></pre></td></tr></table></figure>
+
 
 </article>
     
@@ -483,8 +506,24 @@
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="ssh key"><a rel="nofollow" class="trm-toc-link" href="#ssh-key"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">ssh key</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="生成过程"><a rel="nofollow" class="trm-toc-link" href="#生成过程"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">生成过程</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
     
     
         <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
