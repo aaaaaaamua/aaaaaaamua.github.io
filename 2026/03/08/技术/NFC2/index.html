@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="简介最近家里的门禁坏了想给常来的朋友们配个钥匙方便进出，就在咸鱼上找了买了 wcopy 这种经典 GUI 复制器。找的时候发现变色龙出了新版本（Chameleon Utral）就打算研究一下有什么不同。这才发现之前发的一篇关于 NFC 的实际上是在我初步接触设备的时候的浅显感受，里面几乎在原理层面没有一点描述，完全就是一篇使用说明。不幸的是，我的知识储备停留在了那里。几年过去了，搜索能力和学习能力">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从理论到实践：NFC&#x2F;ID 卡复制与攻防技术详解">
+<meta property="og:url" content="https://aaaaaamua.github.io/2026/03/08/%E6%8A%80%E6%9C%AF/NFC2/index.html">
+<meta property="og:site_name" content="aaaaaaamua">
+<meta property="og:description" content="简介最近家里的门禁坏了想给常来的朋友们配个钥匙方便进出，就在咸鱼上找了买了 wcopy 这种经典 GUI 复制器。找的时候发现变色龙出了新版本（Chameleon Utral）就打算研究一下有什么不同。这才发现之前发的一篇关于 NFC 的实际上是在我初步接触设备的时候的浅显感受，里面几乎在原理层面没有一点描述，完全就是一篇使用说明。不幸的是，我的知识储备停留在了那里。几年过去了，搜索能力和学习能力">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="og:image" content="https://aaaaaamua.github.io/img/404.jpg">
+<meta property="article:published_time" content="2026-03-08T06:32:01.000Z">
+<meta property="article:modified_time" content="2026-03-08T06:34:28.566Z">
+<meta property="article:author" content="aaaaaaamua">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aaaaaamua.github.io/img/404.jpg">
+
+
+<title >从理论到实践：NFC/ID 卡复制与攻防技术详解</title>
+
+<!-- Favicon -->
+
+    <link href='http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500?v=2.2.5' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304?v=2.2.5' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"aaaaaamua.github.io","author":"aaaaaaamua","root":"/","typed_text":["cow and horse"],"theme_version":"2.2.5","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"/img/picture/touxiang.png","icon16":"http://mms2.baidu.com/it/u=1764489770,1790526983&fm=253&app=138&f=JPEG?w=508&h=500","icon32":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304","apple_touch_icon":null,"webmanifest":null,"visibilitychange":false,"hidden":"https://mms2.baidu.com/it/u=251319153,2346383010&fm=253&app=120&f=JPEGw=500&h=500# /failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"http://mms0.baidu.com/it/u=4208939750,346890809&fm=253&app=138&f=JPEG?w=304&h=304"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":false,"title":"default","height_limit":200},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"trigger":"auto","path":"search.json"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2026-03-08 14:34:28"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.5" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?20136";
+              var s = document.getElementsByTagName("script")[0]; 
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+     
+
+    
+        <!-- Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=G-EJ6W34RGXT'></script>
+        <script defer>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EJ6W34RGXT');
+        </script>
+    
+
+    
+ 
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/img/picture/touxiang.png">
+    
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags" target="">
+                    标签
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            从理论到实践：NFC/ID 卡复制与攻防技术详解
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2026
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/08
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            14:32
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            aaaaaaamua
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>最近家里的门禁坏了想给常来的朋友们配个钥匙方便进出，就在咸鱼上找了买了 wcopy 这种经典 GUI 复制器。找的时候发现变色龙出了新版本（Chameleon Utral）就打算研究一下有什么不同。这才发现之前发的一篇关于 NFC 的实际上是在我初步接触设备的时候的浅显感受，里面几乎在原理层面没有一点描述，完全就是一篇使用说明。不幸的是，我的知识储备停留在了那里。几年过去了，搜索能力和学习能力都得到了提升，于是我就想着彻底把这个 M1 复制的工作原理搞明白，于是有了这篇博客。</p>
+<blockquote>
+<p>本文并非自主探究结果，而是基于两篇主要论文&#x2F;《无线电安全攻防大揭秘》以及若干网友博客以及在AI的帮助下总结学习而成的学习笔记结果。</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://eprint.iacr.org/2024/1275">研究 FM11RF08S 的漏洞仔细描述了传统 M1 卡的攻击方式</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/selway/articles/M1_S50.html">经典研发论文 MIFARE Classic S50</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/ics-articles/338317.html">基于 MIFARE Classic S50 但是对图片进行了翻译，为本文主要引用图片</a></p>
+</li>
+</ul>
+</blockquote>
+<h2 id="卡片分类"><a href="#卡片分类" class="headerlink" title="卡片分类"></a>卡片分类</h2><h3 id="正规发卡分类"><a href="#正规发卡分类" class="headerlink" title="正规发卡分类"></a>正规发卡分类</h3><p>现行使用的卡片基本可以分为 IC 卡&#x2F;ID 卡&#x2F;CPU 卡，其中区别可以按照工作频率大范围分为（IC + CPU）+ ID，然而需要知道的是 IC 卡和 CPU 卡的区别实际上类似猴子和人，属于是两只发展方向。</p>
+<p>最为经典的 NFC 卡，江湖人称“M1 卡”，是恩智浦半导体开发的可用于非接触式智能卡。现在我们进行复制或者尝试折腾的绝大部分 13.56MHz 的卡片都是如此。</p>
+<p>不严谨的说，13.56MHz 是一个基础门槛，具体区分可以认为是市面上绝大部分手机能否直接读取卡号（也就是识别）来判断。而进一步的，能否被手机直接复制，或者不能直接复制（能读取卡号）但是借助工具设备还是可以实现复制的就大概率是 M1 卡或者及其变体。当然，不能复制但能读取卡号的还有可能是 CPU 卡，不在本文的讨论范围内（我不会）。对于根本无法被手机感应的卡片大概率是 ID 卡，也就是工作频率为 125KHz，这两者频率差相差过大，一般来说商用手机不会设置两个部分的感应芯片。</p>
+<p>从网上获取 IC+ID 双卡合一可以发现实际上就连这种商业卡在设计的时候都需要给不同的工作频率单独设置芯片和线圈。</p>
+<p><img src="/2025/05/02/hello-world/a4e75ed875eea19bbaa33706fd5e.png" alt="IC 卡基本原理介绍 IC 卡基本原理介绍 _什么值得买"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="复制卡分类"><a href="#复制卡分类" class="headerlink" title="复制卡分类"></a>复制卡分类</h3><h4 id="IC-卡"><a href="#IC-卡" class="headerlink" title="IC 卡"></a>IC 卡</h4><p>普通 M1 卡的制卡过程不可逆，主要的“不可逆”就是 UID 也就是卡片的卡号不可改变，具有唯一性。但是作为复制卡，自然是可以进行修改卡号的，这是所有复制卡的基础。而在此基础上，又根据不同的特性分为了以下的几种复制卡。</p>
+<p>（表格来自 <a target="_blank" rel="noopener" href="https://foyum.com/en/shnews.asp?id=249&sid=60">ID 卡 IC 卡的复制卡种类介绍_厦门孚远电子科技有限公司</a>）</p>
+<table>
+<thead>
+<tr>
+<th>卡类型</th>
+<th>芯片名称</th>
+<th>频率</th>
+<th>重复擦写</th>
+<th>备注说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IC 卡</td>
+<td>M1 卡</td>
+<td>13.56MHZ</td>
+<td>✘</td>
+<td>普通卡，0 块（卡号块）出厂为锁定状态，不可用于复制，只能授权，物业卡为些卡，俗称授权卡</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>UID 卡</td>
+<td>13.56MHZ</td>
+<td>✔</td>
+<td>经典复制卡，可以反复擦写，无法穿防火墙</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>CUID 卡</td>
+<td>13.56MHZ</td>
+<td>✔</td>
+<td>穿防火墙 IC 复制卡，对于 UID 卡复制成功却刷卡无效的情况下，可以使用此卡复制</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>FUID 卡</td>
+<td>13.56MHZ</td>
+<td>✘</td>
+<td>一次性穿防火墙 IC 复制卡，对于 CUID 卡复制成功刷卡无效的情况下，可以使用此卡复制</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>UFUID 卡</td>
+<td>13.56MHZ</td>
+<td>✘</td>
+<td>一次性穿防火墙 IC 复制卡，但区别在于此卡支持手动锁卡，没有锁卡之前就是一张 UID 卡，锁卡之后不支持擦写</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>GTU 卡</td>
+<td>13.56MHZ</td>
+<td>✔</td>
+<td>可以自动复位数据的 IC 复制卡，用于滚动码防复制系统，支持反复擦写</td>
+</tr>
+<tr>
+<td>IC 卡</td>
+<td>GDMIC 卡</td>
+<td>13.56MHZ</td>
+<td>✔</td>
+<td>可以自动复位数据的 IC 复制卡，用于滚动码防复制系统，支持反复擦写，功能同 GTU 卡，生产厂商不同</td>
+</tr>
+</tbody></table>
+<p>需要注意的是，表格中多次提到的几个概念在此作具体说明：</p>
+<ul>
+<li><code>防火墙</code>：主要目的求实就是识别是复制卡还是原卡。实现路径主要依赖于判断第 0 扇区第 0 块存储（UID 卡号区）是否可写，如果卡片（UID 卡）对于读卡设备发出的写卡指令 <code>0x43</code> 进行响应，那么说明这是复制卡从而拒绝解锁。接下来我们讨论的“写入”，都是基于第 0 扇区第 0 块存储 UID 卡号区。<ol>
+<li><code>M1卡</code>：UID 厂家自带，录入者只能写入其他区域，不能修改卡号。</li>
+<li><code>CUID</code> 卡: 就是屏蔽了 <code>0x43</code> 这个指令，但是实际上它可以直接被写入。也就是说不需要开始写的信号直接写入。实际上这种卡片已经可以过市面上绝大部分的设备了。</li>
+<li><code>FUID / UFUID卡</code>：初始状态和 CUID 一样，但 <strong>只能写一次</strong>。一旦写入成功，芯片内部会物理熔断或逻辑锁死，变成真正的“只读”，彻底免疫防火墙的写入测试。</li>
+</ol>
+</li>
+<li><code>滚动码</code>：部分高级电梯梯控会使用到这个技术，就是每次进行刷卡行为之后，卡中的数据部分都会被修改，也就是防重放攻击。一般是一个特定的标志位。但是对于严格使用滚动码技术, 真实数据库同步的系统，复制完新卡并且使用之后老卡就会失效。</li>
+<li><code>自动复位数据</code>：这是适用于非绝对严格的滚动码系统。具体表现为部分非高级门禁不具备数据库，他的识别方式为验证数据内容是否符合逻辑输出规范。在进行刷卡操作的时候，除了在标志位进行+1（简单来说），还会尝试在其他部分写入脏数据。对于 CUID 卡来说这部分脏数据就会影响数据的合规性检验，而正常的 M1 卡这个部分不应该会被写入。具有这个功能的卡片就能防止老式的滚动系统（只验证数据的合规性，就是不该出现脏数据的地方不出现）。还能通过不严格的新型系统，也就是在这种系统中，由于数据库中保存的标志位和卡片中的标志位相差不是很大（卡片中是 10，但是数据库已经是 11 了），数据库就会认为上次没有成功写入而放弃这个 11 而接受这个 10 的标志位。当然这也是有风险的，对于智能的系统而言，如果某一个 UID 卡片的标志位一直来回跳转（新卡是 11 但是老卡还是 10，下次新卡是 13 老卡已经是 14）就有可能标记为异常甚至封禁该 UID。</li>
+</ul>
+<h4 id="ID-卡"><a href="#ID-卡" class="headerlink" title="ID 卡"></a>ID 卡</h4><p>（表格来源同上）</p>
+<table>
+<thead>
+<tr>
+<th>卡类型</th>
+<th>芯片名称</th>
+<th>频率</th>
+<th>重复擦写</th>
+<th>备注说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID 卡</td>
+<td>T5577 卡 EM4305 卡 5200 卡</td>
+<td>125KHZ</td>
+<td>✔</td>
+<td>可擦写复制的 ID 卡</td>
+</tr>
+<tr>
+<td>ID 卡</td>
+<td>F8268 卡</td>
+<td>125KHZ</td>
+<td>✔</td>
+<td>穿防火墙 ID 复制卡，用于 ID 卡复制成功刷卡无效的情况</td>
+</tr>
+</tbody></table>
+<p>ID 卡一般没有加密的部分，正常的 ID 卡只有一个唯一固定的 UID，也就是卡号，另外在没有其他的加密手段，所以现在的 ID 卡被认为是不安全的。</p>
+<p>ID 卡防火墙也是发出写指令来观察卡片是否回显。</p>
+<h2 id="M1-工作原理"><a href="#M1-工作原理" class="headerlink" title="M1 工作原理"></a>M1 工作原理</h2><h3 id="卡片物理结构组成"><a href="#卡片物理结构组成" class="headerlink" title="卡片物理结构组成"></a>卡片物理结构组成</h3><p>M1 卡的标准提出是以下这篇 <a target="_blank" rel="noopener" href="https://cdn-shop.adafruit.com/datasheets/S50.pdf">论文</a>，其中对于卡片结构和工作原理做了详细的介绍</p>
+<p><img src="/2025/05/02/hello-world/992697_62c3b3b9cdadffe39631c.jpeg" alt="img"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>集成电路芯片内含 1 Kbyte EEPROM、RF 接口和数字控制单元。能量和数据通过天线传输，卡中天线为几匝线圈，直接连接到芯片上。不再需要额外的组件。以下是各个物理结构的介绍（来自 GPT）。</p>
+<ol>
+<li><p>RF 接口 (RF Interface)：仓库的“传达室” – 它是芯片和外界沟通的 <strong>唯一窗口</strong>。</p>
+<ul>
+<li><strong>翻译与供电</strong>：它把空中的无线电波转换成电能给芯片供电（因为它没有电池），同时把电波里的信号变成数字信号传给里面的单元。它既是“电源插座”，也是“翻译员”。</li>
+</ul>
+</li>
+<li><p>防冲突单元 (Anticollision)：窗口的“一米线” – 如果有好几张卡同时靠近读卡器，这个单元就开始工作了。</p>
+<ul>
+<li><strong>排队机制</strong>：它确保读卡器在同一时间只和 <strong>其中一张卡</strong> 说话，让其他卡先“闭嘴”排队，防止大家一起开口导致信号乱成一团。</li>
+</ul>
+</li>
+<li><p>EEPROM：仓库的“储物格”– 这是真正存数据的地方，总共 1KB，分成了 16 个房间（扇区）。</p>
+<ul>
+<li><strong>数据存储</strong>：你的卡号、余额、门禁权限都锁在这里。每个房间都自带两把锁（Key A 和 Key B）和一张说明书（控制位），决定了谁能进来读或者写。</li>
+</ul>
+</li>
+<li><p>认证模块 (Authentication)：“验票处”– 这是进入 EEPROM 之前的必经关卡。</p>
+<ul>
+<li><strong>核对暗号</strong>：当你想要访问某个储物格时，认证模块会从 EEPROM 里读取那个房间的“正确暗号”，然后和读卡器提供的暗号进行对比。只有对上了，它才会拉开挡在 EEPROM 前面的逻辑闸门。</li>
+</ul>
+</li>
+<li><p>控制和算术逻辑单元 (Control and ALU)：仓库的“管理员” – 它负责具体的体力活。</p>
+<ul>
+<li><strong>存取指令</strong>：它听从读卡器的指挥，负责把数据从 EEPROM 搬出来，或者把新数据存进去。</li>
+<li><strong>自动算术</strong>：如果你是公交卡，它能直接完成“加钱”或“扣钱”的计算，而且存得非常严谨（特定冗余格式），防止数据存错。</li>
+</ul>
+</li>
+<li><p>加密单元 (Crypto Unit)：仓库的“碎纸机与密信员” – 它保证你和读卡器之间的通话不被偷听。</p>
+<ul>
+<li><strong>通讯加密</strong>：它使用特定的算法（CRYPTO1），把你们之间传输的所有数据都变成乱码。即使有人在空中截获了信号，没有加密单元的配合，他也看不懂信里写了什么。</li>
+</ul>
+</li>
+</ol>
+<h3 id="EEPROM分类和结构"><a href="#EEPROM分类和结构" class="headerlink" title="EEPROM分类和结构"></a>EEPROM分类和结构</h3><p>但是实际上关于EEPROM大小和分区情况还大有说法。主要分为两种包括:Mifare Classic 1K和 Mifare Classic 4K</p>
+<ul>
+<li>Mifare Classic 1K：有1KB的EEPROM内存，分为四个扇区，每个扇区包含16个区块，一个区块为16B；</li>
+<li>Mifare Classic 4K：有4KB的EEPROM内存，分为32个扇区，前16个扇区每个扇区4个块，后16个扇区每个扇区16个块，每个块16字节 (Bytes)</li>
+</ul>
+<p>这个是EEPROM的功能分区</p>
+<table>
+<thead>
+<tr>
+<th align="left">结构</th>
+<th align="left">作用</th>
+<th align="left">类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">扇区</td>
+<td align="left">存储数据的基本逻辑单元。</td>
+<td align="left">必要</td>
+</tr>
+<tr>
+<td align="left">区块</td>
+<td align="left">存储数据的最小物理单元，分为数据区块和尾块。</td>
+<td align="left">必要</td>
+</tr>
+<tr>
+<td align="left">数据区块</td>
+<td align="left">存储用户数据。</td>
+<td align="left">存放数据</td>
+</tr>
+<tr>
+<td align="left">尾块（扇区尾块）</td>
+<td align="left">存储扇区的密钥和访问权限，控制对扇区内数据区块的访问。密钥用于身份验证，访问权限定义了哪些密钥可以执行哪些操作（读、写等）。访问权限是影响卡安全的关键因素。存储的内容分为密钥A，密钥B，访问控制</td>
+<td align="left">固定</td>
+</tr>
+</tbody></table>
+<p><strong>密钥存储和长度：</strong></p>
+<ul>
+<li>尾块中存储密钥 A 和密钥 B。</li>
+<li><strong>类型</strong>：用于扇区访问控制，基于 CRYPTO-1 加密算法。</li>
+<li><strong>长度</strong>：MIFARE Classic使用的密钥长度为48位（6字节）。</li>
+</ul>
+<p><strong>密钥区分：</strong></p>
+<ul>
+<li>密钥A和密钥B单独存在，具体权限由访问控制字段来设置，可以一个设置只读，一个设置只写，也可以两个都设置写，由访问控制位决定。</li>
+<li>读卡器一次只能提供一个密钥，不能同时进行验证。</li>
+</ul>
+<p><strong>安全相关的固定结构：</strong></p>
+<ul>
+<li><strong>访问控制位 (Access Bits)</strong>：位于尾块，定义了各个区块的访问权限。这些位决定了哪些操作（读、写）可以被哪些密钥所执行。不正确的权限设置是安全漏洞的源头之一。通常是 3 个 bit 位组成，多个 bit 位组合控制整个扇区的访问权</li>
+<li><strong>UID (Unique Identifier)</strong>：每张卡都有唯一的UID，用于区分不同的卡。但是，论文中提到，有些“兼容MIFARE”的卡可能会有重复的UID，这削弱了UID的唯一性。并且部分生产厂商使用的是同一套UID</li>
+<li><strong>LFSR</strong>: 位于卡中，用于生成伪随机数（nonce）用于认证过程。如果LFSR使用静态种子值，或者生成的随机数具有可预测的模式，则会引入安全风险。在早期提出的卡片攻击漏洞中，就是利用了生成的随机数可预料来实现的攻击。</li>
+</ul>
+<p><strong>访问注意：</strong></p>
+<ul>
+<li><strong>扇区是最小的访问控制单元：</strong> 在MIFARE Classic中，访问控制的最小粒度是<em>扇区</em>级别，而不是<em>区块</em>级别。密钥A和密钥B控制着对<em>整个</em>扇区的访问权限。这意味着，一旦你使用正确的密钥对一个扇区进行了身份验证（Authentication），接下来你就可以读取或者写入该扇区内的<em>任何</em>数据块（前提是你具有相应的权限，访问控制位允许你这样做）。</li>
+<li><strong>身份认证是关键：</strong> 你必须先通过身份认证，才能访问扇区内的任意区块，每一次访问验证只能访问当前扇区内的区块，密钥只对当前区块负责。</li>
+<li><strong>访问控制位决定了能做什么：</strong> 即使你身份认证通过了，访问控制位仍然决定了你能对该扇区内的区块做什么。假如访问控制位设置了只允许读取所有区块，那么即使你通过了身份验证，也无法对扇区的任意区块进行写入操作。</li>
+</ul>
+<p><strong>加密区别，什么叫半加密，什么叫全加密：</strong></p>
+<ul>
+<li>**半加密：**部分或者全部扇区使用了默认密钥，能够被带有nfc功能的手机直接复制。</li>
+<li>**全加密：**设置密钥的时候使用了强密码。</li>
+</ul>
+<h3 id="卡片工作原理"><a href="#卡片工作原理" class="headerlink" title="卡片工作原理"></a>卡片工作原理</h3><p>结合上述的物理结构，接下来将结合上述物理结构的概述与论文中出现的工作原理图来具体展示卡片的工作原理。</p>
+<p><img src="/2025/05/02/hello-world/e-20260219162048385.png" alt="M1 卡工作逻辑-来自 https:&#x2F;&#x2F;cdn-shop.adafruit.com&#x2F;datasheets&#x2F;S50.pdf"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>简单来说这个流程图概括了以下几个工作流程：</p>
+<ol>
+<li><p>寻卡与选择阶段 (Identification and Selection)</p>
+<ul>
+<li><strong>POR (Power On Reset)</strong>：卡片进入读卡器磁场后上电复位。（RF 接口）</li>
+<li><strong>Request Standard&#x2F;All</strong>：读卡器发出信号，询问磁场内是否有卡。（RF 接口）</li>
+<li><strong>Anticollision Loop (防冲突循环)</strong>：如果有多张卡，读卡器通过这个循环选出其中一张，并获取其 <strong>Serial Number (UID)</strong>。（防冲突单元）</li>
+<li><strong>Select Card</strong>：正式锁定该 UID 的卡片。（防冲突单元）</li>
+</ul>
+<blockquote>
+<p><strong>时间消耗</strong>：无冲突时约 <strong>3ms</strong>。</p>
+</blockquote>
+</li>
+<li><p>三轮认证阶段 (Authentication Procedure) —— <strong>核心安全区</strong>（Authentication）</p>
+<ul>
+<li><strong>3 Pass Authentication (Sector specific)</strong>：这是你之前关注的“三轮握手”。</li>
+<li><strong>关键点</strong>：所有的加密通信都从这里开始。它必须针对<strong>特定扇区</strong>（Sector specific）进行。</li>
+<li><strong>漏洞插入点</strong>：你提到的 Darkside 或 Nested 攻击，都是卡在这个阶段，通过伪造读卡器的认证请求（Request）或分析卡片返回的加密随机数（$n_T$）来工作的。</li>
+</ul>
+<blockquote>
+<p><strong>时间消耗</strong>：约 <strong>2ms</strong>。</p>
+</blockquote>
+</li>
+<li><p>存储操作阶段 (Memory Operations)（Control and ALU + Crypto Unit）</p>
+<p>一旦认证成功，逻辑门开启，读卡器可以对该扇区执行具体的指令：</p>
+<ul>
+<li><strong>Read&#x2F;Write Block</strong>：读写 16 字节的数据块。</li>
+<li><strong>Increment&#x2F;Decrement</strong>：数值增减（常用于公交卡余额）。</li>
+<li><strong>Transfer&#x2F;Restore</strong>：将计算结果转存到存储区。</li>
+</ul>
+<blockquote>
+<p><strong>时间消耗</strong>：读取约 <strong>2.5ms</strong>，写入较慢约 <strong>6.0ms</strong>。</p>
+</blockquote>
+</li>
+<li><p>停止阶段 (Halt)</p>
+<ul>
+<li>操作完成后，读卡器发送 Halt 指令让卡片进入休眠，直到离开磁场重新上电。</li>
+</ul>
+</li>
+</ol>
+<h3 id="M1如何进行三轮认证"><a href="#M1如何进行三轮认证" class="headerlink" title="M1如何进行三轮认证"></a>M1如何进行三轮认证</h3><ol>
+<li><p>第一步：卡片发送随机数 $n_T$ (Pass 1)</p>
+<ul>
+<li><strong>动作</strong>：读卡器发送认证指令（包含要访问的扇区和密钥类型 A 或 B）。</li>
+<li><strong>响应</strong>：卡片生成一个 32 位的随机数 $n_T$（Nonce of Tag），并以<strong>明文</strong>形式发送给读卡器。</li>
+<li><strong>目的</strong>：这个随机数作为后续加密运算的“挑战码”，确保每次认证的会话内容都是唯一的，防止重放攻击。</li>
+</ul>
+</li>
+<li><p>第二步：读卡器发送 $n_R$ 和 $a_R$ (Pass 2)</p>
+<ul>
+<li><strong>动作</strong>：读卡器收到 $n_T$ 后，生成自己的 32 位随机数 $n_R$。然后利用内部存储的 <strong>密钥（Key）</strong> 和 <strong>Crypto-1 算法</strong>，对 $n_T$ 进行加密运算，得到一个响应值 $a_R$（Answer of Reader）。</li>
+<li><strong>传输</strong>：读卡器将 $a_R$ 和自己的随机数 $n_R$ 发送给卡片。</li>
+<li><strong>校验</strong>：卡片用自己的密钥解密并验证 $a_R$。如果 $a_R$ 正确，说明读卡器拥有合法的密钥，卡片<strong>初步信任</strong>读卡器。</li>
+</ul>
+</li>
+<li><p>第三步：卡片发送 $a_T$ (Pass 3)</p>
+<ul>
+<li><strong>动作</strong>：卡片在验证读卡器成功后，同样利用密钥和算法，对读卡器发来的 $n_R$ 进行加密运算，生成响应值 $a_T$（Answer of Tag）。</li>
+<li><strong>传输</strong>：卡片将 $a_T$ 发送给读卡器。</li>
+<li><strong>校验</strong>：读卡器收到后进行验证。如果 $a_T$ 正确，说明卡片也拥有正确的密钥，读卡器<strong>完全信任</strong>卡片。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<ul>
+<li><p>关键特性</p>
+<ul>
+<li><strong>双向认证</strong>：不仅仅是读卡器检查卡，卡片也在检查读卡器。 </li>
+<li><strong>全过程加密</strong>：从第二步读卡器的响应开始，所有传输的数据都经过 <strong>Crypto-1</strong> 流密码加密。</li>
+<li><strong>安全性现状</strong>：虽然这种机制设计得很巧妙，但由于 S50 使用的 Crypto-1 算法已被破解，现在可以通过“嵌套认证攻击”（Nested Attack会在接下来的章节介绍）等手段在几秒内提取出密钥。</li>
+</ul>
+</li>
+</ul>
+<p>以上是AI的回答,实际上<a href="#%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F">所有的攻击</a>都是针对这个三轮认证展开的，会在下一个章节展开。于此同时对于变色龙为什么在侦测之后就能得到一个简单的密钥然后就可以结合原卡进行破解，可以逐步展开一层神秘的面纱。<a href="#%E5%8F%98%E8%89%B2%E9%BE%99%E4%BE%A6%E6%B5%8B%E5%8E%9F%E7%90%86">变色龙侦测原理</a>也是利用了这个。</p>
+<p><img src="/2025/05/02/hello-world/e-20260307000002604.png" alt="image-20260307000002604"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="M1卡正常发卡流程"><a href="#M1卡正常发卡流程" class="headerlink" title="M1卡正常发卡流程"></a>M1卡正常发卡流程</h3><p>综上所述可以得到正常的发卡流程是什么样的：</p>
+<ol>
+<li>获取一张全新的M1卡，使用默认密钥<code>FFFFF...</code></li>
+<li>记录UID，并且绑定个人</li>
+<li>使用默认密钥访问扇区，添加用户信息例如学生学号余额信息</li>
+<li>修改默认密码，设置强密码</li>
+<li>修改权限控制位，设置密码不可修改权限控制位</li>
+</ol>
+<h2 id="针对于M1的攻击"><a href="#针对于M1的攻击" class="headerlink" title="针对于M1的攻击"></a>针对于M1的攻击</h2><h3 id="如何复制一张全加密M1卡？"><a href="#如何复制一张全加密M1卡？" class="headerlink" title="如何复制一张全加密M1卡？"></a>如何复制一张全加密M1卡？</h3><ol>
+<li>准备工具：<ul>
+<li>具有pm3功能的读卡器（pm3太贵了 我这里用的是wcopy）</li>
+<li>变色龙侦测卡</li>
+</ul>
+</li>
+<li>拿到M1卡之后放到读卡器上尝试解密，发现进度条卡住了，怎么都没有办法成功解密复制，意识到这大概率是全加密卡。<br><img src="/2025/05/02/hello-world/e-20260306161835598.png" alt="image-20260306161835598"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></li>
+<li>变色龙设置为侦测模式，在读卡器上来回试探，获取密钥</li>
+<li>获取密钥之后勾选“使用密钥”并且填入，重新进行破解，成功解密，能够到处卡片镜像dump文件</li>
+<li>但是需要注意的是，当拿着这个dump文件重新导入的时候，看到的数据仍然是加密后的没有被解密的情况</li>
+</ol>
+<h3 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h3><h4 id="简单分类"><a href="#简单分类" class="headerlink" title="简单分类"></a>简单分类</h4><ol>
+<li><p>Darkside 攻击 (暗面攻击)</p>
+<p>这是最基础、最“暴力”的逻辑攻击，通常用于<strong>完全没有任何已知密钥</strong>的卡片（全加密卡）。</p>
+<ul>
+<li><strong>针对对象</strong>：Crypto1 的<strong>认证反馈（Error Codes）</strong>。</li>
+<li><strong>攻击原理</strong>：当攻击者发送一个错误的加密请求时，由于 Crypto1 算法的设计缺陷，卡片在报错时会泄露一部分内部状态信息。Darkside 攻击通过不断尝试并观察卡片返回的“加密校验错误”响应，利用概率统计学在几分钟内定位到密钥的内部状态。</li>
+<li><strong>特点</strong>：它是“从无到有”的突破口。只要破获了一个扇区的密钥，就可以转向更快的“嵌套攻击”。</li>
+<li>但实际应用中，通常 <em>需要配合</em> 已知的部分密钥信息，才能更有效地进行攻击。</li>
+<li>具体细节看一看“<a href="#%E5%A6%82%E4%BD%95%E9%A2%84%E6%B5%8BLFSR%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C%EF%BC%9F">如何预测LFSR输出结果？</a>”</li>
+</ul>
+</li>
+<li><p>嵌套认证攻击 (Nested Attack)</p>
+<p>这是 M1 卡漏洞中最经典的攻击方式，也是 PN532 等工具最常用的功能。</p>
+<ul>
+<li><p><strong>针对对象</strong>：Crypto1 的<strong>逻辑缺陷</strong>和<strong>伪随机数发生器 (PRNG)</strong>。</p>
+</li>
+<li><p><strong>前提条件</strong>：已经知道卡片中<strong>至少一个</strong>扇区的密钥（通常利用默认密钥 <code>FFFFFFFFFFFF</code>）。</p>
+</li>
+<li><p><strong>攻击原理</strong>：攻击者先用已知密钥进行合法认证，此时卡片的加密流已经处于激活状态。接着，攻击者在不中断连接的情况下，请求认证另一个（未知密钥的）扇区。</p>
+<p>由于 M1 卡的 PRNG（伪随机数发生器）在已知时间轴下是<strong>可预测的</strong>，攻击者可以根据已知扇区的随机数，推算出未知扇区随机数的可能值，从而极快地破解出所有扇区。</p>
+</li>
+</ul>
+</li>
+<li><p>Hardnested 攻击 (硬嵌套攻击)</p>
+<p>针对“加固型”M1 卡（即修复了 PRNG 漏洞，使随机数变得更难预测的卡片）。</p>
+<ul>
+<li><p><strong>针对对象</strong>：<strong>随机数关联性</strong>。</p>
+</li>
+<li><p><strong>攻击原理</strong>：加固后的卡片修复了 Nested 攻击利用的简单线性关系，使得随机数看起来很随机。但研究人员发现，由于硬件计算能力的限制，这些随机数之间依然存在某种复杂的非线性相关性。</p>
+<p>Hardnested 攻击通过收集大量的（通常是几千组）认证交互数据，利用高性能计算（复杂度约为 $2^{35}$）来进行“生日攻击”或“离线字典碰撞”。</p>
+</li>
+<li><p><strong>特点</strong>：计算量大，通常需要电脑 CPU 跑几分钟甚至几小时。PN532 基本跑不动，需要 <strong>Proxmark3</strong> 配合电脑完成。</p>
+</li>
+</ul>
+</li>
+<li><p>静态嵌套攻击 (Static Nested Attack)</p>
+<p>这是一种针对特定型号（如部分国产兼容卡、复旦卡等）的特殊攻击。</p>
+<ul>
+<li><p><strong>针对对象</strong>：<strong>静态随机数 (Static Nonce)</strong>。</p>
+</li>
+<li><p><strong>攻击原理</strong>：某些兼容芯片为了简化电路，其随机数发生器存在严重缺陷——在特定条件下（例如断电重启后），卡片发出的随机数（Nonce）是<strong>固定不变</strong>的，或者是每次上电都循环相同的序列。</p>
+<p>攻击者通过多次重置卡片，强制其发出相同的静态随机数，从而将复杂的加密认证降维打击，直接通过简单的数学查表或抵消运算获得密钥。</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>总结对比表</p>
+<table>
+<thead>
+<tr>
+<th><strong>攻击名称</strong></th>
+<th><strong>核心利用点</strong></th>
+<th><strong>难易程度</strong></th>
+<th><strong>硬件需求</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Darkside</strong></td>
+<td>认证报错泄露的信息</td>
+<td>中等 (全加密卡首选)</td>
+<td>PN532 &#x2F; PM3</td>
+</tr>
+<tr>
+<td><strong>Nested</strong></td>
+<td>PRNG 随机数可预测性</td>
+<td>极低 (最常用)</td>
+<td>PN532 &#x2F; PM3</td>
+</tr>
+<tr>
+<td><strong>Hardnested</strong></td>
+<td>复杂非线性相关性</td>
+<td>极高 (针对加固卡)</td>
+<td>Proxmark3(必选)</td>
+</tr>
+<tr>
+<td><strong>Static Nested</strong></td>
+<td>随机数不更新(静态)</td>
+<td>低 (针对特定缺陷卡)</td>
+<td>PN532 &#x2F; PM3</td>
+</tr>
+</tbody></table>
+<h3 id="Crypto1-算法的问题"><a href="#Crypto1-算法的问题" class="headerlink" title="Crypto1 算法的问题"></a>Crypto1 算法的问题</h3><p>使用这个算法的加密卡 M1 Mifare Classic  <a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/ics-articles/338317.html">物理渗透-Mifare Classic S50(IC)卡分析 - FreeBuf 网络安全行业门户</a></p>
+<p>以下插图来自《无线电安全攻防大揭秘》P11</p>
+<p><img src="/2025/05/02/hello-world/2158dd6e8b5653ee4ec84ef4e287.jpg" alt="来自《无线电安全攻防大揭秘》P11"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>实际上这个<code>48-bit LFSR</code>的设计存在相当大的问题，首先先来解释一下图片中各个组件的作用：</p>
+<ul>
+<li><strong>PRNG (伪随机数生成器):</strong><ul>
+<li>这是读卡器 (Reader) 发送给卡片的一个随机数，称为 Challenge。</li>
+<li>这个“随机数”实际上由 PRNG 产生。PRNG 的质量直接影响了整个加密过程的安全性。一个好的 PRNG 应该产生具有良好统计特性的、难以预测的序列。</li>
+<li>图中的 <code>Challenge</code> 向上箭头指向 <code>Response</code> 的生成过程，向下箭头则直接参与后续的计算。</li>
+</ul>
+</li>
+<li><strong>UID (唯一识别码):</strong><ul>
+<li>这是 MIFARE Classic 卡的唯一标识符 (Unique Identifier)。每个卡都有一个独特的 UID。</li>
+<li>UID 是固定的，不随每次交易改变。</li>
+<li>UID 和 <code>Challenge</code> 通过异或运算 (⊕) 结合在一起。 异或的结果是生成密钥流的其中一个输入。</li>
+</ul>
+</li>
+<li><strong>异或门 (⊕):</strong><ul>
+<li>这个异或门将来自 <code>PRNG</code> 的 <code>Challenge</code> 与卡片的 <code>UID</code> 进行混合。这种混合的目的是增加密钥流的复杂性和随机性，使得攻击者更难预测密钥流。</li>
+<li>从安全角度来看，简单的异或混合可能不足以抵抗高级攻击。</li>
+</ul>
+</li>
+<li><strong>与门 (AND):</strong><ul>
+<li>图中的 <strong>异或门</strong> 的输出，与 <strong>Challenge</strong> 信号连接与门</li>
+<li>与门的结果是另外一个输入，输入到异或门</li>
+</ul>
+</li>
+<li><strong>异或门 (⊕):</strong><ul>
+<li>这个异或门的作用是将上游的两个信号混合，作为对 <strong>48-bit LFSR</strong> 的输入。</li>
+</ul>
+</li>
+<li><strong>48-bit LFSR (线性反馈移位寄存器):</strong><ul>
+<li>这是整个加密系统的核心组件。LFSR 是一个由移位寄存器和反馈函数组成的电路。</li>
+<li>LFSR 的作用是生成伪随机序列，这个序列被用作密钥流。</li>
+<li>LFSR 的初始状态 (种子) 由之前的异或结果决定。</li>
+<li>LFSR 的反馈函数决定了序列的生成方式。一个设计良好的 LFSR 应该具有长的周期和良好的统计特性。</li>
+<li>图中从 <code>48-bit LFSR</code> 引出多个箭头，表示 LFSR 的多位输出会进入 <code>f(x)</code> 函数。</li>
+</ul>
+</li>
+<li><strong>f(x) (非线性函数&#x2F;S-盒):</strong><ul>
+<li>这是一个非线性函数，通常被称为 S-盒 (Substitution Box)。</li>
+<li>S-盒的作用是增加密钥流的混淆性和扩散性，使得密钥流与明文之间的关系更加复杂。</li>
+<li>S-盒是密码学中重要的组件，能够抵抗线性密码分析等攻击。</li>
+<li><code>f(x)</code> 的输出就是最终的 <strong>Keystream</strong>。</li>
+</ul>
+</li>
+<li><strong>Keystream (密钥流):</strong><ul>
+<li>这是由 <code>LFSR</code> 产生的伪随机序列经过 <code>f(x)</code> 处理后的结果。</li>
+<li><code>Keystream</code> 会被用于加密或解密数据。</li>
+<li>图中 <code>Keystream</code> 箭头向上， 与 <strong>Response</strong> 结合，生成最终的密文返回发卡器。</li>
+</ul>
+</li>
+<li><strong>Response (响应):</strong><ul>
+<li>这是一个从卡片发回读卡器的加密后的数据。</li>
+<li>卡片利用最终的 <strong>Keystream</strong> 和一些数据异或，就组成了 <strong>Response</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="48-bit-LFSR-问题所在"><a href="#48-bit-LFSR-问题所在" class="headerlink" title="48-bit LFSR 问题所在"></a>48-bit LFSR 问题所在</h4><ol start="0">
+<li><p>Crypt-1使用的加密是对称加密</p>
+</li>
+<li><p>倒推结果：当攻击者对于卡片的攻击的时候掌握了这个<code>Keystream</code>之后，就可以根据这个加密密钥来解密监听得到的卡片数据，也就是说一旦得到了这个<code>Keystream</code>就可以直接dump出卡片的原文，从而直接实现复制或者修改。</p>
+</li>
+<li><p>而特定扇区的密钥A&#x2F;B是参与身份验证的，就是说密钥A&#x2F;B参与组成了最后用于加解密的<code>Keystream</code></p>
+</li>
+<li><p>随机数<code>PRNG</code>的生成受到密钥A&#x2F;B的影响，扇区密钥就是在这个阶段影响最后的<code>Keystream</code></p>
+</li>
+<li><p>那么一旦LFSR的结果可以预测，那么紧接着<code>Keystream</code>就可以预测，那么用于保护扇区的密钥也就被绕过了</p>
+</li>
+<li><p>接下来的问题就是如何预测<code>LFSR</code>的结果？</p>
+</li>
+</ol>
+<h4 id="如何预测LFSR输出结果？"><a href="#如何预测LFSR输出结果？" class="headerlink" title="如何预测LFSR输出结果？"></a>如何预测LFSR输出结果？</h4><ol start="0">
+<li><p>我们前面提到Crypt-1算法使用的是对称加密</p>
+</li>
+<li><p>结合<a href="#%E7%AE%80%E5%8D%95%E5%88%86%E7%B1%BB"><code>Darkside攻击</code></a>来说，因为它正是利用了这个原理</p>
+</li>
+<li><p>但是实际上这个<code>Darkside</code>的开始需要一个<code>Keystream</code>来开始做异或，当然这个<code>Keystream</code>是不完美的，不然就没有下面的故事了，具体的值大概率是需要通过变色龙来获取一个区块的密钥来推出不完整的<code>Keystream</code>的，那么通过这个不完美的<code>Keystream</code>结合CRC的校验和错误值（当然其实伪造一个随机的<code>Keystream</code>也会让CRC进行报错，但是这样其实没什么用，因为这个区间太大了）。</p>
+</li>
+<li><p>也就是说在启动<code>Darkside</code>攻击之前需要一个已知的扇区的密钥和对应的<code>Keystream</code>。</p>
+</li>
+<li><p>这是侧信道攻击，使用的侧信道是卡片返回的 CRC 错误码。</p>
+</li>
+<li><p>以下是AI展开（讲的比我好）<br>理解这一点需要了解 MIFARE Classic 在读写块时，如果校验失败会返回错误码，而这些错误码泄露了 keystream 的前几位。</p>
+<p><strong>1. Darkside 攻击的整体框架:</strong></p>
+<p>如同之前所述，攻击的目标是恢复 LFSR 的内部状态，从而预测 Keystream。 为了达到这个目的，需要收集足够多的 Keystream 比特。 获取 keystream 的方法通常是在认证之后，进行块的读写操作。</p>
+<p><strong>2. 利用错误码泄露Keystream：</strong></p>
+<p>MIFARE Classic 有一个重要的特点：当读写块操作的校验失败时，卡片会返回一个特定的错误码。 通过分析这个错误码，攻击者可以推断出 Keystream 的前几位。</p>
+<ul>
+<li><strong>错误码的含义:</strong>  具体来说，MIFARE Classic 的错误码包含了有关传输过程中发生错误的类型信息。 某些错误码直接指示了在 CRC 校验中发现了错误，而 CRC 校验的过程涉及 Keystream 的使用。</li>
+<li><strong>错误码与CRC校验的关系：</strong> 在MIFARE Classic中，数据块以附加的CRC字节进行保护。读写操作都涉及卡片内部计算CRC并与发送的CRC进行比较。如果CRC校验失败，则会产生一个错误代码。由于数据和CRC都被Keystream加密，错误代码发生的方式与使用Keystream加密的数据之间存在关系，因此我们可以从中提取有关Keystream的信息。</li>
+<li><strong>如何获取 Keystream 信息:</strong><ul>
+<li><strong>精心构造数据:</strong> 攻击者可以精心构造要写入卡片的数据，并故意修改数据中的某些比特。 这里的数据是明文数据，在发送之前会与 keystream（上面获取的不完美的<code>Keystream</code>） 进行异或运算再发送给卡。</li>
+<li><strong>触发校验错误:</strong> 通过上述操作，攻击者可以尝试触发卡片返回特定的错误码。 如果明文数据和错误码已知，就可以反推出 keystream 的前几位. 具体来说，通过选择特定的数据块并计算期望的 CRC 值, 通过故意引入错误并观察返回的错误代码，就能提取到 keystream.</li>
+<li><strong>重复实验:</strong> 这是一个重复实验过程，通过不断尝试和分析错误码，可以逐步恢复更多的 Keystream 比特。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 详细示例：</strong></p>
+<p>假设攻击者要向一个扇区写入数据，并知道需要进行 CRC 校验。 以下是一个简化的例子：</p>
+<ol>
+<li><strong>选择数据块:</strong> 攻击者选择想要写入的数据块（16 字节）。</li>
+<li><strong>计算 CRC:</strong> 计算该数据块的 CRC (循环冗余校验) 值。</li>
+<li><strong>修改数据和 CRC:</strong> 攻击者可能会故意修改数据块中的一个比特，或者修改 CRC 值，以引入错误。</li>
+<li><strong>发送数据到卡片:</strong> 将修改后的数据块和 CRC 值发送到卡片。 数据和 CRC 会首先和 keystream 进行异或加密，再进行传输。在卡里收到数据后，会用内部的密钥进行解密，然后计算 CRC 。</li>
+<li><strong>观察错误码:</strong> 卡片收到数据后进行 CRC 校验。由于数据或 CRC 被修改过，校验将失败，卡片会返回一个错误码。</li>
+<li><strong>分析错误码:</strong> 攻击者分析返回的错误码。 不同的错误码可能指示了不同的校验错误类型，例如 CRC 校验错误。</li>
+<li><strong>推断 Keystream 比特:</strong> 根据错误码的类型和修改的数据，攻击者可以推断出 Keystream 的前几位或某些特定位置的比特值，因为卡片接收到的数据是被 keystream 加密过的。</li>
+<li><strong>重复上述过程:</strong> 攻击者重复上述过程，每次修改不同的数据比特或 CRC 值，并记录返回的错误码。 通过多次重复，攻击者可以收集到足够的 Keystream 信息。</li>
+</ol>
+<p><strong>4. 恢复 LFSR 状态并破解密钥</strong></p>
+<p>收集到足够的 keystream 之后，就可以使用之前提到的方法（解线性方程组）恢复出内部状态，并预测后续的 keystream，从而进行进一步的攻击（如破解密钥、克隆卡片等）。</p>
+<p><strong>5. 重要注意事项：</strong></p>
+<ul>
+<li>这种方法需要仔细的实验和分析。</li>
+<li>不同的 MIFARE Classic 卡片可能返回不同的错误码。</li>
+<li>错误码的具体含义可能取决于卡片的固件版本。</li>
+<li>实际的攻击过程可能比这个例子复杂得多。</li>
+</ul>
+<p><strong>总结：</strong></p>
+<p>通过精心构造数据、故意引入错误并分析 MIFARE Classic 返回的错误码，攻击者可以逐步获取 Keystream 的信息。 这种方法是 Darkside 攻击的一个重要组成部分。 结合其他技术，攻击者最终可以恢复 LFSR 的状态，预测 Keystream，并破解卡片的密钥。</p>
+</li>
+</ol>
+<h2 id="Proxmark3-攻击"><a href="#Proxmark3-攻击" class="headerlink" title="Proxmark3 攻击"></a>Proxmark3 攻击</h2><p><a target="_blank" rel="noopener" href="https://eprint.iacr.org/2024/1275">MIFARE Classic：暴露静态加密的无视变体 — MIFARE Classic: exposing the static encrypted nonce variant</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/17416723401">(15 封私信 &#x2F; 28 条消息) 当全加密 M1 卡沦陷之后 - 知乎</a></p>
+<p>可以编写 lua 脚本, 为什么 pn532 或者其他板子无法完成这个实验?</p>
+<p>Proxmark3 能够实现更底层的协议分析和控制，因此可以用于一些高级的攻击场景，比如对新的、或者应用了特殊安全机制的卡片进行研究和破解。不过笔者没钱买，所以这部分没法探究。</p>
+<p>但是pn532之类的芯片是高度封装的，没有留下精细调试的接口，不能控制细微的信号。</p>
+<h2 id="Chameleon"><a href="#Chameleon" class="headerlink" title="Chameleon"></a>Chameleon</h2><h3 id="变色龙侦测原理"><a href="#变色龙侦测原理" class="headerlink" title="变色龙侦测原理"></a>变色龙侦测原理</h3><p>据前文提到的三轮认证，实际上侦测获取密钥主要就是更具这个<a href="#M1%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%B8%89%E8%BD%AE%E8%AE%A4%E8%AF%81">三轮认证</a>来实现的攻击。</p>
+<p>以<code>Chameleon Ultra</code>为例，是针对读卡器的攻击，当然常规来说针对卡片的攻击使用的是PM3。虽然<code>Chameleon Ultra </code>也可以对卡片进行攻击了，但是不讨论这个。本文中提到的<code>Chameleon </code>都是针对读卡器的攻击。</p>
+<p>侦测本质上都是伪装成一张正常的卡片骗取读卡器经过特定扇区密钥加密后的响应值，也就是流程图中的<code>$a_R</code>，当发送的随机数<code>$n_T</code>可控并且可以获取响应值<code>$a_R</code>，那这不就是一个标准的选择明文攻击吗？</p>
+<h3 id="什么是Mfkey32"><a href="#什么是Mfkey32" class="headerlink" title="什么是Mfkey32"></a>什么是Mfkey32</h3><p>就是用来建立发送的随机数<code>$n_T</code>和响应值<code>$a_R</code>之间的方程，y&#x3D;f(x)</p>
+<h3 id="版本区别"><a href="#版本区别" class="headerlink" title="版本区别"></a>版本区别</h3><p>Chameleon Mini 和 Ultra 的主控芯片不同。Chameleon Ultra 的新芯片在性能上更强大，支持更复杂的卡片模拟和交互，但 <em>并非完全不支持 Sniffing</em>。 只是 Ultra 的 Sniffing 不像 Mini 那样 <em>纯粹被动</em>。</p>
+<p>因此，Chameleon Mini 更适合 <em>隐蔽地监听</em>，分析真实卡片与读卡器的交互过程，并且更难被检测到。 而 Chameleon Ultra <em>必须主动出击</em>，通过模拟不同的卡片输入，观察读卡器的响应，以此来分析协议或尝试破解。</p>
+<p>由于 Ultra 的硬件性能更强，它可以模拟更多类型的卡片，并且能够执行更复杂的安全测试和攻击。 但是，Ultra 的主动模拟行为也更容易被检测到。</p>
+<p>然而由于财力限制，笔者几乎接触到的所有Chameleon都是Utral或者变种，没有接触过存粹使用sniff进行监听的行为。</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2999/12/30/%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">碎碎念</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>99/12/30</li>
+                <li>00:00</li>
+                <li>未分类</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2025/09/23/%E6%89%93%E9%9D%B6%E6%97%A5%E8%AE%B0/vulhub%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/fastjson/1.2.24-rce/fastjson_1.2.24-rce/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">fastjson_1.2.24-rce</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>25/09/23</li>
+                <li>22:26</li>
+                <li>vulhub漏洞复现</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024 - 2026</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">aaaaaaaaamua</span>
+        </div>
+    
+
+      
+
+     
+
+    
+        <div class="trm-footer-item">
+            大佬来了就随便看看吧
+        </div>
+     
+
+
+    
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title="简介"><a rel="nofollow" class="trm-toc-link" href="#简介"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">简介</span></a></li><li class="trm-toc-item trm-toc-level-2" title="卡片分类"><a rel="nofollow" class="trm-toc-link" href="#卡片分类"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">卡片分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="正规发卡分类"><a rel="nofollow" class="trm-toc-link" href="#正规发卡分类"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">正规发卡分类</span></a></li><li class="trm-toc-item trm-toc-level-3" title="复制卡分类"><a rel="nofollow" class="trm-toc-link" href="#复制卡分类"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">复制卡分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="IC 卡"><a rel="nofollow" class="trm-toc-link" href="#IC-卡"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">IC 卡</span></a></li><li class="trm-toc-item trm-toc-level-4" title="ID 卡"><a rel="nofollow" class="trm-toc-link" href="#ID-卡"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text">ID 卡</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="M1 工作原理"><a rel="nofollow" class="trm-toc-link" href="#M1-工作原理"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">M1 工作原理</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="卡片物理结构组成"><a rel="nofollow" class="trm-toc-link" href="#卡片物理结构组成"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text">卡片物理结构组成</span></a></li><li class="trm-toc-item trm-toc-level-3" title="EEPROM分类和结构"><a rel="nofollow" class="trm-toc-link" href="#EEPROM分类和结构"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text">EEPROM分类和结构</span></a></li><li class="trm-toc-item trm-toc-level-3" title="卡片工作原理"><a rel="nofollow" class="trm-toc-link" href="#卡片工作原理"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text">卡片工作原理</span></a></li><li class="trm-toc-item trm-toc-level-3" title="M1如何进行三轮认证"><a rel="nofollow" class="trm-toc-link" href="#M1如何进行三轮认证"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text">M1如何进行三轮认证</span></a></li><li class="trm-toc-item trm-toc-level-3" title="M1卡正常发卡流程"><a rel="nofollow" class="trm-toc-link" href="#M1卡正常发卡流程"><span class="trm-toc-number">3.5.</span> <span class="trm-toc-text">M1卡正常发卡流程</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="针对于M1的攻击"><a rel="nofollow" class="trm-toc-link" href="#针对于M1的攻击"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">针对于M1的攻击</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="如何复制一张全加密M1卡？"><a rel="nofollow" class="trm-toc-link" href="#如何复制一张全加密M1卡？"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text">如何复制一张全加密M1卡？</span></a></li><li class="trm-toc-item trm-toc-level-3" title="攻击方式"><a rel="nofollow" class="trm-toc-link" href="#攻击方式"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text">攻击方式</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="简单分类"><a rel="nofollow" class="trm-toc-link" href="#简单分类"><span class="trm-toc-number">4.2.1.</span> <span class="trm-toc-text">简单分类</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-3" title="Crypto1 算法的问题"><a rel="nofollow" class="trm-toc-link" href="#Crypto1-算法的问题"><span class="trm-toc-number">4.3.</span> <span class="trm-toc-text">Crypto1 算法的问题</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="48-bit LFSR 问题所在"><a rel="nofollow" class="trm-toc-link" href="#48-bit-LFSR-问题所在"><span class="trm-toc-number">4.3.1.</span> <span class="trm-toc-text">48-bit LFSR 问题所在</span></a></li><li class="trm-toc-item trm-toc-level-4" title="如何预测LFSR输出结果？"><a rel="nofollow" class="trm-toc-link" href="#如何预测LFSR输出结果？"><span class="trm-toc-number">4.3.2.</span> <span class="trm-toc-text">如何预测LFSR输出结果？</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="Proxmark3 攻击"><a rel="nofollow" class="trm-toc-link" href="#Proxmark3-攻击"><span class="trm-toc-number">5.</span> <span class="trm-toc-text">Proxmark3 攻击</span></a></li><li class="trm-toc-item trm-toc-level-2" title="Chameleon"><a rel="nofollow" class="trm-toc-link" href="#Chameleon"><span class="trm-toc-number">6.</span> <span class="trm-toc-text">Chameleon</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="变色龙侦测原理"><a rel="nofollow" class="trm-toc-link" href="#变色龙侦测原理"><span class="trm-toc-number">6.1.</span> <span class="trm-toc-text">变色龙侦测原理</span></a></li><li class="trm-toc-item trm-toc-level-3" title="什么是Mfkey32"><a rel="nofollow" class="trm-toc-link" href="#什么是Mfkey32"><span class="trm-toc-number">6.2.</span> <span class="trm-toc-text">什么是Mfkey32</span></a></li><li class="trm-toc-item trm-toc-level-3" title="版本区别"><a rel="nofollow" class="trm-toc-link" href="#版本区别"><span class="trm-toc-number">6.3.</span> <span class="trm-toc-text">版本区别</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="搜索文章...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    请输入关键词进行搜索
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.5"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.5"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.2.5"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
