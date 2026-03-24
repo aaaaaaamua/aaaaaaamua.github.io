@@ -611,7 +611,7 @@
 </li>
 <li><p><code>docker ps</code>  #查看所有正在运行的容器</p>
 <p><code>docker ps -a</code>  #查看所有的容器(包括微运行的)</p>
-<p><img src="/docker/image-20250923173546414.png" alt="image-20250923173546414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250923173546414.png" alt="image-20250923173546414"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 </li>
 <li><p>根据已有的镜像建立一个容器表情进入容器内部的交互式shell</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 3000:3000 --name jdk8 justrydeng/jdk8 /bin/bash</span><br></pre></td></tr></table></figure>
@@ -663,11 +663,11 @@
 <li><p>需要找出<code>docker-compose</code>启动的网卡长什么样,一般是叫做<code>**_default</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker Network <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/docker/image-20250925134902529.png" alt="image-20250925134902529"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250925134902529.png" alt="image-20250925134902529"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>可以轻松找到应该是<code>nodejstest_default</code></p>
 </li>
 <li><p>使用命令<code>docker network connect</code></p>
-<p><img src="/docker/image-20250925135119774.png" alt="image-20250925135119774"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="/2025/05/02/hello-world/image-20250925135119774.png" alt="image-20250925135119774"  data-tag='post-image' onload='this.onload=null;this.style.opacity=1;' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network connect nodejstest_default jdk8</span><br></pre></td></tr></table></figure></li>
 </ol>
 </li>
